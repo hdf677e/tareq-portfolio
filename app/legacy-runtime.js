@@ -64,7 +64,7 @@ function featCard(p){
       <dl class="feat-meta"><dt>Platform</dt><dd>${p.platform}</dd><dt>My role</dt><dd>${p.role}</dd></dl>
       <span class="feat-cta"><span class="feat-cta-icon">${ARROW}</span>View case study</span></div></div>`;
   const art = `<div class="feat-art">${p.art()}</div>`;
-  return `<a class="feat ${p.cls} rv" href="/work/${p.slug}" aria-label="${p.name} case study">${body}${art}</a>`;
+  return `<a class="feat ${p.cls} rv" href="#${p.slug}" aria-label="${p.name} case study">${body}${art}</a>`;
 }
 
 /* ---------- more work ---------- */
@@ -189,7 +189,7 @@ const CASES = {
   cover:`<div class="cover-frame"><div class="shot">${img('packly-web-home','Packly marketplace home page',1)}</div></div>`,
   sections:[
    ['intro','Introduction','A marketplace in two iterations', `<p class="lead">Packly is a multi-vendor commerce platform in Bangladesh.</p><p>I designed two iterations of it, covering customer shopping journeys, product discovery, vendor experiences, checkout, order management and marketplace workflows.</p>`],
-   ['context','Context','Three sides of one purchase', `<div class="three"><div class="box"><span class="meta">Customer</span><h3>Finds and buys</h3><p>Discovers products, compares, adds to cart from several shops, checks out and follows orders.</p></div><div class="box inkb"><span class="meta">Marketplace</span><h3>Connects</h3><p>Categories, search, campaigns and order management tie buyers and sellers together.</p></div><div class="box"><span class="meta">Vendor</span><h3>Sells</h3><p>Runs a shop, lists products and fulfils orders, with tools in <a href="/work/packly-business-manager">Business Manager</a>.</p></div></div>`],
+   ['context','Context','Three sides of one purchase', `<div class="three"><div class="box"><span class="meta">Customer</span><h3>Finds and buys</h3><p>Discovers products, compares, adds to cart from several shops, checks out and follows orders.</p></div><div class="box inkb"><span class="meta">Marketplace</span><h3>Connects</h3><p>Categories, search, campaigns and order management tie buyers and sellers together.</p></div><div class="box"><span class="meta">Vendor</span><h3>Sells</h3><p>Runs a shop, lists products and fulfils orders, with tools in <a href="#packly-business-manager">Business Manager</a>.</p></div></div>`],
    ['problem','Problem','One store, many sellers', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">A marketplace has to feel like one store to the customer, while every seller's products, stock and orders stay separate.</p></div><div><span class="meta">Challenge</span><p style="margin-top:12px">Iterate the product architecture and UX into a more scalable, conversion-focused commerce experience.</p></div></div>`],
    ['flow','User Flow','The customer journey', `<div class="focus-list f5"><div><b>Discover</b><span>Home, campaigns, search</span></div><div><b>Browse</b><span>Categories, listings</span></div><div><b>Decide</b><span>Product details, variants</span></div><div><b>Cart</b><span>Grouped by shop</span></div><div><b>Order</b><span>Checkout, tracking</span></div></div>`],
    ['ui','Final UI','Selected screens from the live product', `<div class="gallery">${fig('pk-app-home','Home','Search, banner, campaigns and categories above the fold.')}${fig('pk-app-categories','Categories','Two-level browsing with image tiles.')}${fig('pk-app-flash','Flash sale','Countdown and discount on every card.')}${fig('pk-app-cart','Cart','Items grouped under each shop.')}</div><p class="scope-note">Screens from the Packly shopping app on Google Play and packly.com.</p>`],
@@ -458,8 +458,8 @@ function buildCase(slug){
       <div class="cs-sections">${secs}</div>
     </div>
     <nav class="next" aria-label="More case studies">
-      <a href="/work/${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
-      <a href="/work/${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
+      <a href="#${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
+      <a href="#${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
     </nav>
   </div>`;
   const frag = document.createDocumentFragment();

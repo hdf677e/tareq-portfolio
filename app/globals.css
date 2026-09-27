@@ -1037,38 +1037,10 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 .wordmark{margin-top:48px}
 }
 
-/* Search-friendly project pages */
-.project-name{color:var(--lime);margin-bottom:14px}
-.project-page .cs-meta dt{color:var(--muted-d)}
-.project-page .cs-meta dd{margin:0}
-.project-cover{margin:0;border-radius:var(--r-lg);overflow:hidden;background:var(--paper-2)}
-.project-cover img{display:block;width:100%;height:auto;max-height:760px;object-fit:cover;object-position:center}
-.project-cover figcaption{padding:12px 18px;color:var(--muted);font-size:var(--t-small)}
-.project-content{display:flex;flex-direction:column;gap:clamp(64px,7vw,104px);max-width:840px;margin-inline:auto}
-.project-content .cs-sec{scroll-margin-top:110px}
-.project-skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.project-skills span{padding:8px 12px;border:1px solid var(--line);border-radius:var(--r-pill);font-size:var(--t-small);color:var(--muted)}
-.project-decisions{border-top:1px solid var(--line)}
-.project-decision{display:grid;grid-template-columns:44px minmax(180px,.8fr) minmax(0,1.2fr);gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}
-.project-decision h3{font-size:1.1rem;line-height:1.35;letter-spacing:-.02em}
-.project-decision p{color:var(--muted);font-size:.95rem}
-.project-outcome{gap:18px}
-.project-outcome p{max-width:68ch}
-.project-outcome a{align-self:flex-start;text-decoration:none;color:var(--text);font-weight:500}
-.project-contact{max-width:840px;margin:clamp(64px,8vw,120px) auto 0;padding:clamp(24px,4vw,48px);border-radius:var(--r-lg);background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:space-between;gap:32px}
-.project-contact .meta{color:var(--lime)}
-.project-contact h2{font-size:clamp(1.6rem,1.2rem + 1.4vw,2.4rem);line-height:1.1;letter-spacing:-.03em;max-width:18ch;margin-top:12px}
-.project-contact .btn{flex:none}
-.project-more{max-width:840px;margin:64px auto 0;padding-top:20px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px}
-.project-more a{display:flex;flex-direction:column;gap:4px;padding:12px 0;text-decoration:none}
-.project-more a>span:last-child{font-size:1.05rem}
+/* Crawlable case study links for visitors without JavaScript */
 .seo-case-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}
 .seo-case-links a{display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid var(--line);border-radius:var(--r-md);text-decoration:none;color:inherit;background:var(--card)}
 .seo-case-links a span{font-size:var(--t-small);color:var(--muted)}
 @media(max-width:700px){
-  .project-decision{grid-template-columns:34px minmax(0,1fr);gap:8px 12px}
-  .project-decision p{grid-column:2}
-  .project-contact{align-items:flex-start;flex-direction:column}
   .seo-case-links{grid-template-columns:1fr}
-  .project-more{grid-template-columns:1fr}
 }
