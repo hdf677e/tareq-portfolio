@@ -88,8 +88,7 @@ ul{margin:0;padding:0;list-style:none}
 .nav.compact{padding-top:calc(10px + env(safe-area-inset-top,0px))}
 .nav.compact .nav-bar{background:rgba(20,22,14,.86);box-shadow:0 8px 30px rgba(10,12,6,.18);max-width:920px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:500;letter-spacing:-.01em;white-space:nowrap}
-.brand-dot{width:22px;height:22px;border-radius:50%;background:var(--lime);position:relative;flex:none}
-.brand-dot::after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--ink);left:5px;top:4px}
+.brand-logo{display:block;width:22px;height:22px;object-fit:contain;flex:none}
 .nav-links{display:flex;gap:4px}
 .nav-links a{padding:8px 14px;border-radius:var(--r-pill);text-decoration:none;font-size:.9rem;color:rgba(244,244,238,.82);transition:background-color .2s,color .2s}
 .nav-links a:hover,.nav-links a[aria-current="true"]{background:rgba(244,244,238,.1);color:var(--paper)}
