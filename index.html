@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css"></head><body>
 <title>Tareq Mahmud</title>
 <meta name="description" content="Tareq Mahmud, Mid-Senior UI/UX and Product Designer in Dhaka. Product design for ecommerce, logistics, ERP, payments and SaaS.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,10 +80,10 @@ ul{margin:0;padding:0;list-style:none}
 .btn-ghost:hover{background:rgba(244,244,238,.16)}
 .btn-line{background:transparent;color:var(--text);border-color:var(--line)}
 .btn-line:hover{border-color:var(--text)}
-.btn svg{width:16px;height:16px;flex:none}
+.btn .ri{font-size:16px;line-height:1;flex:none}
 .arrow-link{display:inline-flex;align-items:center;gap:.45em;text-decoration:none;font-weight:500;font-size:.95rem}
-.arrow-link svg{width:16px;height:16px;transition:transform .25s var(--ease)}
-.arrow-link:hover svg{transform:translateX(3px)}
+.arrow-link .ri{font-size:16px;line-height:1;transition:transform .25s var(--ease)}
+.arrow-link:hover .ri{transform:translateX(3px)}
 
 /* ============ Nav (Soniq frosted pill, compresses on scroll) ============ */
 .nav{position:fixed;left:0;right:0;top:0;z-index:50;padding-top:calc(18px + env(safe-area-inset-top,0px));transition:padding .35s var(--ease);pointer-events:none}
@@ -111,19 +111,15 @@ ul{margin:0;padding:0;list-style:none}
 /* ============ Hero ============ */
 .hero{position:relative;background:var(--ink);color:var(--paper);overflow:hidden;isolation:isolate}
 .hero-media{position:absolute;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(80% 70% at 68% 105%, #2c3316 0%, #151809 45%, #050604 80%)}
-.hero-media video{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;object-position:22% center;display:block}
+.hero-media video{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;object-position:center;display:block}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:
   linear-gradient(180deg, rgba(10,12,6,.35) 0%, rgba(10,12,6,0) 30%, rgba(20,22,14,0) 62%, rgba(20,22,14,.75) 88%, var(--ink) 100%),
   linear-gradient(90deg, rgba(10,12,6,.78) 0%, rgba(10,12,6,.55) 36%, rgba(10,12,6,.12) 62%, rgba(10,12,6,0) 80%)}
-.media-toggle{position:absolute;right:var(--gutter);top:calc(96px + env(safe-area-inset-top,0px));z-index:2;display:inline-flex;align-items:center;gap:8px;height:32px;padding-inline:12px;border-radius:var(--r-pill);border:1px solid var(--line-d);background:rgba(20,22,14,.5);color:rgba(244,244,238,.75);font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px)}
-.media-toggle:hover{color:var(--paper);border-color:rgba(244,244,238,.3)}
-.media-toggle svg{width:10px;height:10px}
 @media (max-width:860px){
   .hero::before{background:
     linear-gradient(180deg, rgba(10,12,6,.6) 0%, rgba(10,12,6,.62) 45%, rgba(20,22,14,.9) 72%, var(--ink) 100%)}
-  .media-toggle{top:calc(84px + env(safe-area-inset-top,0px));height:28px;padding-inline:10px}
 }
-.hero-inner{padding-top:calc(150px + env(safe-area-inset-top,0px));padding-bottom:clamp(40px,6vw,72px)}
+.hero-inner{padding-top:calc(170px + env(safe-area-inset-top,0px));padding-bottom:clamp(104px,10vw,144px)}
 .hero-eyebrow{display:flex;align-items:center;gap:10px;color:var(--muted-d);margin-bottom:28px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px rgba(185,226,91,.18)}
 .hero h1{font-size:var(--t-hero);line-height:1.01;letter-spacing:-.045em;font-weight:400;max-width:17ch}
@@ -137,8 +133,8 @@ ul{margin:0;padding:0;list-style:none}
 .cred span{color:var(--muted-d);font-size:var(--t-small)}
 
 /* Product strip (was the Soniq logo marquee) */
-.strip{border-top:1px solid var(--line-d);padding-block:26px;overflow:hidden;position:relative}
-.strip-label{color:var(--muted-d);margin-bottom:16px}
+.strip{border-top:0;padding-block:26px;overflow:hidden;position:relative}
+.strip-label{color:var(--muted-d);margin-bottom:16px;text-align:center}
 .marquee{display:flex;align-items:center;width:max-content;animation:marq 60s linear infinite}
 .strip:hover .marquee{animation-play-state:paused}
 .marquee .logo{flex:none;display:flex;align-items:center;justify-content:center;height:56px;padding-inline:clamp(28px,3.4vw,48px)}
@@ -209,12 +205,11 @@ ul{margin:0;padding:0;list-style:none}
 .feat-meta dt{opacity:.6}
 .feat-meta dd{margin:0}
 .feat-cta{display:inline-flex;align-items:center;gap:10px;font-weight:500}
-.feat-cta i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:currentColor;transition:transform .35s var(--ease)}
-.feat-cta i svg{width:16px;height:16px}
-.feat.sage .feat-cta i svg,.feat.cardc .feat-cta i svg{color:var(--paper)}
-.feat.inkc .feat-cta i{background:var(--lime)} .feat.inkc .feat-cta i svg{color:var(--lime-ink)}
-.feat.limec .feat-cta i{background:var(--lime-ink)} .feat.limec .feat-cta i svg{color:var(--lime)}
-.feat:hover .feat-cta i{transform:translateX(4px)}
+.feat-cta-icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper);transition:transform .35s var(--ease);flex:none}
+.feat-cta-icon .ri{display:inline-block;font-size:16px;line-height:1;color:inherit!important;-webkit-text-fill-color:currentColor}
+.feat.inkc .feat-cta-icon{background:var(--lime);color:var(--lime-ink)}
+.feat.limec .feat-cta-icon{background:var(--ink);color:var(--lime)}
+.feat:hover .feat-cta-icon{transform:translateX(4px)}
 .feat-art{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
 .phones{display:flex;gap:14px;align-items:flex-end;padding:40px 32px 0;width:100%;justify-content:center}
 .phone{flex:0 1 210px;border-radius:22px 22px 0 0;overflow:hidden;box-shadow:0 24px 60px rgba(20,22,14,.2);transition:transform .6s var(--ease)}
@@ -408,7 +403,7 @@ a.mw:hover .mw-shot{transform:translate(-12px,28px)}
 .hw-bot ul{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .hw-bot li{font-size:.74rem;padding:4px 10px;border-radius:var(--r-pill);background:var(--paper);border:1px solid var(--line)}
 .hw-ico{flex:none;width:38px;height:38px;border-radius:10px;background:var(--paper);display:grid;place-items:center;color:var(--text)}
-.hw-ico svg{width:18px;height:18px}
+.hw-ico .ri{font-size:18px;line-height:1}
 .hw-last{background:#fff}
 
 .hw-last li{background:rgba(244,244,238,.06);border-color:var(--line-d)}
@@ -480,9 +475,9 @@ a.mw:hover .mw-shot{transform:translate(-12px,28px)}
 .cap-tab b{font-weight:400;font-size:clamp(1.6rem,1.1rem + 1.8vw,2.6rem);letter-spacing:-.035em;line-height:1.05;color:rgba(21,23,15,.28);transition:color .4s,transform .5s cubic-bezier(.22,.8,.2,1)}
 .cap-tab:hover b{color:rgba(21,23,15,.6)}
 .cap-tab.on b{color:var(--text)}
-.cap-tab i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);opacity:0;transform:translateX(-8px);transition:opacity .4s,transform .5s cubic-bezier(.22,.8,.2,1),background-color .3s}
-.cap-tab i svg{width:15px;height:15px}
-.cap-tab.on i{opacity:1;transform:none;background:var(--lime);border-color:var(--lime);color:var(--lime-ink)}
+.cap-tab-icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);opacity:0;transform:translateX(-8px);transition:opacity .4s,transform .5s cubic-bezier(.22,.8,.2,1),background-color .3s}
+.cap-tab-icon .ri{font-size:15px;line-height:1}
+.cap-tab.on .cap-tab-icon{opacity:1;transform:none;background:var(--lime);border-color:var(--lime);color:var(--lime-ink)}
 .cap-tab:focus-visible b{outline:2px solid var(--lime-2);outline-offset:4px;border-radius:6px}
 .cap-stage{position:relative;background:var(--ink);color:var(--paper);border-radius:20px;padding:clamp(24px,3vw,40px);overflow:hidden;isolation:isolate;height:560px;display:flex;flex-direction:column}
 .cap-panel.on{flex:1}
@@ -512,7 +507,7 @@ a.mw:hover .mw-shot{transform:translate(-12px,28px)}
 .cap-thumb-l em{font-style:normal;opacity:.6;transition:transform .3s}
 .cap-thumb:hover .cap-thumb-l em{transform:translate(2px,-2px);opacity:1}
 @media (max-width:900px){.cap-wrap{grid-template-columns:1fr}.cap-stage{height:auto}.cap-tabs{height:auto}.cap-tab{flex:none}}
-@media (max-width:560px){.cap-tab{grid-template-columns:34px 1fr 36px}.cap-tab i{width:34px;height:34px}.cap-thumbs{gap:8px}}
+@media (max-width:560px){.cap-tab{grid-template-columns:34px 1fr 36px}.cap-tab-icon{width:34px;height:34px}.cap-thumbs{gap:8px}}
 @media (prefers-reduced-motion: reduce){.cap-panel.on,.cap-panel.on .cap-skills li{animation:none}}
 /* ============ About (editorial) ============ */
 .ab-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,96px);align-items:center}
@@ -557,112 +552,118 @@ a.mw:hover .mw-shot{transform:translate(-12px,28px)}
 .btn-ghost:hover{color:var(--ink);border-color:var(--paper);background:rgba(244,244,238,.08)}
 .btn-line::before{background:var(--ink)}
 .btn-line:hover{color:var(--paper);border-color:var(--ink)}
-.btn svg{transition:transform .4s cubic-bezier(.22,.8,.2,1)}
-.btn:hover svg{transform:translateX(4px)}
-.btn[href$=".pdf"]:hover svg{transform:translateY(3px)}
-@media (prefers-reduced-motion: reduce){.btn::before,.btn,.btn svg{transition:none}}
+.btn .ri{transition:transform .4s cubic-bezier(.22,.8,.2,1)}
+.btn:hover .ri{transform:translateX(4px)}
+.btn[href$=".pdf"]:hover .ri-download-line{transform:translateY(3px)}
 /* ============ Story case study ============ */
-.sy-progress{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none}
-.sy-progress i{display:block;height:100%;width:0;background:var(--lime);box-shadow:0 0 12px rgba(185,226,91,.6)}
-.sy-hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden;isolation:isolate;padding-top:calc(140px + env(safe-area-inset-top,0px))}
-.sy-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(50% 60% at 85% 10%,rgba(185,226,91,.16),transparent 70%),radial-gradient(40% 40% at 10% 90%,rgba(185,226,91,.08),transparent 70%)}
-.sy-name{color:var(--lime);margin-bottom:16px}
-.sy-hero h1{font-size:clamp(3rem,1.4rem + 6.5vw,7.4rem);line-height:.95;letter-spacing:-.055em;font-weight:400;max-width:12ch}
-.sy-hero h1 span{display:block;font-size:clamp(1.2rem,.9rem + 1.2vw,1.9rem);letter-spacing:-.02em;line-height:1.25;color:var(--muted-d);margin-top:22px;max-width:28ch}
-.sy-hero .cs-meta{margin-top:clamp(40px,5vw,64px)}
-.sy-cover{padding-top:clamp(40px,5vw,72px);padding-bottom:0;margin-bottom:-1px}
-.sy-cover .sy-shot{margin-bottom:-6%}
-.sy-cover .sy-frame{border-radius:18px 18px 0 0;box-shadow:0 -20px 80px rgba(185,226,91,.12)}
-.sy-toc{position:sticky;top:calc(76px + env(safe-area-inset-top,0px));z-index:40;background:rgba(244,244,238,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:6%}
-.sy-toc .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-block:10px}
-.sy-toc .wrap::-webkit-scrollbar{display:none}
-.sy-toc a{flex:none;display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:var(--r-pill);text-decoration:none;font-size:.86rem;color:var(--muted);transition:background-color .3s,color .3s}
-.sy-toc a span{font-family:var(--f-mono);font-size:.7rem;opacity:.7}
-.sy-toc a:hover{color:var(--text)}
-.sy-toc a.on{background:var(--ink);color:var(--paper)}
-.sy-toc a.on span{color:var(--lime);opacity:1}
-.sy-ch{padding-block:clamp(88px,11vw,160px);scroll-margin-top:130px;position:relative}
-.sy-dark{background:var(--ink);color:var(--paper)}
-.sy-head{margin-bottom:clamp(40px,5vw,72px)}
-.sy-k{color:var(--muted);display:block;margin-bottom:20px}
-.sy-dark .sy-k{color:var(--lime)}
-.sy-t{font-size:clamp(2rem,1.1rem + 3vw,3.9rem);line-height:1.04;letter-spacing:-.04em;font-weight:400;max-width:20ch}
-.sy-t em{font-style:normal;color:var(--lime-2)}
-.sy-dark .sy-t em{color:var(--lime)}
-.sy-cols{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(24px,5vw,80px);align-items:start}
-.sy-lead{font-size:clamp(1.25rem,1rem + .9vw,1.75rem);line-height:1.35;letter-spacing:-.02em}
-.sy-body{display:flex;flex-direction:column;gap:16px;color:var(--muted);font-size:1.02rem;line-height:1.65}
-.sy-cast{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;align-items:stretch}
-.sy-role{border:1px solid var(--line-d);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:10px;background:rgba(244,244,238,.03)}
-.sy-role .meta{color:var(--muted-d)}
-.sy-role h3{font-size:1.6rem;letter-spacing:-.03em;font-weight:400}
-.sy-role p{color:var(--muted-d);font-size:.95rem}
-.sy-role i{margin-top:auto;padding-top:18px;font-style:normal;font-size:1.05rem;color:var(--paper)}
-.sy-role.on{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
-.sy-role.on .meta,.sy-role.on p{color:rgba(24,32,10,.7)}
-.sy-role.on i{color:var(--lime-ink)}
-.sy-link{align-self:center;height:1px;background:repeating-linear-gradient(90deg,rgba(244,244,238,.35) 0 5px,transparent 5px 10px)}
-.sy-flow{margin-top:clamp(32px,4vw,56px);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sy-flow span{padding:10px 18px;border-radius:var(--r-pill);border:1px solid var(--line-d);font-size:.92rem}
-.sy-flow span:last-child{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
-.sy-flow b{flex:1;min-width:20px;height:1px;background:var(--line-d)}
-.sy-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.sy-mapcol{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px}
-.sy-mapcol:first-child{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.sy-step{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
-.sy-mapcol:first-child .sy-step{color:var(--lime)}
-.sy-mapcol h3{font-size:1.35rem;letter-spacing:-.025em;font-weight:500}
-.sy-mapcol ul{display:flex;flex-direction:column}
-.sy-mapcol li{padding:9px 0;border-top:1px solid var(--line);font-size:.93rem}
-.sy-mapcol:first-child li{border-color:var(--line-d)}
-.sy-caption{margin-top:20px;color:var(--muted);font-size:.95rem}
-.sy-shot{margin:0}
-.sy-frame{position:relative;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 0 rgba(21,23,15,.04),0 40px 80px -40px rgba(20,22,14,.35);outline:1px solid var(--line)}
-.sy-dark .sy-frame{outline-color:var(--line-d);box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
-.sy-frame img{display:block;width:100%;height:auto}
-.sy-pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-family:var(--f-mono);font-size:.8rem;font-weight:500;box-shadow:0 0 0 6px rgba(185,226,91,.35);animation:syPulse 2.4s ease-in-out infinite}
-@keyframes syPulse{0%,100%{box-shadow:0 0 0 5px rgba(185,226,91,.35)}50%{box-shadow:0 0 0 11px rgba(185,226,91,.12)}}
-.sy-notes{list-style:none;margin:clamp(28px,3vw,40px) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.sy-notes li{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
-.sy-dark .sy-notes li{background:rgba(244,244,238,.04);border-color:var(--line-d)}
-.sy-num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-family:var(--f-mono);font-size:.74rem}
-.sy-dark .sy-num{background:var(--lime);color:var(--lime-ink)}
-.sy-notes b{display:block;font-weight:500;margin-bottom:4px;letter-spacing:-.01em}
-.sy-notes p{color:var(--muted);font-size:.9rem;line-height:1.5}
-.sy-dark .sy-notes p{color:var(--muted-d)}
-.sy-pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px);align-items:start}
-.sy-pair .sy-notes{grid-template-columns:1fr}
-.sy-split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:start}
-.sy-side{position:sticky;top:160px}
-.sy-side .sy-notes{grid-template-columns:1fr}
-.sy-sys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.sy-sys > div{border:1px solid var(--line-d);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:10px}
-.sy-sys h3{font-size:1.3rem;letter-spacing:-.02em;font-weight:500}
-.sy-sys p{color:var(--muted-d);font-size:.95rem}
-.sy-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.sy-pills span{font-size:.8rem;padding:5px 12px;border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:6px}
-.sy-pills span::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-.sy-pills .ok{background:rgba(88,184,58,.18);color:#8fdc6d}.sy-pills .wait{background:rgba(245,166,35,.16);color:#f5b451}.sy-pills .done{background:rgba(185,226,91,.16);color:var(--lime)}.sy-pills .bad{background:rgba(240,82,82,.16);color:#f38a8a}
-.sy-end{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.sy-end > div{background:var(--paper-2);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:10px}
-.sy-end .meta{color:var(--muted)}
-.sy-end h3{font-size:1.4rem;letter-spacing:-.025em;font-weight:500}
-.sy-end p{color:var(--muted)}
-@media (max-width:980px){
-  .sy-cols,.sy-pair,.sy-split{grid-template-columns:1fr}
-  .sy-side{position:static}
-  .sy-cast{grid-template-columns:1fr}
-  .sy-link{width:1px;height:28px;justify-self:center;background:repeating-linear-gradient(180deg,rgba(244,244,238,.35) 0 5px,transparent 5px 10px)}
-  .sy-map{grid-template-columns:1fr 1fr}
-  .sy-sys{grid-template-columns:1fr}
-}
-@media (max-width:560px){
-  .sy-map,.sy-end{grid-template-columns:1fr}
-  .sy-pin{width:24px;height:24px;font-size:.66rem}
-  .sy-toc{top:calc(68px + env(safe-area-inset-top,0px))}
-  .sy-flow b{display:none}
-}
-@media (prefers-reduced-motion: reduce){.sy-pin{animation:none}}
+/* ============ Payment gateway case study ============ */
+.pg-story{background:var(--paper)}
+.pg-hero{background:var(--ink);color:var(--paper);padding:calc(112px + env(safe-area-inset-top,0px)) 0 clamp(64px,8vw,112px);position:relative;overflow:hidden;isolation:isolate}
+.pg-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 70% at 86% 25%,rgba(185,226,91,.13),transparent 72%)}
+.pg-hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(36px,5vw,64px);align-items:center}
+.pg-crumb{display:flex;gap:10px;color:var(--muted-d);font-size:.82rem;margin-bottom:34px}.pg-crumb a{color:inherit;text-decoration:none}.pg-crumb a:hover{color:var(--paper)}
+.pg-eyebrow{color:var(--lime);font: .74rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.pg-hero h1{font-size:clamp(3rem,1.5rem + 5vw,6.3rem);line-height:.96;letter-spacing:-.055em;font-weight:400;max-width:11ch}
+.pg-hero-copy{font-size:clamp(1.05rem,.95rem + .55vw,1.3rem);line-height:1.55;color:var(--muted-d);max-width:48ch;margin-top:24px}
+.pg-meta-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 24px;margin-top:28px;max-width:none}
+.pg-meta-row div{border-top:1px solid var(--line-d);padding-top:10px;display:flex;flex-direction:column;gap:5px}
+.pg-meta-row span{font:.7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-d)}
+.pg-meta-row b{font-size:.86rem;font-weight:500;color:var(--paper)}
+.pg-hero-art{height:clamp(420px,46vw,600px);position:relative;display:flex;align-items:center;justify-content:center}
+.pg-hero-shot{position:absolute;overflow:hidden;border:8px solid #fff;border-radius:24px;background:#fff;box-shadow:0 32px 80px rgba(0,0,0,.32)}
+.pg-hero-shot img{display:block;width:100%;height:100%;object-fit:contain;object-position:top}
+.pg-hero-shot.main{width:22%;height:82%;left:24%;top:12%;transform:rotate(-4deg)}
+.pg-hero-shot.method{width:23%;height:90%;left:38.5%;top:5%;z-index:2}
+.pg-hero-shot.receipt{width:22%;height:82%;right:24%;top:12%;transform:rotate(4deg)}
+.pg-section{padding-block:clamp(72px,9vw,128px)}
+.pg-section.soft{background:var(--paper-2)}
+.pg-section-head{display:grid;grid-template-columns:minmax(180px,3fr) minmax(0,7fr);gap:32px;align-items:start;margin-bottom:clamp(36px,5vw,64px)}
+.pg-label{font: .74rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:8px}
+.pg-section h2{font-size:clamp(2rem,1.2rem + 2.6vw,3.6rem);line-height:1.04;letter-spacing:-.045em;font-weight:400;max-width:23ch}
+.pg-deck{font-size:1.08rem;line-height:1.65;color:var(--muted);max-width:62ch;margin-top:16px}
+.pg-flowline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0 0 30px;counter-reset:flow}
+.pg-flowline span{position:relative;padding:0 14px 0 0;color:var(--muted);font-size:.84rem}.pg-flowline span::before{counter-increment:flow;content:"0" counter(flow);display:block;font: .72rem var(--f-mono);color:var(--lime-2);margin-bottom:10px}.pg-flowline span::after{content:"";position:absolute;left:0;right:14px;top:36px;height:1px;background:var(--line)}
+.pg-flow-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;overflow-x:auto;padding:2px 2px 16px;scroll-snap-type:x mandatory}
+.pg-flow-card{min-width:0;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pg-flow-card figure{height:clamp(260px,32vw,440px);margin:0;background:#f1f4f7;display:flex;align-items:center;justify-content:center;padding:10px}
+.pg-flow-card img{height:100%;width:100%;object-fit:contain;display:block}
+.pg-flow-caption{padding:16px 15px 18px}.pg-flow-caption b{display:block;font-size:.94rem;font-weight:500;margin-bottom:6px}.pg-flow-caption p{font-size:.82rem;line-height:1.5;color:var(--muted)}
+.pg-next{display:flex;justify-content:space-between;gap:20px;margin-top:clamp(64px,8vw,104px);border-top:1px solid var(--line);padding-top:22px}.pg-next a{color:var(--text);text-decoration:none;display:flex;flex-direction:column;gap:6px}.pg-next a:last-child{text-align:right}.pg-next .meta{color:var(--muted)}
+.pg-hero{background:var(--paper);color:var(--text);padding-top:calc(112px + env(safe-area-inset-top,0px))}
+.pg-hero::before{background:radial-gradient(48% 70% at 88% 24%,rgba(185,226,91,.12),transparent 74%)}
+.pg-crumb{color:var(--muted)}.pg-crumb a:hover{color:var(--text)}
+.pg-eyebrow{color:var(--muted)}
+.pg-hero-copy{color:var(--muted)}
+.pg-meta-row div{border-color:var(--line)}.pg-meta-row span{color:var(--muted)}.pg-meta-row b{color:var(--text)}
+.pg-hero-art{background:var(--paper-2);border-radius:20px;overflow:hidden}
+.pg-hero-shot{box-shadow:0 24px 60px rgba(20,22,14,.18)}
+.pg-role-card{border-radius:0}
+.pg-problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,7vw,100px)}
+.pg-problem-grid article{border-top:1px solid var(--line);padding-top:18px}
+.pg-problem-grid .meta{display:block;color:var(--muted);margin-bottom:16px}
+.pg-problem-grid h3{font-size:clamp(1.35rem,1.1rem + .8vw,1.8rem);font-weight:500;letter-spacing:-.025em;max-width:24ch;margin-bottom:12px}
+.pg-problem-grid p{max-width:50ch;color:var(--muted);line-height:1.65}
+.pg-solution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.pg-solution-grid article{border-top:1px solid var(--line);padding-top:16px}
+.pg-solution-grid .num{display:block;color:var(--lime-2);font: .74rem var(--f-mono);margin-bottom:28px}
+.pg-solution-grid h3{font-size:1.18rem;font-weight:500;line-height:1.3;margin-bottom:10px}
+.pg-solution-grid p{color:var(--muted);font-size:.94rem;line-height:1.6}
+.pg-principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid var(--line)}
+.pg-principles article{padding:22px 22px 24px 0}.pg-principles article+article{padding-left:22px;border-left:1px solid var(--line)}
+.pg-principles b{display:block;font-weight:500;margin-bottom:8px}.pg-principles p{color:var(--muted);font-size:.92rem;line-height:1.6}
+.pg-ui-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,48px)}
+.pg-ui-card{margin:0}.pg-ui-card .frame{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.pg-ui-card img{display:block;width:100%;height:auto}
+.pg-ui-card figcaption{padding-top:14px;color:var(--muted);font-size:.9rem;line-height:1.5}.pg-ui-card figcaption b{display:block;color:var(--text);font-weight:500;margin-bottom:4px}
+.pg-workflow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:phase}
+.pg-workflow div{border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.9rem}
+.pg-workflow div::before{counter-increment:phase;content:"0" counter(phase);display:block;color:var(--lime-2);font: .74rem var(--f-mono);margin-bottom:12px}
+@media(max-width:900px){.pg-problem-grid{gap:28px}.pg-workflow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.pg-problem-grid,.pg-solution-grid,.pg-principles,.pg-ui-grid{grid-template-columns:1fr}.pg-principles article{padding:18px 0}.pg-principles article+article{padding-left:0;border-left:0;border-top:1px solid var(--line)}.pg-workflow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.pg-hero-art{height:460px;max-width:100%;width:100%;margin:0 auto}.pg-flowline{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:20px}.pg-flow-grid{grid-template-columns:repeat(3,minmax(180px,1fr))}.pg-section-head{grid-template-columns:1fr;gap:14px}}
+@media(max-width:560px){.pg-hero{padding-top:100px}.pg-meta-row{grid-template-columns:repeat(2,minmax(0,1fr))}.pg-hero-art{height:330px}.pg-hero-shot{border-width:5px;border-radius:18px}.pg-hero-shot.main{width:30%;height:70%;left:5%;top:15%}.pg-hero-shot.method{width:30%;height:78%;left:35%;top:11%}.pg-hero-shot.receipt{width:30%;height:70%;right:5%;top:15%}.pg-flowline{grid-template-columns:repeat(2,minmax(0,1fr))}.pg-flow-grid{grid-template-columns:repeat(5,minmax(220px,62vw))}.pg-flow-card figure{height:390px}.pg-next{font-size:.9rem}}
+/* ============ Clean payment case study ============ */
+.pg-clean{background:var(--paper);color:var(--text)}
+.pg-clean-hero{padding:calc(108px + env(safe-area-inset-top,0px)) 0 clamp(56px,7vw,88px)}
+.pg-clean-crumb{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.82rem;margin-bottom:clamp(38px,6vw,72px)}
+.pg-clean-crumb a{color:inherit;text-decoration:none}.pg-clean-crumb a:hover{color:var(--text)}
+.pg-clean-intro{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr);gap:clamp(28px,7vw,100px);align-items:end}
+.pg-clean-kicker,.pg-clean-label{font:.73rem var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.pg-clean-kicker{margin-bottom:20px}
+.pg-clean h1{font-size:clamp(3rem,1.4rem + 5.3vw,6.6rem);line-height:.96;letter-spacing:-.06em;font-weight:400;max-width:12ch}
+.pg-clean-lead{color:var(--muted);font-size:clamp(1rem,.95rem + .4vw,1.2rem);line-height:1.65;max-width:43ch;margin:0 0 5px}
+.pg-clean-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:clamp(36px,5vw,60px);border-top:1px solid var(--line);padding-top:16px}
+.pg-clean-meta span{display:block;color:var(--muted);font:.68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.pg-clean-meta b{font-size:.92rem;font-weight:500}
+.pg-clean-cover{height:clamp(360px,52vw,680px);background:#edf1f5;border-radius:18px;padding:clamp(18px,4vw,44px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,3vw,36px);align-items:center;overflow:hidden}
+.pg-clean-cover figure{height:100%;margin:0;background:#fff;border:1px solid rgba(20,22,14,.08);border-radius:12px;overflow:hidden;box-shadow:0 18px 50px rgba(20,22,14,.09);display:grid;place-items:center}
+.pg-clean-cover figure:first-child{transform:translateY(18px)}.pg-clean-cover figure:last-child{transform:translateY(-18px)}
+.pg-clean-cover img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.pg-clean-section{padding-block:clamp(64px,8vw,104px)}
+.pg-clean-section + .pg-clean-section{border-top:1px solid var(--line)}
+.pg-clean-heading{display:grid;grid-template-columns:minmax(150px,3fr) minmax(0,7fr);gap:28px;margin-bottom:clamp(28px,4vw,48px)}
+.pg-clean-heading h2{font-size:clamp(2rem,1.15rem + 2.6vw,3.5rem);line-height:1.03;letter-spacing:-.045em;font-weight:400;max-width:22ch}
+.pg-clean-copy{font-size:1rem;line-height:1.7;color:var(--muted);max-width:68ch;margin-top:14px}
+.pg-clean-columns{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px)}
+.pg-clean-note{border-top:1px solid var(--line);padding-top:16px}
+.pg-clean-note h3{font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:10px}
+.pg-clean-note p{color:var(--muted);line-height:1.65;max-width:52ch}
+.pg-clean-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.pg-clean-step{min-width:0}
+.pg-clean-step figure{margin:0;background:#f0f3f7;border:1px solid var(--line);border-radius:12px;padding:8px;overflow:hidden}
+.pg-clean-step img{display:block;width:100%;height:clamp(230px,29vw,390px);object-fit:contain;object-position:top;background:#fff;border-radius:7px}
+.pg-clean-step h3{font-size:.9rem;font-weight:500;margin:14px 0 6px}
+.pg-clean-step p{font-size:.8rem;line-height:1.5;color:var(--muted)}
+.pg-clean-merchant{background:var(--paper-2);border-radius:16px;padding:clamp(12px,2vw,24px);border:1px solid var(--line)}
+.pg-clean-merchant img{display:block;width:100%;height:auto;border-radius:8px}
+.pg-clean-merchant-caption{display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.84rem;line-height:1.55;padding:16px 4px 2px}
+.pg-clean-end{background:var(--ink);color:var(--paper);padding:clamp(36px,6vw,72px);border-radius:18px}
+.pg-clean-end .pg-clean-label{color:var(--muted-d)}
+.pg-clean-end h2{font-size:clamp(1.8rem,1.2rem + 2vw,3rem);line-height:1.08;letter-spacing:-.04em;font-weight:400;max-width:22ch;margin:18px 0}
+.pg-clean-end p{color:var(--muted-d);line-height:1.65;max-width:62ch}
+.pg-clean-next{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line-d);margin-top:38px;padding-top:20px}
+.pg-clean-next a{color:var(--paper);text-decoration:none;display:flex;flex-direction:column;gap:7px}.pg-clean-next a:last-child{text-align:right}.pg-clean-next .meta{color:var(--muted-d)}
+@media(max-width:900px){.pg-clean-intro{grid-template-columns:1fr;gap:24px}.pg-clean-steps{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:28px}.pg-clean-step img{height:clamp(260px,48vw,420px)}.pg-clean-heading{grid-template-columns:1fr;gap:12px}}
+@media(max-width:560px){.pg-clean-hero{padding-top:96px}.pg-clean-meta{grid-template-columns:1fr 1fr;gap:18px}.pg-clean-meta div:last-child{grid-column:1/-1}.pg-clean-cover{padding:12px;gap:10px;border-radius:12px}.pg-clean-cover figure{border-radius:8px}.pg-clean-cover figure:first-child{transform:translateY(10px)}.pg-clean-cover figure:last-child{transform:translateY(-10px)}.pg-clean-section{padding-block:56px}.pg-clean-columns{grid-template-columns:1fr}.pg-clean-steps{grid-template-columns:repeat(5,minmax(210px,72vw));overflow-x:auto;padding:0 0 14px;scroll-snap-type:x mandatory}.pg-clean-step{scroll-snap-align:start}.pg-clean-step img{height:390px}.pg-clean-merchant-caption{display:block}.pg-clean-merchant-caption span{display:block;margin-top:6px}.pg-clean-end{padding:26px 22px}.pg-clean-next{font-size:.84rem}}
 /* ============ Experience (Soniq FAQ panel style) ============ */
 .exp{position:relative;overflow:hidden;isolation:isolate}
 .exp::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 60% at 85% 10%, rgba(185,226,91,.1), transparent 70%)}
@@ -735,7 +736,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
  .c-bar{position:relative;z-index:1;background:var(--paper)}
 .c-social{display:flex;gap:8px}
 .c-social a{width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;text-decoration:none;transition:background-color .25s,color .25s,transform .3s var(--ease)}
-.c-social a svg{width:18px;height:18px}
+.c-social a .ri{font-size:18px;line-height:1}
 .c-social a:hover{background:var(--lime);color:var(--lime-ink);transform:translateY(-2px)}
 .c-links{display:flex;gap:clamp(20px,3.4vw,48px);flex-wrap:wrap;justify-content:center;align-items:center;min-height:44px}
 .c-links a{text-decoration:none;font-size:1.02rem;font-weight:500;letter-spacing:-.01em;color:var(--text);display:inline-flex;gap:6px;align-items:center;position:relative}
@@ -829,6 +830,15 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 .scope-node b{font-weight:500;font-size:.95rem}
 .scope-node ul{display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:var(--muted)}
 .scope-note{font-size:.8rem;color:var(--muted)}
+.ia-map{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);overflow:hidden}
+.ia-map-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:17px 20px;border-bottom:1px solid var(--line)}
+.ia-map-head b{font-size:.95rem;font-weight:500}
+.ia-map-head span{font:.68rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.ia-map-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line)}
+.ia-map-card{min-width:0;background:var(--card);padding:20px;min-height:142px}
+.ia-map-card h3{font-size:1rem;font-weight:500;letter-spacing:-.015em;margin-bottom:12px}
+.ia-map-card ul{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:.84rem;line-height:1.4}
+.ia-map-foot{padding:12px 20px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
 /* gallery */
 .gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .gallery.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -848,6 +858,40 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 .decision h3{font-size:1.15rem;letter-spacing:-.015em}
 .decision p{font-size:.95rem;color:var(--muted)}
 .decision .frame{border-radius:10px;overflow:hidden;background:var(--paper-2)}
+.pg-case-problem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pg-case-problem article{min-height:210px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,2vw,26px);display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.pg-case-index{font: .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pg-case-problem h3{font-size:clamp(1.15rem,1rem + .65vw,1.5rem);line-height:1.22;letter-spacing:-.025em;font-weight:500;max-width:20ch}
+.pg-case-problem p{font-size:.9rem;line-height:1.55;color:var(--muted);margin-top:auto}
+.pg-case-challenge{display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:start;background:var(--ink);color:var(--paper);border-radius:var(--r-lg);padding:20px 24px;margin-top:10px}
+.pg-case-challenge span{font: .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lime);padding-top:3px}
+.pg-case-challenge p{color:rgba(244,244,238,.88);line-height:1.55;max-width:62ch}
+.pg-case-roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pg-case-role{position:relative;min-height:218px;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);display:flex;flex-direction:column;align-items:flex-start}
+.pg-case-role:nth-child(2){background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pg-case-role .pg-case-index{margin-bottom:24px}
+.pg-case-role:nth-child(2) .pg-case-index{color:var(--lime)}
+.pg-case-role h3{font-size:1.35rem;letter-spacing:-.025em;font-weight:500;margin-bottom:8px}
+.pg-case-role b{font-size:.78rem;font-weight:500;color:var(--lime-2);margin-bottom:12px}
+.pg-case-role:nth-child(2) b{color:var(--lime)}
+.pg-case-role p{font-size:.9rem;color:var(--muted);line-height:1.55}
+.pg-case-role:nth-child(2) p{color:var(--muted-d)}
+.pg-case-decisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;counter-reset:caseDecision}
+.pg-case-decision{min-height:170px;border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;background:var(--card);display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.pg-case-decision::before{counter-increment:caseDecision;content:"0" counter(caseDecision);font:.72rem var(--f-mono);color:var(--lime-2)}
+.pg-case-decision h3{font-size:1.12rem;font-weight:500;letter-spacing:-.02em}
+.pg-case-decision p{font-size:.9rem;line-height:1.58;color:var(--muted)}
+.market-decisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.market-decision{min-width:0;min-height:180px;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.market-decision:nth-child(3){grid-column:1/-1;min-height:0;display:grid;grid-template-columns:42px minmax(0,1fr) minmax(0,1.4fr);align-items:start;gap:16px}
+.market-decision-num{font:.72rem var(--f-mono);color:var(--lime-2);padding-top:2px}
+.market-decision h3{font-size:1.1rem;line-height:1.3;letter-spacing:-.02em;font-weight:500;max-width:28ch}
+.market-decision p{font-size:.9rem;line-height:1.58;color:var(--muted);max-width:58ch}
+.sf-decisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;counter-reset:sfDecision}
+.sf-decision{min-width:0;min-height:180px;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.sf-decision::before{counter-increment:sfDecision;content:"0" counter(sfDecision);font:.72rem var(--f-mono);color:var(--lime-2)}
+.sf-decision h3{font-size:1.1rem;line-height:1.3;letter-spacing:-.02em;font-weight:500;max-width:28ch}
+.sf-decision p{font-size:.9rem;line-height:1.58;color:var(--muted);max-width:58ch}
 /* v1 v2 */
 .versions{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);align-items:stretch;gap:0}
 .versions .arrow{display:grid;place-items:center;color:var(--muted)}
@@ -928,6 +972,17 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
   .cs-meta div:nth-child(3){padding-left:0;border-left:0}
   .cs-meta div:nth-child(n+3){padding-top:18px}
   .problem{grid-template-columns:1fr}
+  .pg-case-problem{grid-template-columns:1fr}
+  .pg-case-problem article{min-height:0}
+  .pg-case-challenge{grid-template-columns:1fr;gap:8px}
+  .pg-case-roles{grid-template-columns:1fr}
+  .pg-case-role{min-height:0}
+  .pg-case-role .pg-case-index{margin-bottom:14px}
+  .pg-case-decisions{grid-template-columns:1fr}
+  .sf-decisions{grid-template-columns:1fr}
+  .ia-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .market-decisions{grid-template-columns:1fr}
+  .market-decision:nth-child(3){grid-column:auto;display:flex}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gallery.g3{grid-template-columns:repeat(2,minmax(0,1fr))}
   .three,.outcome{grid-template-columns:1fr}
@@ -974,6 +1029,10 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
   .two{grid-template-columns:1fr}
   .gallery,.gallery.g3{grid-template-columns:1fr 1fr;gap:8px}
   .decision{grid-template-columns:1fr}
+  .ia-map-head{align-items:flex-start;flex-direction:column;gap:5px;padding:15px}
+  .ia-map-grid{grid-template-columns:1fr}
+  .ia-map-card{min-height:0;padding:16px}
+  .ia-map-foot{padding-inline:15px}
   .versions{grid-template-columns:1fr}
   .versions .arrow{padding:6px 0;transform:rotate(90deg)}
   .next a{max-width:100%}
@@ -1011,7 +1070,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
   <a href="#contact">Contact <span class="meta">04</span></a>
   <div class="sheet-actions">
     <a class="btn btn-lime" href="#contact">Let's talk</a>
-    <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8m0 0 3.5-3.5M8 10.5 4.5 7M3 13.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <i class="ri-download-line" aria-hidden="true"></i></a>
   </div>
 </div>
 
@@ -1023,29 +1082,18 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 <template id="tpl-home">
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-media" aria-hidden="true">
-      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="media/hero-valley-poster.jpg">
-        <source src="media/hero-valley-4k.webm" type='video/webm; codecs="vp9"' media="(min-width: 1100px)">
-        <source src="media/hero-valley-4k.mp4" type="video/mp4" media="(min-width: 1100px)">
-        <source src="media/hero-valley-1080.webm" type='video/webm; codecs="vp9"'>
-        <source src="media/hero-valley-1080.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata">
+        <source src="media/footer-globe.mp4" type="video/mp4">
       </video>
     </div>
-    <button class="media-toggle" id="mediaToggle" type="button" aria-pressed="false"><svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="1" width="3" height="8" fill="currentColor"/><rect x="6" y="1" width="3" height="8" fill="currentColor"/></svg><span>Pause video</span></button>
     <div class="wrap hero-inner">
-      <p class="hero-eyebrow meta"><span class="live-dot" aria-hidden="true"></span>Tareq Mahmud · Product Designer · Dhaka</p>
       <h1 id="hero-title" tabindex="-1">I design digital products that make complex business workflows <em>feel simple.</em></h1>
       <p class="hero-sub lead">Product Designer with 3+ years of experience designing real-world products across ecommerce, logistics, ERP, payments and SaaS.</p>
       <div class="hero-actions">
         <a class="btn btn-lime" href="#work">View selected work
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8m0 0 3.5-3.5M8 10.5 4.5 7M3 13.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <i class="ri-arrow-down-line" aria-hidden="true"></i></a>
+        <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <i class="ri-download-line" aria-hidden="true"></i></a>
       </div>
-      <ul class="cred" aria-label="At a glance">
-        <li><b>3+ years</b><span>Designing live products</span></li>
-        <li><b>Web + Mobile</b><span>Apps, dashboards, admin panels</span></li>
-        <li><b>Product Design</b><span>From flows to developer handoff</span></li>
-        <li><b>UX Architecture</b><span>Multi-role, multi-service systems</span></li>
-      </ul>
     </div>
     <div class="strip">
       <div class="wrap"><p class="strip-label meta">Brands I've worked with</p></div>
@@ -1091,30 +1139,30 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
     <div class="wrap">
       <div class="hw-head">
         <div><span class="eyebrow meta">How I work</span><h2 class="h2" id="approach-title">Good product design <span class="hw-sub">starts before the pixels.</span></h2></div>
-        <div class="hw-nav"><button class="hw-btn" type="button" id="hwPrev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3m0 0 4-4M3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="hw-btn dark" type="button" id="hwNext" aria-label="Next step"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        <div class="hw-nav"><button class="hw-btn" type="button" id="hwPrev" aria-label="Previous step"><i class="ri-arrow-left-line" aria-hidden="true"></i></button><button class="hw-btn dark" type="button" id="hwNext" aria-label="Next step"><i class="ri-arrow-right-line" aria-hidden="true"></i></button></div>
       </div>
     </div>
     <div class="hw-viewport">
       <ol class="hw-track" id="hwTrack" tabindex="0" aria-label="Five design stages">
         <li class="hw-card" data-i="0" style="--k:0">
             <div class="hw-top"><h3>Understand</h3><p>I start by talking to users and stakeholders to learn the goals, the limits and where the current flow breaks.</p></div>
-            <span class="hw-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H9l-5 4z"/></svg></span>
+            <span class="hw-ico" aria-hidden="true"><i class="ri-chat-3-line" aria-hidden="true"></i></span>
           </li>
           <li class="hw-card" data-i="1" style="--k:1">
             <div class="hw-top"><h3>Structure</h3><p>I map the information, roles and user flows before any screen, so the product has a clear shape.</p></div>
-            <span class="hw-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v5M6 14V9h12v5M4 14h4v5H4zM10 14h4v5h-4zM16 14h4v5h-4z"/></svg></span>
+            <span class="hw-ico" aria-hidden="true"><i class="ri-store-2-line" aria-hidden="true"></i></span>
           </li>
           <li class="hw-card" data-i="2" style="--k:2">
             <div class="hw-top"><h3>Design</h3><p>Wireframes first, then interaction and high-fidelity UI built on a shared design system.</p></div>
-            <span class="hw-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg></span>
+            <span class="hw-ico" aria-hidden="true"><i class="ri-layout-grid-line" aria-hidden="true"></i></span>
           </li>
           <li class="hw-card" data-i="3" style="--k:3">
             <div class="hw-top"><h3>Validate</h3><p>I test with real users, check the analytics and iterate. Most products get a second version.</p></div>
-            <span class="hw-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V11M10 19V7M15 19v-5M20 19V4"/></svg></span>
+            <span class="hw-ico" aria-hidden="true"><i class="ri-bar-chart-box-line" aria-hidden="true"></i></span>
           </li>
           <li class="hw-card hw-last" data-i="4" style="--k:4">
             <div class="hw-top"><h3>Ship</h3><p>Prototypes, specs and every state documented, then I stay close to the developers through handoff and QA.</p></div>
-            <span class="hw-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span>
+            <span class="hw-ico" aria-hidden="true"><i class="ri-check-line" aria-hidden="true"></i></span>
           </li>
           </ol>
     </div>
@@ -1131,7 +1179,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
           <img class="why-bg" src="img/why-grass.webp" alt="" width="700" height="900" loading="lazy" decoding="async">
           <div class="why-a-body">
             <p class="why-a-t">You don't need another pretty screen. You need a product that works.</p>
-            <a class="btn btn-lime" href="#contact">Let's talk <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn btn-lime" href="#contact">Let's talk <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
           </div>
         </article>
         <article class="why-card why-b rv">
@@ -1164,7 +1212,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
         <p>Product thinking and UX architecture first, with the visual craft to ship it.</p>
       </div>
       <div class="cap-wrap">
-        <div class="cap-tabs" role="tablist" aria-label="Capabilities"><button class="cap-tab on" type="button" role="tab" id="capt0" aria-controls="capp0" aria-selected="true" data-i="0"><span class="meta">01</span><b>Product Design</b><i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button class="cap-tab" type="button" role="tab" id="capt1" aria-controls="capp1" aria-selected="false" data-i="1"><span class="meta">02</span><b>Visual Design</b><i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button class="cap-tab" type="button" role="tab" id="capt2" aria-controls="capp2" aria-selected="false" data-i="2"><span class="meta">03</span><b>Research</b><i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button class="cap-tab" type="button" role="tab" id="capt3" aria-controls="capp3" aria-selected="false" data-i="3"><span class="meta">04</span><b>Business</b><i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button></div>
+        <div class="cap-tabs" role="tablist" aria-label="Capabilities"><button class="cap-tab on" type="button" role="tab" id="capt0" aria-controls="capp0" aria-selected="true" data-i="0"><span class="meta">01</span><b>Product Design</b><span class="cap-tab-icon" aria-hidden="true"><i class="ri-arrow-right-line"></i></span></button><button class="cap-tab" type="button" role="tab" id="capt1" aria-controls="capp1" aria-selected="false" data-i="1"><span class="meta">02</span><b>Visual Design</b><span class="cap-tab-icon" aria-hidden="true"><i class="ri-arrow-right-line"></i></span></button><button class="cap-tab" type="button" role="tab" id="capt2" aria-controls="capp2" aria-selected="false" data-i="2"><span class="meta">03</span><b>Research</b><span class="cap-tab-icon" aria-hidden="true"><i class="ri-arrow-right-line"></i></span></button><button class="cap-tab" type="button" role="tab" id="capt3" aria-controls="capp3" aria-selected="false" data-i="3"><span class="meta">04</span><b>Business</b><span class="cap-tab-icon" aria-hidden="true"><i class="ri-arrow-right-line"></i></span></button></div>
         <div class="cap-stage"><div class="cap-panel on" role="tabpanel" id="capp0" aria-labelledby="capt0">
             <p class="cap-desc">How the product works before how it looks. Structure, flows and interaction for multi-role systems.</p>
             <ul class="cap-skills"><li>UX Architecture</li><li>Information Architecture</li><li>Interaction Design</li><li>User Flows</li></ul>
@@ -1197,7 +1245,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
         <p class="ab-lead">It's harder than it looks. That's kind of the point.</p>
         <p>I'm a Product Designer in Dhaka. For 3+ years I've designed ecommerce, logistics, ERP, payments and multi-service products for customers, merchants, operators, and the internal teams who have to stare at the admin panel all day. I try to be nice to those people.</p>
         <p>I basically live in Figma: research, user flows, design systems, prototypes and developer handoff. I've named more layers "Frame 2847 copy" than I'd like to admit, and I stick around long enough to design version two.</p>
-        <div class="ab-actions"><a class="btn btn-lime" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8m0 0 3.5-3.5M8 10.5 4.5 7M3 13.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="btn btn-ghost" href="#contact">Get in touch</a></div>
+        <div class="ab-actions"><a class="btn btn-lime" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <i class="ri-download-line" aria-hidden="true"></i></a><a class="btn btn-ghost" href="#contact">Get in touch</a></div>
       </div>
     </div>
   </section>
@@ -1216,7 +1264,7 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
             <button class="copy" type="button" data-copy="tmahmud771@gmail.com">Copy</button>
           </div>
           <a class="btn btn-lime" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV
-            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v8m0 0 3.5-3.5M8 10.5 4.5 7M3 13.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <i class="ri-download-line" aria-hidden="true"></i></a>
         </div>
       </div>
 
@@ -1227,15 +1275,15 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 
       <footer class="c-bar">
         <div class="c-social" aria-label="Social profiles">
-          <a href="https://www.linkedin.com/in/traeq-mahmud-uxdesigner/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg></a>
-          <a href="https://www.behance.net/mtcreation2" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.2 11.3c.9-.4 1.5-1.2 1.5-2.3 0-2.1-1.6-2.9-3.6-2.9H1v11.8h5.3c2.1 0 4-1 4-3.4 0-1.5-.8-2.7-2.1-3.2zM3.6 8.1h2.2c.8 0 1.5.3 1.5 1.2 0 .9-.6 1.3-1.4 1.3H3.6zm2.5 7.8H3.6v-3.3h2.6c1 0 1.7.4 1.7 1.6 0 1.2-.8 1.7-1.8 1.7zM17.8 9c-2.8 0-4.6 2-4.6 4.6 0 2.8 1.7 4.5 4.6 4.5 2.1 0 3.6-1 4.1-3h-2.3c-.2.7-1 1.1-1.8 1.1-1.3 0-2-.7-2.1-2h6.3c.2-2.8-1.3-5.2-4.2-5.2zm-2.1 3.6c.1-1.1.8-1.8 1.9-1.8 1.1 0 1.7.8 1.8 1.8zM15.3 6.8h5v1.3h-5z"/></svg></a>
-          <a href="https://dribbble.com/tareq_mahmud_ux" target="_blank" rel="noopener" aria-label="Dribbble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M4.5 6.5c4 3 9.5 4 15 3M3 13.5c5-1.5 11-1 15.5 5M9 3c3 3.5 5.5 9 6.5 18"/></svg></a>
+          <a href="https://www.linkedin.com/in/traeq-mahmud-uxdesigner/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ri-linkedin-fill" aria-hidden="true"></i></a>
+          <a href="https://www.behance.net/mtcreation2" target="_blank" rel="noopener" aria-label="Behance"><i class="ri-behance-fill" aria-hidden="true"></i></a>
+          <a href="https://dribbble.com/tareq_mahmud_ux" target="_blank" rel="noopener" aria-label="Dribbble"><i class="ri-dribbble-line" aria-hidden="true"></i></a>
         </div>
         <nav class="c-links" aria-label="Footer">
-          <a href="#work">Work <span aria-hidden="true">↗</span></a>
+          <a href="#work">Work <i class="ri-arrow-right-up-line" aria-hidden="true"></i></a>
           <a href="#about">About <span aria-hidden="true">↗</span></a>
           <a href="#why">Why me <span aria-hidden="true">↗</span></a>
-          <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+          <a href="#top">Back to top <i class="ri-arrow-up-line" aria-hidden="true"></i></a>
         </nav>
         <p class="c-legal"><b style="font-weight:500">© 2026 Tareq Mahmud</b><span>Dhaka, Bangladesh</span></p>
       </footer>
@@ -1256,9 +1304,9 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 document.documentElement.classList.add('js');
 
 /* ---------- small helpers ---------- */
-const ARROW = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m0 0L9 4m4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const EXT = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5m0 0H6m5 0v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const PLUS = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+const ARROW = '<i class="ri-arrow-right-line" aria-hidden="true"></i>';
+const EXT = '<i class="ri-external-link-line" aria-hidden="true"></i>';
+const PLUS = '<i class="ri-add-line" aria-hidden="true"></i>';
 const SIZES = {phone:[450,800], 'pk-v2-home':[1200,1123], web:[800,500], 'pg-dash-top':[1171,605], 'pg-dash-full':[1171,2000], 'bd-web-home':[800,340], 'dcr-mobile':[800,1340], 'pbm-web-login':[800,502]};
 function dims(name){ if(SIZES[name]) return SIZES[name]; return /-(app|merchant)-/.test(name) ? SIZES.phone : SIZES.web; }
 function img(name, alt, eager){
@@ -1313,7 +1361,7 @@ function featCard(p){
       <h3>${p.name}</h3><p class="cat meta">${p.cat}</p><p class="desc">${p.desc}</p></div>
       <div style="display:flex;flex-direction:column;gap:20px">
       <dl class="feat-meta"><dt>Platform</dt><dd>${p.platform}</dd><dt>My role</dt><dd>${p.role}</dd></dl>
-      <span class="feat-cta"><i>${ARROW}</i>View case study</span></div></div>`;
+      <span class="feat-cta"><span class="feat-cta-icon">${ARROW}</span>View case study</span></div></div>`;
   const art = `<div class="feat-art">${p.art()}</div>`;
   return `<a class="feat ${p.cls} rv" href="#${p.slug}" aria-label="${p.name} case study">${body}${art}</a>`;
 }
@@ -1374,22 +1422,26 @@ const CASES = {
    ['problem','Problem','What needed to change', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">High-volume merchant workflows were slow to move through, and operational data was hard to understand and act on.</p></div><div><span class="meta">Goal</span><p style="margin-top:12px">Make daily operations fast, and make the numbers readable at a glance.</p></div></div>`],
    ['users','Users','Who the app serves', `<div class="two"><div class="box inkb"><span class="meta">Primary</span><h3>Merchants</h3><p>Businesses sending parcels through Steadfast. They book pickups, track parcels, check customers and request payments.</p></div><div class="box"><span class="meta">Secondary</span><h3>Merchants with online stores</h3><p>Merchants who connect their website to Steadfast. The app gives them API keys and plugins without a support call.</p></div></div>`],
    ['focus','Challenges','Four things the design had to get right', `<div class="focus-list"><div><b>Speed</b><span>Frequent tasks one tap from home.</span></div><div><b>Clarity</b><span>Status and money visible without digging.</span></div><div><b>Hierarchy</b><span>Summary first, detail on demand.</span></div><div><b>Efficiency</b><span>Fewer steps for tasks repeated every day.</span></div></div>`],
-   ['ia','Information Architecture','How the app is organised', scope('Merchant app','Home = task launcher',[
-      ['Parcels',['Add parcel','Pickup request','Express delivery','Pick & drop','Parcel details']],
-      ['Money',['Wallet balance','Balance summary','Payment request','Add balance']],
-      ['Performance',['Parcel summary by status','Period filter','Cancellations']],
-      ['Customers',['Fraud check','Success rate','Complaint history']],
-      ['Network',['Coverage search','Pickup points','Pricing']],
-      ['Support & tools',['Tickets','Support','API keys','Plugins']]
-    ],'Mapped from the live app\'s home screen and store listing.')],
+   ['ia','Information Architecture','How the app is organised', `<div class="ia-map">
+      <div class="ia-map-head"><b>Merchant app</b><span>Home as a task launcher</span></div>
+      <div class="ia-map-grid">
+        <article class="ia-map-card"><h3>Parcels</h3><ul><li>Add parcel and parcel details</li><li>Pickup request</li><li>Express delivery and pick &amp; drop</li></ul></article>
+        <article class="ia-map-card"><h3>Money</h3><ul><li>Wallet balance and summary</li><li>Payment request</li><li>Add balance</li></ul></article>
+        <article class="ia-map-card"><h3>Performance</h3><ul><li>Parcel summary by status</li><li>Period filter</li><li>Cancellations</li></ul></article>
+        <article class="ia-map-card"><h3>Customers</h3><ul><li>Fraud check</li><li>Delivery success rate</li><li>Complaint history</li></ul></article>
+        <article class="ia-map-card"><h3>Network</h3><ul><li>Coverage search</li><li>Pickup points</li><li>Pricing</li></ul></article>
+        <article class="ia-map-card"><h3>Support &amp; tools</h3><ul><li>Tickets and support</li><li>API keys</li><li>Plugins</li></ul></article>
+      </div>
+      <p class="ia-map-foot">Frequent parcel actions lead; money, performance and support tools stay grouped by task.</p>
+    </div>`],
    ['ui','Final UI','Selected screens from the live app', `<div class="gallery">${fig('sf-merchant-1','Home and parcel details','Frequent actions on top. Parcel details with COD, charges, recipient and rider.')}${fig('sf-merchant-summary','Parcel summary','Every status as a tile with one number.')}${fig('sf-merchant-wallet','Wallet','Requestable amount first, calculation beneath.')}${fig('sf-merchant-fraud','Fraud check','Customer success rate before booking.')}</div>`],
-   ['decisions','Key Design Decisions','Decisions visible in the shipped product', decisions([
-      ['Status first, then detail','Parcel Summary splits parcels into delivered, pending, in review, partially delivered, waiting approval and cancelled. Each is a colour-coded tile with a single number, so a merchant sees where parcels are stuck before opening any list.','sf-merchant-summary'],
-      ['Show the money math','The wallet shows the amount the merchant can request at the top, then the breakdown: amount delivered, delivery charge, COD charge and total. The payout is explained, not just stated.','sf-merchant-wallet'],
-      ['Check the customer before sending','Fraud Check takes a phone number and shows its delivery success rate and complaints reported by other merchants. It turns a risk merchants handle every day into a quick lookup.','sf-merchant-fraud'],
-      ['Home as a task launcher','The home screen leads with the four booking actions (add parcel, pickup request, express delivery, pick & drop) and groups everything else into a scannable grid below.','sf-merchant-1']
-    ])],
-   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on Google Play</h3><p>In daily use by Steadfast merchants.</p></div><div class="box sageb"><span class="meta">Workflow</span><h3>Simpler high-volume workflows</h3><p>Booking, tracking and payment tasks grouped around what merchants do most.</p></div><div class="box sageb"><span class="meta">Data</span><h3>Readable operational data</h3><p>Status, money and customer risk shown as summaries first.</p></div></div>${todo('To add',['Add metric','Add research notes','Add user flow','Add wireframes'])}`],
+   ['decisions','Key Design Decisions','Decisions visible in the shipped product', `<div class="sf-decisions">
+      <article class="sf-decision"><h3>Put parcel status first</h3><p>Show each delivery state as a countable tile, so merchants can spot where parcels are waiting before opening a list.</p></article>
+      <article class="sf-decision"><h3>Explain the available payout</h3><p>Lead with the requestable balance, then show delivered amount, delivery charge and COD charge behind the total.</p></article>
+      <article class="sf-decision"><h3>Make customer checks quick</h3><p>Let merchants look up delivery success and reported complaints by phone number before booking a parcel.</p></article>
+      <article class="sf-decision"><h3>Turn home into a task launcher</h3><p>Place frequent booking actions first and group the remaining tools in a scannable grid.</p></article>
+    </div>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on Google Play</h3><p>In daily use by Steadfast merchants.</p></div><div class="box sageb"><span class="meta">Workflow</span><h3>Simpler high-volume workflows</h3><p>Booking, tracking and payment tasks grouped around what merchants do most.</p></div><div class="box sageb"><span class="meta">Data</span><h3>Readable operational data</h3><p>Status, money and customer risk shown as summaries first.</p></div></div>`],
    ['live','Live Product','See it in the wild', `<div class="live-card"><b>Steadfast Merchant is live.</b><div class="links">${ext(PB+'com.steadfast.steadfastmerchant','Google Play')}${ext('https://steadfast.com.bd/','steadfast.com.bd')}</div></div>`]
   ]},
 
@@ -1401,28 +1453,30 @@ const CASES = {
   cover:`<div class="cover-frame cover-mock"><img src="img/pbm-mockup.webp" srcset="img/pbm-mockup-sm.webp 800w, img/pbm-mockup.webp 1400w" sizes="(max-width:900px) 92vw, 820px" alt="Packly Business Manager app: finance reports, dashboard and POS sale screens" width="1400" height="1310" fetchpriority="high" decoding="async"></div>`,
   sections:[
    ['intro','Introduction','A back office in the merchant\'s pocket', `<p class="lead">Packly Business Manager is where merchants run their business on Packly.</p><p>I designed the mobile app for everyday merchant work and the web platform for merchants operating at a larger scale, and evolved both from V1 to V2.</p>`],
-   ['context','Context','A lot of business in one product', `<p>The product covers the full operating loop of a merchant. Each area is a product in its own right, and they all depend on each other.</p><div class="chips" style="margin-top:4px">${['Products','Inventory','Orders','Sales','Customers','Campaigns','Warehouses','Multiple channels','Marketplace operations'].map(x=>`<span class="chip" style="color:var(--text);border-color:var(--line)">${x}</span>`).join('')}</div>`],
+   ['context','Context','A lot of business in one product', `<p>The product covers the full operating loop of a merchant. Each area is a product in its own right, and they all depend on each other.</p><div class="chips" style="margin-top:4px">${['Products','Inventory','Orders','Sales','Customers','Campaigns','Warehouses','Multiple channels','Marketplace operations'].map(x=>`<span class="chip" style="color:var(--text);border-color:var(--line)">${x}</span>`).join('')}</div><figure class="wide-shot" style="margin-top:24px"><div class="frame"><img src="img/pbm-cover.jpg" alt="Packly Business Manager campaign image showing a small business owner using the app" width="2048" height="1000" loading="lazy" decoding="async"></div><figcaption>Packly Business Manager brings the tools for running a small business into one mobile app.</figcaption></figure>`],
    ['problem','Problem','Complex workflows, mixed experience levels', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">Merchant workflows are complex. One sale touches products, stock, orders, payments and sometimes several channels at once.</p></div><div><span class="meta">Challenge</span><p style="margin-top:12px">Make a complex business system understandable for merchants with varying levels of technical knowledge.</p></div></div>`],
    ['users','Users','Two platforms, two ways of working', `<div class="two"><div class="box inkb"><span class="meta">Mobile app</span><h3>Merchants on the move</h3><p>Everyday tasks: adding products, checking stock, handling orders, POS billing and payouts.</p></div><div class="box"><span class="meta">Web platform</span><h3>Merchants at larger scale</h3><p>Complex dashboards and workflows for inventory, orders, products, sales, campaigns and multi-channel management.</p></div></div>`],
-   ['ia','Information Architecture','How the product is structured', scope('Business Manager','Mobile + Web share one model',[
-      ['Catalogue',['Products and variants','Active, inactive, draft','SKU and pricing']],
-      ['Inventory',['Stock levels','Warehouses','Low-stock visibility']],
-      ['Orders',['Status tabs','Returns','COD and paid']],
-      ['Sales',['POS billing','Seller center / shop','Multiple channels']],
-      ['Money',['Payouts','Earnings breakdown','Reports']],
-      ['Growth',['Customers','Campaigns','Marketplace operations']]
-    ],'Structure based on the product scope and the live app.')],
-   ['iteration','Iteration','From V1 to V2', `<div class="versions"><div class="box"><span class="meta">V1</span><h3>Cover the core jobs</h3><p>The first release of the app and web platform, covering products, inventory, orders, sales, customers and business operations.</p></div><div class="arrow">${ARROW}</div><div class="box inkb"><span class="meta">V2</span><h3>Make them faster</h3><p>Simplified workflows, a clearer information hierarchy, and everyday merchant tasks that take less time to complete.</p></div></div>${todo('To add',['Add V1 vs V2 screen comparison','Add what changed and why'])}`],
+   ['ia','Information Architecture','How the product is structured', `<div class="ia-map">
+      <div class="ia-map-head"><b>Business Manager</b><span>One model across mobile and web</span></div>
+      <div class="ia-map-grid">
+        <article class="ia-map-card"><h3>Catalogue</h3><ul><li>Products and variants</li><li>SKU and pricing</li><li>Active, inactive and draft</li></ul></article>
+        <article class="ia-map-card"><h3>Inventory</h3><ul><li>Stock levels</li><li>Warehouses</li><li>Low-stock visibility</li></ul></article>
+        <article class="ia-map-card"><h3>Orders</h3><ul><li>Status tabs and returns</li><li>COD and paid orders</li></ul></article>
+        <article class="ia-map-card"><h3>Sales</h3><ul><li>POS billing</li><li>Seller center and shop</li><li>Multiple channels</li></ul></article>
+        <article class="ia-map-card"><h3>Money</h3><ul><li>Payouts</li><li>Earnings breakdown</li><li>Reports</li></ul></article>
+        <article class="ia-map-card"><h3>Growth</h3><ul><li>Customers</li><li>Campaigns</li><li>Marketplace operations</li></ul></article>
+      </div>
+      <p class="ia-map-foot">Core merchant workflows grouped by the job they support.</p>
+    </div>`],
+   ['iteration','Iteration','From V1 to V2', `<div class="versions"><div class="box"><span class="meta">V1</span><h3>Cover the core jobs</h3><p>The first release of the app and web platform, covering products, inventory, orders, sales, customers and business operations.</p></div><div class="arrow">${ARROW}</div><div class="box inkb"><span class="meta">V2</span><h3>Make them faster</h3><p>Simplified workflows, a clearer information hierarchy, and everyday merchant tasks that take less time to complete.</p></div></div>`],
    ['ui','Final UI · Mobile','Selected screens from the live app', `<div class="gallery">${fig('pbm-app-inventory','Product list','Status filters with counts, stock and price on each row.')}${fig('pbm-app-orders','Shop orders','Order ID, amount, payment type and customer in one card.')}${fig('pbm-app-pos','POS sale','Search, scan and image-first product grid.')}${fig('pbm-app-payouts','Payouts','Available balance and the full earnings breakdown.')}</div>`],
-   ['web','Final UI · Web','The web platform', `<figure class="wide-shot"><div class="frame">${img('pbm-web-login','Packly Business Manager web entry')}</div><figcaption>Seller entry point at business.packly.com. The dashboards sit behind sign-in.</figcaption></figure>${todo('To add',['Add web dashboard','Add inventory screens','Add campaign screens','Add multi-channel view'])}`],
-   ['decisions','Key Design Decisions','Decisions visible in the shipped product', decisions([
-      ['Counts on every filter','Product and order lists show a count inside each status chip (All 120, Active 90, Draft 10). Merchants see the size of each queue before they tap.','pbm-app-inventory'],
-      ['One card, enough to act','Each order card carries order ID, time, amount, payment type (COD or paid), customer, address and item count, so most orders can be triaged from the list.','pbm-app-orders'],
-      ['Earnings explained line by line','Payouts shows the available balance, then the path to it: orders delivered, delivery charge, Packly commission and COD charge.','pbm-app-payouts'],
-      ['POS built for the counter','POS puts search and a scan shortcut at the top and shows products as image cards with price, for fast in-person billing.','pbm-app-pos']
-    ])],
-   ['system','Design System','Consistency across the Packly ecosystem', `<p>Business Manager is one of several Packly products. The web platform was designed to stay consistent with the rest of the ecosystem, so merchants moving between the marketplace, the app and the web tools meet the same patterns.</p><div class="three"><div class="box"><h3>Shared patterns</h3><p>Status chips, list cards and money breakdowns repeat across products.</p></div><div class="box"><h3>Web + mobile</h3><p>The same model of products, orders and payouts on both platforms.</p></div><div class="box"><h3>Ecosystem link</h3><p>Vendor work in the <a href="#packly-marketplace">Packly Marketplace</a> connects here.</p></div></div>`],
-   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on app and web</h3><p>Two versions released to Packly merchants.</p></div><div class="box sageb"><span class="meta">Workflow</span><h3>Simpler everyday tasks</h3><p>V2 reduced the effort of common merchant jobs.</p></div><div class="box sageb"><span class="meta">Structure</span><h3>Clearer hierarchy</h3><p>A complex system organised into areas merchants recognise.</p></div></div>${todo('To add',['Add metric','Add research notes','Add wireframes'])}`],
+   ['decisions','Key Design Decisions','Decisions visible in the shipped product', `<div class="sf-decisions">
+      <article class="sf-decision"><h3>Show queue size on the filter</h3><p>Counts beside status filters help merchants see how much work is waiting before opening a list.</p></article>
+      <article class="sf-decision"><h3>Put the details needed to act on each order</h3><p>Order cards bring ID, amount, payment type, customer and item count into the list for quick triage.</p></article>
+      <article class="sf-decision"><h3>Explain the payout line by line</h3><p>Show the requestable balance first, then delivered amount, delivery charge, commission and COD charge.</p></article>
+      <article class="sf-decision"><h3>Make POS ready for the counter</h3><p>Keep search and scan shortcuts close, with a product grid that puts images and prices up front.</p></article>
+    </div>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on app and web</h3><p>Two versions released to Packly merchants.</p></div><div class="box sageb"><span class="meta">Workflow</span><h3>Simpler everyday tasks</h3><p>V2 reduced the effort of common merchant jobs.</p></div><div class="box sageb"><span class="meta">Structure</span><h3>Clearer hierarchy</h3><p>A complex system organised into areas merchants recognise.</p></div></div>`],
    ['live','Live Product','See it in the wild', `<div class="live-card"><b>Packly Business Manager is live.</b><div class="links">${ext(PB+'com.packlybusiness.app','Google Play')}${ext('https://business.packly.com/sell-with-us','Web platform')}</div></div>`]
   ]},
 
@@ -1438,13 +1492,13 @@ const CASES = {
    ['problem','Problem','One store, many sellers', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">A marketplace has to feel like one store to the customer, while every seller's products, stock and orders stay separate.</p></div><div><span class="meta">Challenge</span><p style="margin-top:12px">Iterate the product architecture and UX into a more scalable, conversion-focused commerce experience.</p></div></div>`],
    ['flow','User Flow','The customer journey', `<div class="focus-list f5"><div><b>Discover</b><span>Home, campaigns, search</span></div><div><b>Browse</b><span>Categories, listings</span></div><div><b>Decide</b><span>Product details, variants</span></div><div><b>Cart</b><span>Grouped by shop</span></div><div><b>Order</b><span>Checkout, tracking</span></div></div>`],
    ['ui','Final UI','Selected screens from the live product', `<div class="gallery">${fig('pk-app-home','Home','Search, banner, campaigns and categories above the fold.')}${fig('pk-app-categories','Categories','Two-level browsing with image tiles.')}${fig('pk-app-flash','Flash sale','Countdown and discount on every card.')}${fig('pk-app-cart','Cart','Items grouped under each shop.')}</div><p class="scope-note">Screens from the Packly shopping app on Google Play and packly.com.</p>`],
-   ['decisions','Key Design Decisions','Decisions visible in the shipped product', decisions([
-      ['Cart grouped by shop','Each seller\'s items sit under the shop name with its own checkbox. Customers buy from several shops in one checkout while it stays clear who ships what.','pk-app-cart'],
-      ['Two-level category browsing','A left rail of top-level categories with expandable groups and image tiles. Customers can move across a large catalogue without deep menus.','pk-app-categories'],
-      ['Campaigns as entry points','Flash sale, free shipping and seasonal campaigns sit right under the home banner. Flash sale cards carry the countdown and discount so urgency is visible without opening a product.','pk-app-flash']
-    ])],
-   ['iteration','Iteration','V1 to V2', `<div class="versions"><div class="box"><span class="meta">V1 · Live</span><h3>The marketplace foundation</h3><p>Customer journeys, vendor experiences, checkout and order management.</p></div><div class="arrow">${ARROW}</div><div class="box inkb"><span class="meta">V2 · In development</span><h3>Scalable and conversion-focused</h3><p>Reworked architecture and UX for a larger catalogue and a smoother path to purchase.</p></div></div><figure class="wide-shot"><div class="frame">${img('pk-v2-home','Packly marketplace V2 home page')}</div><figcaption>V2 home page: campaign shortcuts, hero promotions, combo and winter sales, flash sale with countdown, daily picks, app download and Packly Play short videos.</figcaption></figure>${todo('To add',['Add vendor-side screens','Add checkout flow'])}`],
-   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on web and app</h3><p>V1 in market, V2 under development.</p></div><div class="box sageb"><span class="meta">Structure</span><h3>One journey, many sellers</h3><p>Multi-vendor complexity kept out of the customer's way.</p></div><div class="box sageb"><span class="meta">Ecosystem</span><h3>Connected to vendor tools</h3><p>Designed alongside Packly Business Manager.</p></div></div>${todo('To add',['Add metric','Add research notes'])}`],
+   ['decisions','Key Design Decisions','Decisions visible in the shipped product', `<div class="market-decisions">
+      <article class="market-decision"><span class="market-decision-num">01</span><h3>Group cart items by shop</h3><p>Keep each seller’s items together so customers can check out across shops and still see who fulfils each order.</p></article>
+      <article class="market-decision"><span class="market-decision-num">02</span><h3>Make category paths visible</h3><p>Use top-level categories and expandable groups to help shoppers browse a large catalogue without deep menus.</p></article>
+      <article class="market-decision"><span class="market-decision-num">03</span><h3>Bring campaigns into discovery</h3><p>Place seasonal offers and flash sales near the home entry point. Show the discount and countdown on product cards so shoppers can scan the offer before opening it.</p></article>
+    </div>`],
+   ['iteration','Iteration','V1 to V2', `<div class="versions"><div class="box"><span class="meta">V1 · Live</span><h3>The marketplace foundation</h3><p>Customer journeys, vendor experiences, checkout and order management.</p></div><div class="arrow">${ARROW}</div><div class="box inkb"><span class="meta">V2 · In development</span><h3>Scalable and conversion-focused</h3><p>Reworked architecture and UX for a larger catalogue and a smoother path to purchase.</p></div></div><figure class="wide-shot"><div class="frame">${img('pk-v2-home','Packly marketplace V2 home page')}</div><figcaption>V2 home page: campaign shortcuts, hero promotions, combo and winter sales, flash sale with countdown, daily picks, app download and Packly Play short videos.</figcaption></figure>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on web and app</h3><p>V1 in market, V2 under development.</p></div><div class="box sageb"><span class="meta">Structure</span><h3>One journey, many sellers</h3><p>Multi-vendor complexity kept out of the customer's way.</p></div><div class="box sageb"><span class="meta">Ecosystem</span><h3>Connected to vendor tools</h3><p>Designed alongside Packly Business Manager.</p></div></div>`],
    ['live','Live Product','See it in the wild', `<div class="live-card"><b>Packly Marketplace is live.</b><div class="links">${ext('https://www.packly.com/','packly.com')}${ext(PB+'com.packly.app','Google Play')}</div></div>`]
   ]},
 
@@ -1456,27 +1510,27 @@ const CASES = {
   cover:`<div class="cover-frame" style="padding-bottom:clamp(20px,4vw,56px)"><div class="shot" style="border-radius:12px;border:1px solid var(--line);max-width:1100px">${pgImg('pg-transactions','Merchant panel transactions list',1)}</div></div>`,
   sections:[
    ['intro','Introduction','One payment, three points of view', `<p class="lead">I designed multiple products within a payment ecosystem: the payment gateway application, the merchant panel and the admin panel.</p><p>Together they cover payment processing, transaction management, merchant operations, monitoring and administration.</p>`],
-   ['problem','Problem','Different roles, same money', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">Each role sees the same payment from a different angle. The payer wants to pay, the merchant wants to see and settle, the admin wants to monitor and control.</p></div><div><span class="meta">Challenge</span><p style="margin-top:12px">Create connected experiences and keep them consistent across different user roles.</p></div></div>`],
-   ['users','Users','Who uses what', `<div class="three"><div class="box"><span class="meta">Gateway app</span><h3>Payers</h3><p>Complete a payment.</p></div><div class="box inkb"><span class="meta">Merchant panel</span><h3>Merchants</h3><p>Track transactions, run stores, configure EMI and follow settlements.</p></div><div class="box"><span class="meta">Admin panel</span><h3>Admins</h3><p>Monitor activity and administer merchants.</p></div></div>`],
-   ['ia','Information Architecture','How the merchant panel is organised', scope('Merchant panel','Money first, setup second',[
-      ['Payments',['Transactions','Payment links','Payment QR','Invoice']],
-      ['Money',['Settlements','Refunds & disputes']],
-      ['Insight',['Dashboard','Report & analytics','Customers']],
-      ['Setup',['Stores & outlets','EMI partners','Integrations','Team management']]
-    ],'Taken from the merchant panel navigation.')],
+   ['problem','Problem','Different roles, same money', `<div class="pg-case-problem">
+      <article><span class="pg-case-index">01 · Customer</span><h3>“Did my payment go through?”</h3><p>Customers need clear payment choices, a visible amount and a definite result.</p></article>
+      <article><span class="pg-case-index">02 · Merchant</span><h3>“When will the money arrive?”</h3><p>Merchants need to distinguish a successful payment from funds still awaiting settlement.</p></article>
+      <article><span class="pg-case-index">03 · Admin</span><h3>“What needs attention?”</h3><p>Admins need to monitor payment activity and manage merchants across the system.</p></article>
+    </div><div class="pg-case-challenge"><span>Design challenge</span><p>Connect these views around one payment lifecycle while keeping each role focused on the decisions they own.</p></div>`],
+   ['users','Users','One payment, three jobs', `<div class="pg-case-roles">
+      <article class="pg-case-role"><span class="pg-case-index">01 · Gateway app</span><h3>Payers</h3><b>Complete a payment</b><p>Choose a method, review the amount and confirm the result.</p></article>
+      <article class="pg-case-role"><span class="pg-case-index">02 · Merchant panel</span><h3>Merchants</h3><b>Run payment operations</b><p>Track transactions, configure stores and EMI, and follow settlements.</p></article>
+      <article class="pg-case-role"><span class="pg-case-index">03 · Admin panel</span><h3>Admins</h3><b>Oversee activity</b><p>Monitor payment activity and administer merchant accounts.</p></article>
+    </div>`],
    ['ui','Final UI','The merchant panel', `<figure class="wide-shot"><div class="frame">${pgImg('pg-transactions','Transactions')}</div><figcaption><b>Transactions.</b> Status summary cards, status tabs with counts, and every row showing method, amount, fee, net, payment status and settlement status.</figcaption></figure>
      <figure class="wide-shot"><div class="frame">${img('pg-dash-full','Payment gateway analytics')}</div><figcaption><b>Report &amp; analytics.</b> KPIs with trends, transaction performance, payment-method mix, refunds, chargebacks, collection breakdown and a monthly report.</figcaption></figure>
      <div class="two"><figure class="wide-shot"><div class="frame">${pgImg('pg-store','Store settings')}</div><figcaption><b>Store settings.</b> Payment methods, API keys, webhooks and checkout redirects for one store, with a live summary on the side.</figcaption></figure>
      <figure class="wide-shot"><div class="frame">${pgImg('pg-emi','EMI configuration')}</div><figcaption><b>EMI configuration.</b> Bank EMI rules, tenure plans with interest and monthly amount, and eligible card networks.</figcaption></figure></div>`],
-   ['decisions','Key Design Decisions','Decisions visible in the product', `<div class="decisions">
-      <div class="decision"><h3>Payment and settlement are two statuses</h3><p>A payment can be paid while its money is still pending settlement. The transactions table shows both side by side, so merchants stop asking "it says paid, where's my money?"</p><span></span></div>
-      <div class="decision"><h3>Fee and net on every row</h3><p>Amount, gateway fee and net are separate columns. Merchants see what they actually receive without opening a transaction.</p><span></span></div>
-      <div class="decision"><h3>A summary that follows you</h3><p>Store and EMI settings keep a summary panel beside the form, updating as you edit, with Save next to it. Long configuration pages stay understandable.</p><span></span></div>
-      <div class="decision"><h3>Safe developer settings</h3><p>Secret keys are masked with a one-click copy, a plain warning sits under them, and webhooks are simple on/off switches per event.</p><span></span></div>
-      <div class="decision"><h3>Every number has a direction</h3><p>Analytics cards pair each amount with its change against the previous period and a small trend line, and the collection breakdown lists every deduction down to net settlement.</p><span></span></div>
+   ['decisions','Key Design Decisions','Decisions visible in the product', `<div class="pg-case-decisions">
+      <article class="pg-case-decision"><h3>Show payment and settlement separately</h3><p>A payment can succeed before funds are settled. Separate statuses make that difference visible in the transaction list.</p></article>
+      <article class="pg-case-decision"><h3>Put fee and net beside the amount</h3><p>Merchants can see the gross amount, gateway fee and expected net without opening each transaction.</p></article>
+      <article class="pg-case-decision"><h3>Keep the summary beside the settings</h3><p>Store and EMI forms pair configuration with a summary, so merchants can review what they are changing.</p></article>
+      <article class="pg-case-decision"><h3>Make sensitive settings deliberate</h3><p>Mask secret keys and let merchants control webhook events with clear on/off states.</p></article>
     </div>`],
-   ['system','Design System','One language across roles', `<div class="three"><div class="box"><h3>Shared patterns</h3><p>Status pills, summary cards and tables repeat across transactions, stores, EMI and analytics.</p></div><div class="box"><h3>Plain labels</h3><p>"Next statement", "Net amount", "Settled": terms merchants use, not accounting jargon.</p></div><div class="box"><h3>Consistent layout</h3><p>Same sidebar, header actions and form-plus-summary structure on every settings page.</p></div></div>`],
-   ['outcome','Outcome','Where it landed', `<div class="two"><div class="box sageb"><span class="meta">Delivered</span><h3>Three connected products</h3><p>Gateway, merchant panel and admin panel designed as one system.</p></div><div class="box sageb"><span class="meta">Consistency</span><h3>One language across roles</h3><p>The same payment reads the same way to payer, merchant and admin.</p></div></div>${todo('To add',['Add gateway checkout screens','Add admin panel screens','Add prototype link'])}`]
+   ['outcome','Outcome','Where it landed', `<div class="two"><div class="box sageb"><span class="meta">Delivered</span><h3>Three connected products</h3><p>Gateway, merchant panel and admin panel designed as one system.</p></div><div class="box sageb"><span class="meta">Consistency</span><h3>One language across roles</h3><p>The same payment reads the same way to payer, merchant and admin.</p></div></div>`]
   ]}
 };
 const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway'];
@@ -1495,111 +1549,183 @@ function buildHome(){
   frag.getElementById('rows').innerHTML = MORE.map(rowItem).join('');
   return frag;
 }
-/* ---------- story-format case study (Payment Gateway) ---------- */
-function syShot(n, alt, pins, cls){
-  const src = n==='pg-dash-full' ? img(n, alt) : pgImg(n, alt);
-  return `<figure class="sy-shot ${cls||''}"><div class="sy-frame">${src}${(pins||[]).map((p,k)=>`<span class="sy-pin" style="left:${p[0]}%;top:${p[1]}%" aria-hidden="true">${k+1}</span>`).join('')}</div></figure>`;
-}
-function syNotes(list){
-  return `<ol class="sy-notes">${list.map((t,k)=>`<li><span class="sy-num">${k+1}</span><div><b>${t[0]}</b><p>${t[1]}</p></div></li>`).join('')}</ol>`;
-}
-function syChapter(n, id, kicker, title, body, dark){
-  return `<section class="sy-ch ${dark?'sy-dark':''}" id="${id}" data-ch="${kicker}">
-    <div class="wrap">
-      <div class="sy-head bt"><span class="sy-k meta">Chapter ${n} · ${kicker}</span><h2 class="sy-t">${title}</h2></div>
-      ${body}
-    </div></section>`;
-}
+/* ---------- Payment Gateway case study ---------- */
 function buildStory(c, prev, prevSlug, next, nextSlug){
-  const chapters = [
-    syChapter('01','sy-1','The question',
-      'Every payment ends with the same question: <em>where’s my money?</em>',
-      `<div class="sy-cols">
-        <p class="sy-lead bt">A customer taps pay. For them the story is over. For the merchant it has just started: was it successful, what did the gateway take, and when does the money actually arrive?</p>
-        <div class="sy-body bt"><p>I designed three connected products inside a payment ecosystem: the payment gateway application, the merchant panel and the admin panel. Together they cover payment processing, transaction management, merchant operations, monitoring and administration.</p>
-        <p>The challenge was to create connected experiences, and keep them consistent across very different user roles.</p></div>
-      </div>`),
-    syChapter('02','sy-2','The cast',
-      'Three people. One payment. Three very different needs.',
-      `<div class="sy-cast">
-        <div class="sy-role rv"><span class="meta">Gateway app</span><h3>The payer</h3><p>Wants to pay and move on. Anything extra is friction.</p><i>“Did it go through?”</i></div>
-        <div class="sy-link" aria-hidden="true"></div>
-        <div class="sy-role on rv"><span class="meta">Merchant panel</span><h3>The merchant</h3><p>Tracks transactions, runs stores, sets up EMI and waits for settlement.</p><i>“How much do I actually get?”</i></div>
-        <div class="sy-link" aria-hidden="true"></div>
-        <div class="sy-role rv"><span class="meta">Admin panel</span><h3>The admin</h3><p>Monitors activity across merchants and keeps the system healthy.</p><i>“Is anything going wrong?”</i></div>
-      </div>
-      <div class="sy-flow bt" aria-label="Payment lifecycle"><span>Payment</span><b></b><span>Transaction</span><b></b><span>Settlement</span><b></b><span>Monitoring</span></div>`, true),
-    syChapter('03','sy-3','Mapping the money',
-      'Before any screen, I organised the panel the way merchants think about money.',
-      `<div class="sy-map">${[
-        ['Get paid',['Transactions','Payment links','Payment QR','Invoice']],
-        ['Receive it',['Settlements','Refunds & disputes']],
-        ['Understand it',['Dashboard','Report & analytics','Customers']],
-        ['Set it up',['Stores & outlets','EMI partners','Integrations','Team management']]
-      ].map((g,k)=>`<div class="sy-mapcol rv" style="--d:${k*0.08}s"><span class="sy-step">${String(k+1).padStart(2,'0')}</span><h3>${g[0]}</h3><ul>${g[1].map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>
-      <p class="sy-caption bt">Money first, setup last. The navigation follows the order a merchant cares about.</p>`),
-    syChapter('04','sy-4','Answering the question',
-      'The transactions screen had to answer “where’s my money?” without a single click.',
-      `${syShot('pg-transactions','Transactions screen',[[27,15],[37,25],[64,34],[82,34]])}
-      ${syNotes([
-        ['Status at a glance','Successful, pending, failed and refunded, each with a count and a total amount, before the table even starts.'],
-        ['Filters that show the size of the queue','Status tabs carry their count, so merchants know how much is waiting before they click.'],
-        ['What you actually receive','Amount, gateway fee and net are separate columns on every row.'],
-        ['Paid is not the same as settled','Payment status and settlement status sit side by side, so “paid” is never mistaken for “the money is in my account”.']
-      ])}`),
-    syChapter('05','sy-5','The scary part',
-      'API keys, webhooks, EMI tenures. Setup is where merchants get nervous, so I made it calm.',
-      `<div class="sy-pair">
-        <div>${syShot('pg-store','Store settings',[[30,49],[71,68],[88,14]],'tall')}
-        ${syNotes([['Safe by default','Secret keys are masked, copy is one click, and a plain warning sits right underneath.'],['Switches, not code','Each webhook event is a simple on/off toggle.'],['A summary that follows you','The store summary and Save stay beside the form on long pages.']])}</div>
-        <div>${syShot('pg-emi','EMI configuration',[[62,58],[62,86],[87,26]])}
-        ${syNotes([['Tenures as a table','Interest, minimum amount and monthly payment per plan, each with its own toggle.'],['Pick networks visually','Eligible card networks are selectable cards with a clear checked state.'],['Same pattern, new page','The summary panel from store settings returns here, so the page feels familiar.']])}</div>
-      </div>`, true),
-    syChapter('06','sy-6','The big picture',
-      'Then zoom out: one page for the whole business, from gross collections to net settlement.',
-      `<div class="sy-split">
-        <div class="sy-side bt">
-          <p class="sy-lead">Merchants don’t read dashboards. They glance at them between everything else.</p>
-          ${syNotes([['Every number has a direction','Each KPI shows its change against the previous period and a small trend line.'],['Money by the names people use','Revenue is split by real wallets, cards and banks.'],['The last line is the one that matters','Collection breakdown lists every deduction down to net settlement.']])}
-        </div>
-        ${syShot('pg-dash-full','Payment gateway analytics',[],'sy-scroll')}
-      </div>`),
-    syChapter('07','sy-7','One language',
-      'Across gateway, merchant and admin, the same payment reads the same way.',
-      `<div class="sy-sys">
-        <div class="rv"><h3>Shared patterns</h3><p>Status pills, summary cards and tables repeat across transactions, stores, EMI and analytics.</p><div class="sy-pills"><span class="ok">Paid</span><span class="wait">Pending</span><span class="done">Settled</span><span class="bad">Cancelled</span></div></div>
-        <div class="rv"><h3>Plain labels</h3><p>“Next statement”, “Net amount”, “Settled”. Words merchants already use, not accounting jargon.</p></div>
-        <div class="rv"><h3>One layout</h3><p>Same sidebar, header actions and form-plus-summary structure on every settings page.</p></div>
-      </div>`, true)
+  const customerSteps = [
+    ['Choose a payment method','Card, mobile banking or net banking. The amount stays visible.','pg-customer-card','Choose a payment method, with card form and payment options'],
+    ['Select a route','Offer familiar local wallet choices in one place.','pg-customer-mobile-banking','Mobile banking payment options including bKash, Nagad and Rocket'],
+    ['Choose a bank','Show participating banks and their available EMI plans.','pg-customer-emi-banks','Participating banks list with available installment plans'],
+    ['Review the plan','Make tenure, interest and monthly amount comparable before confirmation.','pg-customer-emi-plan','Selected three month installment plan with monthly payment'],
+    ['Confirm the result','Give the customer a clear success state and a useful receipt.','pg-customer-receipt','Payment receipt confirming successful payment']
   ];
+  const image = (name, alt, eager=false) => `<img src="img/${name}.png" alt="${alt}" width="945" height="2048" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async">`;
+  const customerCards = customerSteps.map((s,k)=>`<article class="pg-flow-card"><figure>${image(s[2],s[3],k===0)}</figure><div class="pg-flow-caption"><b>${String(k+1).padStart(2,'0')} · ${s[0]}</b><p>${s[1]}</p></div></article>`).join('');
   const el=document.createElement('div');
+  const uiCards = [
+    ['Transactions','pg-transactions','Transactions screen with payment and settlement status, filters and net amount.'],
+    ['Analytics','pg-dash-full','Merchant analytics showing collection, payment method mix and settlement figures.'],
+    ['Store settings','pg-store','Store configuration with payment methods, keys and a persistent summary.'],
+    ['EMI settings','pg-emi','EMI configuration with bank plans and installment details.']
+  ].map(x=>`<figure class="pg-ui-card"><div class="frame">${pgImg(x[1],x[2],false)}</div><figcaption><b>${x[0]}</b>${x[2]}</figcaption></figure>`).join('');
   el.innerHTML = `
-  <div class="sy-progress" aria-hidden="true"><i id="syBar"></i></div>
-  <section class="sy-hero">
-    <div class="wrap">
-      <p class="crumbs meta"><a href="#work">← Work</a><span>/</span><span>${c.eyebrow}</span></p>
-      <p class="meta sy-name">${c.name}</p>
-      <h1 id="cs-title" tabindex="-1">Where’s my money?<span>Designing a payment ecosystem around one question.</span></h1>
-      <div class="cs-meta">${c.meta.map(m=>`<div><span class="meta">${m[0]}</span>${m[1]}</div>`).join('')}</div>
-    </div>
-    <div class="wrap sy-cover">${syShot('pg-transactions','Merchant panel transactions',[])}</div>
-  </section>
-  <nav class="sy-toc" aria-label="Chapters"><div class="wrap">${['The question','The cast','Mapping the money','Answering the question','The scary part','The big picture','One language','Epilogue'].map((t,k)=>`<a href="#sy-${k+1}" data-sy="sy-${k+1}"><span>${String(k+1).padStart(2,'0')}</span>${t}</a>`).join('')}</div></nav>
-  ${chapters.join('')}
-  <section class="sy-ch" id="sy-8">
-    <div class="wrap">
-      <div class="sy-head bt"><span class="sy-k meta">Epilogue · Where it landed</span><h2 class="sy-t">Three products, designed as one system.</h2></div>
-      <div class="sy-end">
-        <div class="rv"><span class="meta">Delivered</span><h3>Gateway, merchant panel and admin panel</h3><p>Connected experiences for payment processing, transactions, merchant operations, monitoring and administration.</p></div>
-        <div class="rv"><span class="meta">Consistency</span><h3>One language across roles</h3><p>The same payment reads the same way to the payer, the merchant and the admin.</p></div>
+  <div class="pg-story">
+    <section class="pg-hero">
+      <div class="wrap">
+        <p class="pg-crumb"><a href="#work">← Projects</a><span>/</span><span>Project details</span></p>
+        <div class="pg-hero-grid">
+          <div>
+            <p class="pg-eyebrow">Case study 04 · Fintech</p>
+            <h1 id="cs-title" tabindex="-1">Payment Gateway Ecosystem</h1>
+            <p class="pg-hero-copy">Designing the customer payment journey and the connected tools merchants and admins use to manage each transaction.</p>
+            <div class="pg-meta-row">
+              <div><span>Industry</span><b>Fintech · Payments</b></div>
+              <div><span>Service</span><b>Product design</b></div>
+              <div><span>My role</span><b>UI/UX Designer · Zavisoft</b></div>
+              <div><span>Scope</span><b>Customer checkout + web panels</b></div>
+            </div>
+          </div>
+          <div class="pg-hero-art" aria-label="Customer checkout and payment receipt screens">
+            <div class="pg-hero-shot main">${image('pg-customer-card','Customer payment screen with card and mobile banking options',true)}</div>
+            <div class="pg-hero-shot method">${image('pg-customer-mobile-banking','Mobile banking payment method selection screen')}</div>
+            <div class="pg-hero-shot receipt">${image('pg-customer-receipt','Customer payment success receipt')}</div>
+          </div>
+        </div>
       </div>
-      ${todo('Still to add',['Gateway checkout screens','Admin panel screens','Prototype link'])}
-      <nav class="next" aria-label="More case studies">
-        <a href="#${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
-        <a href="#${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
-      </nav>
-    </div>
-  </section>`;
+    </section>
+    <section class="pg-section">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Project description</p><div><h2>One payment system, designed for three roles.</h2><p class="pg-deck">A customer chooses how to pay and needs a clear result. A merchant tracks transactions and settlements. An admin monitors activity across the system. I designed connected experiences around the same payment lifecycle.</p></div></div>
+      </div>
+    </section>
+    <section class="pg-section soft">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Problem &amp; challenge</p><div><h2>Make a complex money journey easy to read.</h2></div></div>
+        <div class="pg-problem-grid">
+          <article><span class="meta">The problem</span><h3>A payment can be successful before its funds are settled.</h3><p>For the customer, the key question is whether payment went through. For the merchant, the next question is how much will arrive and when.</p></article>
+          <article><span class="meta">The challenge</span><h3>Keep each step clear without losing the full picture.</h3><p>Checkout, EMI selection, transaction tracking and settlement details belong to different moments and roles, but all refer to the same payment.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="pg-section">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Our solution</p><div><h2>Three design decisions connect the experience.</h2></div></div>
+        <div class="pg-solution-grid">
+          <article><span class="num">01</span><h3>Keep payment choices and amount together</h3><p>Card, mobile banking and net banking sit alongside the amount due, so the customer can choose without losing context.</p></article>
+          <article><span class="num">02</span><h3>Make EMI terms comparable before confirmation</h3><p>Bank, tenure, interest and monthly payment appear as a structured choice; confirmation repeats the selected plan.</p></article>
+          <article><span class="num">03</span><h3>Separate paid from settled</h3><p>The merchant table shows payment and settlement status separately, with fee and net amount beside the transaction.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="pg-section soft" id="pg-flow">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Design process · Customer flow</p><div><h2>From payment method to confirmation.</h2><p class="pg-deck">The customer screens make the sequence tangible: choose a method, select a route or bank, review EMI, then receive a receipt.</p></div></div>
+        <div class="pg-flowline" aria-label="Payment steps"><span>Choose method</span><span>Select route</span><span>Choose bank</span><span>Review EMI</span><span>Confirmation</span></div>
+        <div class="pg-flow-grid">${customerCards}</div>
+      </div>
+    </section>
+    <section class="pg-section">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Style &amp; components</p><div><h2>Use the same visual cues for the same money states.</h2><p class="pg-deck">The interface repeats a small set of patterns so customers and operators can recognise choices, payment states and amounts quickly.</p></div></div>
+        <div class="pg-principles">
+          <article><b>State is explicit</b><p>Labels distinguish paid, pending, failed, refunded and settled states.</p></article>
+          <article><b>Money is explained</b><p>Amounts, gateway fees and net settlement are shown as separate values.</p></article>
+          <article><b>Selection is visible</b><p>Payment method, bank and EMI plan choices use clear active states.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="pg-section soft" id="pg-decisions">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Final UI design · Merchant tools</p><div><h2>The merchant side carries the payment story forward.</h2><p class="pg-deck">Transaction tracking, analytics and configuration keep the operational details close to the actions merchants need to take.</p></div></div>
+        <div class="pg-ui-grid">${uiCards}</div>
+      </div>
+    </section>
+    <section class="pg-section">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">Workflow scenario</p><div><h2>One event, followed through the ecosystem.</h2></div></div>
+        <div class="pg-workflow"><div>Customer selects a method</div><div>Gateway processes payment</div><div>Merchant reviews transaction</div><div>Funds move to settlement</div><div>Admin monitors activity</div></div>
+      </div>
+    </section>
+    <section class="pg-section soft">
+      <div class="wrap">
+        <div class="pg-section-head"><p class="pg-label">The result</p><div><h2>A connected payment experience, from choice to reconciliation.</h2><p class="pg-deck">The delivered design covers customer payment methods and EMI, merchant transaction and settlement visibility, and the shared patterns that connect those experiences to administration.</p></div></div>
+        <nav class="pg-next" aria-label="More case studies">
+          <a href="#${prevSlug}"><span class="meta">← Previous project</span><span>${prev.name}</span></a>
+          <a href="#${nextSlug}"><span class="meta">Next project →</span><span>${next.name}</span></a>
+        </nav>
+      </div>
+    </section>
+  </div>`;
+  const frag=document.createDocumentFragment(); while(el.firstChild) frag.appendChild(el.firstChild); return frag;
+}
+
+function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
+  const screens = [
+    ['01','Choose a method','Keep the amount visible while the customer picks card, mobile banking or net banking.','pg-customer-card','Payment method selection with card form and supported methods'],
+    ['02','Select a route','Show familiar mobile banking options in one clear step.','pg-customer-mobile-banking','Mobile banking options including bKash, Nagad and Rocket'],
+    ['03','Choose a bank','Let customers compare available banks and installment plans.','pg-customer-emi-banks','Participating banks and installment options'],
+    ['04','Review the plan','Make tenure, interest and monthly cost easy to compare.','pg-customer-emi-plan','Installment plan selection with monthly amount'],
+    ['05','See confirmation','Close the journey with a payment result and receipt details.','pg-customer-receipt','Payment success receipt']
+  ];
+  const screenImg = (name, alt, eager=false) => `<img src="img/${name}.png" alt="${alt}" width="945" height="2048" ${eager?'fetchpriority="high"':'loading="lazy"'} decoding="async">`;
+  const stepCards = screens.map((s,i)=>`<article class="pg-clean-step"><figure>${screenImg(s[3],s[4],i===0)}</figure><h3><span class="pg-clean-label">${s[0]} / </span>${s[1]}</h3><p>${s[2]}</p></article>`).join('');
+  const el=document.createElement('div');
+  el.innerHTML=`
+  <main class="pg-clean">
+    <header class="pg-clean-hero">
+      <div class="wrap">
+        <p class="pg-clean-crumb"><a href="#work">← Work</a><span>/</span><span>Case study 04 · Fintech</span></p>
+        <div class="pg-clean-intro">
+          <div><p class="pg-clean-kicker">Payment Gateway Ecosystem</p><h1 id="cs-title" tabindex="-1">A clearer path through every payment.</h1></div>
+          <p class="pg-clean-lead">Customer checkout, merchant operations and admin tools designed around one shared payment journey.</p>
+        </div>
+        <div class="pg-clean-meta">
+          <div><span>Role</span><b>Mid UI/UX Designer · Zavisoft</b></div>
+          <div><span>Scope</span><b>Customer checkout + web panels</b></div>
+          <div><span>Platform</span><b>Gateway app · Merchant · Admin</b></div>
+        </div>
+      </div>
+    </header>
+    <section class="wrap" aria-label="Customer payment screens">
+      <div class="pg-clean-cover">
+        <figure>${screenImg('pg-customer-card','Customer checkout screen with payment methods',true)}</figure>
+        <figure>${screenImg('pg-customer-receipt','Customer payment receipt')}</figure>
+      </div>
+    </section>
+    <section class="pg-clean-section">
+      <div class="wrap">
+        <div class="pg-clean-heading"><p class="pg-clean-label">The project</p><div><h2>One payment. Different questions at every step.</h2><p class="pg-clean-copy">Customers need to know how to pay and whether it worked. Merchants need to understand transaction status and what will be settled. Admins need a clear view across activity. The design connects those needs without making each screen carry every detail.</p></div></div>
+        <div class="pg-clean-columns">
+          <article class="pg-clean-note"><h3>Customer checkout</h3><p>Payment methods, local banking options, installment plans and confirmation screens guide the payer from choice to receipt.</p></article>
+          <article class="pg-clean-note"><h3>Merchant operations</h3><p>Transaction and settlement details sit together so merchants can follow a payment after the customer leaves checkout.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="pg-clean-section" id="pg-customer-flow">
+      <div class="wrap">
+        <div class="pg-clean-heading"><p class="pg-clean-label">Customer experience</p><div><h2>From choosing how to pay to getting a clear receipt.</h2><p class="pg-clean-copy">The supplied screens show the customer flow, including mobile banking and EMI choices. Each step keeps the next decision visible and understandable.</p></div></div>
+        <div class="pg-clean-steps">${stepCards}</div>
+      </div>
+    </section>
+    <section class="pg-clean-section">
+      <div class="wrap">
+        <div class="pg-clean-heading"><p class="pg-clean-label">Merchant experience</p><div><h2>Keep payment and settlement status easy to scan.</h2><p class="pg-clean-copy">The transactions view brings key payment details into one working surface, helping merchants review status, amounts and settlement information in context.</p></div></div>
+        <figure class="pg-clean-merchant">${pgImg('pg-transactions','Merchant transactions list with payment and settlement details',false)}<figcaption class="pg-clean-merchant-caption"><b>Transactions</b><span>Status, amount, fee and net settlement are visible in the same view.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="pg-clean-section">
+      <div class="wrap">
+        <div class="pg-clean-end">
+          <p class="pg-clean-label">Designed across the payment journey</p>
+          <h2>Checkout and operations, connected by a shared view of each payment.</h2>
+          <p>The work spans customer payment choices and receipts, merchant transaction management, and admin oversight. The case study focuses on the customer flow and the merchant transaction view shown here.</p>
+          <nav class="pg-clean-next" aria-label="More case studies">
+            <a href="#${prevSlug}"><span class="meta">← Previous project</span><span>${prev.name}</span></a>
+            <a href="#${nextSlug}"><span class="meta">Next project →</span><span>${next.name}</span></a>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </main>`;
   const frag=document.createDocumentFragment(); while(el.firstChild) frag.appendChild(el.firstChild); return frag;
 }
 
@@ -1608,7 +1734,6 @@ function buildCase(slug){
   const i = ORDER.indexOf(slug);
   const prev = CASES[ORDER[(i+ORDER.length-1)%ORDER.length]], prevSlug = ORDER[(i+ORDER.length-1)%ORDER.length];
   const next = CASES[ORDER[(i+1)%ORDER.length]], nextSlug = ORDER[(i+1)%ORDER.length];
-  if(slug==='payment-gateway') return buildStory(c, prev, prevSlug, next, nextSlug);
   const secs = c.sections.map((s,k)=>{
     const num = String(k+1).padStart(2,'0');
     return `<section class="cs-sec rv" id="s-${s[0]}" aria-labelledby="h-${s[0]}"><span class="meta">${num} · ${s[1]}</span><h2 id="h-${s[0]}">${s[2]}</h2>${s[3]}</section>`;
@@ -1676,21 +1801,6 @@ function focusTitle(id){ const t = document.getElementById(id); if(t) t.focus({p
 /* ---------- per-view wiring ---------- */
 let io, spy, pxRaf=0, pxEls=[];
 function wireView(){
-  // hero background video
-  const vid = view.querySelector('#heroVideo'), vt = view.querySelector('#mediaToggle');
-  if(vid && vt){
-    const PAUSE='<svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="1" width="3" height="8" fill="currentColor"/><rect x="6" y="1" width="3" height="8" fill="currentColor"/></svg><span>Pause video</span>';
-    const PLAY='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg><span>Play video</span>';
-    const setUI = paused => { vt.innerHTML = paused ? PLAY : PAUSE; vt.setAttribute('aria-pressed', String(paused)); };
-    let userPaused=false; try{ userPaused = localStorage.getItem('heroVideoPaused')==='1'; }catch(e){}
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches) userPaused=true;
-    setUI(userPaused);
-    let inView=true;
-    const sync=()=>{ if(inView && !userPaused){ const pr=vid.play(); if(pr&&pr.catch) pr.catch(()=>{}); } else vid.pause(); };
-    vt.addEventListener('click', ()=>{ userPaused=!userPaused; setUI(userPaused); try{ localStorage.setItem('heroVideoPaused', userPaused?'1':'0'); }catch(e){} sync(); });
-    if('IntersectionObserver' in window) new IntersectionObserver(es=>{ inView=es[0].isIntersecting; sync(); }).observe(vid);
-    sync();
-  }
   // how-i-work carousel (transform-based, so every step can be active)
   const track = view.querySelector('#hwTrack');
   if(track){
@@ -1768,16 +1878,6 @@ function wireView(){
     });
     sel(0);
   }
-  // story progress + chapter nav
-  const syBar=view.querySelector('#syBar');
-  if(syBar){
-    const links=[...view.querySelectorAll('.sy-toc a')];
-    const upd=()=>{ const h=document.documentElement.scrollHeight-innerHeight; syBar.style.width=(h>0?scrollY/h*100:0)+'%';
-      let on=null; view.querySelectorAll('.sy-ch').forEach(c=>{ if(c.getBoundingClientRect().top<innerHeight*.45) on=c.id; });
-      links.forEach(a=>{ const act=a.dataset.sy===on; if(act!==a.classList.contains('on')){ a.classList.toggle('on',act); if(act) a.scrollIntoView({block:'nearest',inline:'center'}); } }); };
-    if(window.__syUpd) removeEventListener('scroll',window.__syUpd);
-    window.__syUpd=upd; addEventListener('scroll',upd,{passive:true}); upd();
-  } else if(window.__syUpd){ removeEventListener('scroll',window.__syUpd); window.__syUpd=null; }
   // expandable rows
   view.querySelectorAll('.row-btn-unused').forEach(b=>b.addEventListener('click',()=>{
     const open = b.getAttribute('aria-expanded')==='true';
@@ -1803,7 +1903,7 @@ function wireView(){
   if('IntersectionObserver' in window && !reduce){
     io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.remove('pre'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px'});
     // headings: split into words (text nodes only, keeps inner spans)
-    view.querySelectorAll('.h2, .cs-sec h2, .contact h2, .ab-lead, .statement, .sy-t').forEach(h=>{
+    view.querySelectorAll('.h2, .cs-sec h2, .contact h2, .ab-lead, .statement, .pg-section h2').forEach(h=>{
       if(h.dataset.split) return; h.dataset.split='1'; let i=0;
       const walk=n=>{ [...n.childNodes].forEach(c=>{ if(c.nodeType===3){ const f=document.createDocumentFragment();
             c.textContent.split(/(\s+)/).forEach(w=>{ if(!w) return; if(/^\s+$/.test(w)){ f.appendChild(document.createTextNode(w)); return; }
@@ -1822,7 +1922,7 @@ function wireView(){
   pxEls = reduce ? [] : [
     ...[...view.querySelectorAll('.why-bg')].map(e=>[e,0.06]),
     ...[...view.querySelectorAll('.ab-photo img')].map(e=>[e,0.05]),
-    ...[...view.querySelectorAll('.hero-media video')].map(e=>[e,0.15]),
+    ...[...view.querySelectorAll('.hero-media video')].map(e=>[e,0.24]),
   ];
   pxEls.forEach(([e])=>e.setAttribute('data-px',''));
   const pxTick=()=>{ const vh=innerHeight;
