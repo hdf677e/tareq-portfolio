@@ -118,7 +118,7 @@ function rowItem(p){
 
 /* ---------- project pages (More work) ----------
    URL: #project/<slug>. Layout: banner, description, two images side by side,
-   one wide image, call to action. Images per project on its MORE entry:
+   one wide image. Images per project on its MORE entry:
      banner: 'img/work/more/<slug>/banner.webp'           2400 x 1350
      pair:   ['img/.../1.webp', 'img/.../2.webp']         1200 x 900 each
      wide:   'img/work/more/<slug>/wide.webp'             2400 x 1350
@@ -136,10 +136,7 @@ function shotFrame(src, alt, size, cls, eager){
 
 function buildShot(hash){
   const p = SHOTS[hash];
-  const i = MORE.indexOf(p), next = MORE[(i + 1) % MORE.length];
-  const who = p.n==='10' ? 'GhorerBazar · 2023–25' : 'Zavisoft · 2025–26';
   const tags = p.cat.split(' · ').concat(p.platform);
-  const live = p.links[0];
   const pair = [0, 1].map(k => shotFrame(p.pair && p.pair[k], `${p.name} screen ${k + 2}`, '1200 × 900', 'pj-half')).join('');
   const el = document.createElement('div');
   el.innerHTML = `
@@ -147,10 +144,6 @@ function buildShot(hash){
     <p class="pj-crumbs meta"><a href="#more-work">← More work</a></p>
     <header class="pj-head">
       <h1 id="shot-title" tabindex="-1">${p.name}</h1>
-      <dl class="pj-facts">
-        <div><dt>Platform <span aria-hidden="true">⟶</span></dt><dd>${p.platform}</dd></div>
-        <div><dt>Built at <span aria-hidden="true">⟶</span></dt><dd>${who}</dd></div>
-      </dl>
     </header>
     ${shotFrame(p.banner || `img/${p.thumb}.webp`, p.thumbAlt, '2400 × 1350', 'pj-banner', true)}
     <div class="pj-desc">
@@ -167,17 +160,6 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
-    <section class="pj-cta" aria-labelledby="pj-cta-title">
-      <div>
-        <h2 id="pj-cta-title">Have a product like this in mind?</h2>
-        <p>I design clear, working products for merchants, operators and customers. Let's talk about yours.</p>
-      </div>
-      <div class="pj-cta-actions">
-        <a class="pj-btn pj-btn-lime" href="#contact">Get in touch</a>
-        ${live ? `<a class="pj-btn" href="${live[0]}" target="_blank" rel="noopener">Visit live ${EXT}</a>` : ''}
-      </div>
-      <a class="pj-next" href="#${shotHash(next)}"><span class="meta">Next project</span><b>${next.name} ${ARROW}</b></a>
-    </section>
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
