@@ -116,51 +116,61 @@ function rowItem(p){
   </a>`;
 }
 
-/* ---------- project pages (More work), Dribbble-style shots ----------
-   URL: #project/<slug>. Add more screens to a project with
-   `shots: ['img/work/more/<slug>/2.webp', ...]` on its MORE entry. */
+/* ---------- project pages (More work) ----------
+   URL: #project/<slug>. Layout: banner, description, two images side by side,
+   one wide image, call to action. Images per project on its MORE entry:
+     banner: 'img/work/more/<slug>/banner.webp'           2400 x 1350
+     pair:   ['img/.../1.webp', 'img/.../2.webp']         1200 x 900 each
+     wide:   'img/work/more/<slug>/wide.webp'             2400 x 1350
+   The banner falls back to the project thumbnail. Missing images show a
+   labelled placeholder on localhost and are left out on the live site. */
 const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const shotHash = p => `project/${slugify(p.name)}`;
 const SHOTS = Object.fromEntries(MORE.map(p => [shotHash(p), p]));
+const DEV = ['localhost', '127.0.0.1'].includes(location.hostname);
+
+function shotFrame(src, alt, size, cls, eager){
+  if(src) return `<figure class="pj-frame ${cls}"><img src="${src}" alt="${alt}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></figure>`;
+  return DEV ? `<figure class="pj-frame ${cls} pj-empty" aria-hidden="true"><span>${size}</span></figure>` : '';
+}
 
 function buildShot(hash){
   const p = SHOTS[hash];
-  const list = MORE, i = list.indexOf(p);
-  const prev = list[(i + list.length - 1) % list.length], next = list[(i + 1) % list.length];
+  const i = MORE.indexOf(p), next = MORE[(i + 1) % MORE.length];
   const who = p.n==='10' ? 'GhorerBazar · 2023–25' : 'Zavisoft · 2025–26';
-  const images = [`img/${p.thumb}.webp`, ...(p.shots || [])];
   const tags = p.cat.split(' · ').concat(p.platform);
   const live = p.links[0];
-  const others = list.filter(o => o !== p).slice(0, 4);
+  const pair = [0, 1].map(k => shotFrame(p.pair && p.pair[k], `${p.name} screen ${k + 2}`, '1200 × 900', 'pj-half')).join('');
   const el = document.createElement('div');
   el.innerHTML = `
   <main class="pj" aria-labelledby="shot-title">
-    <div class="shot-top">
-      <p class="shot-crumbs meta"><a href="#more-work">← More work</a></p>
-      <h1 id="shot-title" tabindex="-1">${p.name}</h1>
-      <div class="shot-by">
-        <img class="shot-avatar" src="img/tareq.webp" alt="" width="48" height="48">
-        <div class="shot-who"><b>Tareq Mahmud</b><span>${p.cat} · ${who}</span></div>
-        <div class="shot-actions">
-          ${live ? `<a class="shot-btn" href="${live[0]}" target="_blank" rel="noopener">Visit live ${EXT}</a>` : ''}
-          <a class="shot-btn shot-btn-ink" href="#contact">Get in touch</a>
+    <p class="pj-crumbs meta"><a href="#more-work">← More work</a></p>
+    ${shotFrame(p.banner || `img/${p.thumb}.webp`, p.thumbAlt, '2400 × 1350', 'pj-banner', true)}
+    <div class="pj-desc">
+      <div class="pj-desc-head">
+        <h1 id="shot-title" tabindex="-1">${p.name}</h1>
+        <div class="pj-by">
+          <img class="pj-avatar" src="img/tareq.webp" alt="" width="40" height="40">
+          <span><b>Tareq Mahmud</b>${p.cat} · ${who}</span>
         </div>
       </div>
+      <div class="pj-desc-body">
+        <p>${p.text}</p>
+        <ul class="pj-tags" aria-label="Tags">${tags.map(t => `<li>${t}</li>`).join('')}</ul>
+      </div>
     </div>
-    <div class="shot-media">
-      ${images.map((src, k) => `<figure class="shot-frame"><img src="${src}" alt="${k ? `${p.name} screen ${k + 1}` : p.thumbAlt}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></figure>`).join('')}
-    </div>
-    <div class="shot-top shot-about">
-      <p>${p.text}</p>
-      <ul class="shot-tags" aria-label="Tags">${tags.map(t => `<li>${t}</li>`).join('')}</ul>
-    </div>
-    <section class="shot-more" aria-labelledby="shot-more-title">
-      <div class="shot-more-head"><h2 id="shot-more-title">More by Tareq Mahmud</h2><a href="#more-work">View all work →</a></div>
-      <div class="shot-grid">${others.map(o => `<a href="#${shotHash(o)}"><span class="shot-thumb"><img src="img/${o.thumb}.webp" alt="" loading="lazy" decoding="async"></span><b>${o.name}</b></a>`).join('')}</div>
-      <nav class="shot-pager" aria-label="More projects">
-        <a href="#${shotHash(prev)}"><span class="meta">← Previous</span>${prev.name}</a>
-        <a href="#${shotHash(next)}"><span class="meta">Next →</span>${next.name}</a>
-      </nav>
+    ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
+    ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
+    <section class="pj-cta" aria-labelledby="pj-cta-title">
+      <div>
+        <h2 id="pj-cta-title">Have a product like this in mind?</h2>
+        <p>I design clear, working products for merchants, operators and customers. Let's talk about yours.</p>
+      </div>
+      <div class="pj-cta-actions">
+        <a class="pj-btn pj-btn-lime" href="#contact">Get in touch</a>
+        ${live ? `<a class="pj-btn" href="${live[0]}" target="_blank" rel="noopener">Visit live ${EXT}</a>` : ''}
+      </div>
+      <a class="pj-next" href="#${shotHash(next)}"><span class="meta">Next project</span><b>${next.name} ${ARROW}</b></a>
     </section>
   </main>`;
   const frag = document.createDocumentFragment();
