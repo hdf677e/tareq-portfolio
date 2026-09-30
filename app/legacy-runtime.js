@@ -479,13 +479,27 @@ function buildCase(slug){
   return frag;
 }
 
+let destroyCarousel = null;
+function mountCarousel(){
+  const sec = view.querySelector('.wc');
+  if(!sec) return;
+  const items = MORE.map(p => ({ name:p.name, cat:p.cat, image:`img/${p.thumb}.webp`, href:p.links[0] ? p.links[0][0] : '' }));
+  let cancelled = false;
+  destroyCarousel = () => { cancelled = true; };
+  import('./work-carousel')
+    .then(({ initWorkCarousel }) => { if(!cancelled && sec.isConnected) destroyCarousel = initWorkCarousel(sec, items); })
+    .catch(() => sec.classList.add('wc-off'));
+}
+
 function mount(kind, slug){
+  if(destroyCarousel){ destroyCarousel(); destroyCarousel = null; }
   const frag = kind==='home' ? buildHome() : buildCase(slug);
   frag.appendChild(tplContact.content.cloneNode(true));
   view.replaceChildren(frag);
   current = kind==='home' ? 'home' : slug;
   document.title = kind==='home' ? 'Tareq Mahmud' : CASES[slug].name + ' · Tareq Mahmud';
   wireView();
+  if(kind==='home') mountCarousel();
 }
 
 let swapping = false;
