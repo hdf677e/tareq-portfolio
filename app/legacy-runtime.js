@@ -925,33 +925,73 @@ function wireView(){
     if(document.fonts) document.fonts.ready.then(() => { if(why.isConnected) fit(); });
     tick();
 
-    // mouse trail: project images drop at the cursor, stack, then fade away
+    // mouse trail: a smoothed cursor glides after the pointer and drops project images at even spacing
     const layer = why.querySelector('.why-trail');
     if(layer && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
       const srcs = [...new Set([...WORK.map(w => w.image), ...MORE.filter(m => m.thumb).map(m => `img/${m.thumb}.webp`)])];
-      srcs.forEach(src => { const im = new Image(); im.src = src; });
-      let k = 0, z = 1, lx = null, ly = null;
-      const STEP = 90, MAX = 14;
-      why.addEventListener('pointermove', e => {
-        if(e.pointerType !== 'mouse') return;
-        const r = layer.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-        if(lx !== null && Math.hypot(x - lx, y - ly) < STEP) return;
-        lx = x; ly = y;
-        const im = document.createElement('img');
-        im.src = srcs[k++ % srcs.length]; im.alt = ''; im.decoding = 'async';
-        im.style.zIndex = z++;
-        im.style.width = (190 + Math.random() * 90).toFixed(0) + 'px';
-        const at = s => `translate(${x}px,${y}px) translate(-50%,-50%) scale(${s})`;
+      // shrink every image once to 2x its trail size and decode it, so each drop is small and never paints blank
+      const pool = [];
+      const prep = src => new Promise(done => {
+        const big = new Image(); big.src = src;
+        big.decode().then(() => {
+          const wide = big.naturalWidth >= big.naturalHeight, w = (wide ? 250 : 170) * 2;
+          const c = document.createElement('canvas');
+          c.width = w; c.height = Math.round(w * big.naturalHeight / big.naturalWidth);
+          c.getContext('2d').drawImage(big, 0, 0, c.width, c.height);
+          c.toBlob(b => {
+            if(!b) return done();
+            const im = new Image(); im.src = URL.createObjectURL(b);
+            im.decode().then(() => { pool.push(im); done(); }, done);
+          }, 'image/webp', 0.86);
+        }, done);
+      });
+      const idle = window.requestIdleCallback || (f => setTimeout(f, 200));
+      srcs.reduce((chain, src) => chain.then(() => new Promise(r => idle(() => prep(src).then(r)))), Promise.resolve());
+      const STEP = 72, MAX = 16;
+      let k = 0, z = 1, tx = 0, ty = 0, cx = 0, cy = 0, lx = 0, ly = 0, has = false, inside = false, loop = 0, last = 0;
+      const drop = (x, y) => {
+        if(!pool.length) return;
+        const base = pool[k++ % pool.length];
+        const im = base.cloneNode();
+        const wide = base.naturalWidth >= base.naturalHeight;
+        const w = wide ? 250 : 170, h = Math.round(w * base.naturalHeight / base.naturalWidth);
+        im.alt = '';
+        im.style.cssText = `width:${w}px;height:${h}px;z-index:${z++}`;
+        const at = (s, dy) => `translate3d(${(x - w / 2).toFixed(1)}px,${(y - h / 2 + dy).toFixed(1)}px,0) scale(${s})`;
         layer.appendChild(im);
         while(layer.children.length > MAX) layer.firstElementChild.remove();
         im.animate([
-          { opacity: 0, transform: at(0.6) },
-          { opacity: 1, transform: at(1), offset: 0.18 },
-          { opacity: 1, transform: at(1), offset: 0.7 },
-          { opacity: 0, transform: at(0.92) }
-        ], { duration: 1300, easing: 'cubic-bezier(.22,.8,.2,1)', fill: 'forwards' }).onfinish = () => im.remove();
+          { opacity: 0, transform: at(0.86, 12) },
+          { opacity: 1, transform: at(1, 0), offset: 0.22 },
+          { opacity: 1, transform: at(1, 0), offset: 0.62 },
+          { opacity: 0, transform: at(0.94, -6) }
+        ], { duration: 1500, easing: 'cubic-bezier(.33,1,.68,1)', fill: 'forwards' }).onfinish = () => im.remove();
+      };
+      const frame = now => {
+        const dt = last ? Math.min(64, now - last) : 16; last = now;
+        const f = 1 - Math.exp(-dt / 70);
+        cx += (tx - cx) * f; cy += (ty - cy) * f;
+        // walk the smoothed path and drop an image every STEP px, so spacing stays even at any speed
+        let d = Math.hypot(cx - lx, cy - ly);
+        while(d >= STEP){
+          const t = STEP / d;
+          lx += (cx - lx) * t; ly += (cy - ly) * t;
+          drop(lx, ly);
+          d = Math.hypot(cx - lx, cy - ly);
+        }
+        const moving = Math.hypot(tx - cx, ty - cy) > 0.5;
+        loop = (inside || moving) ? requestAnimationFrame(frame) : 0;
+        if(!loop) last = 0;
+      };
+      why.addEventListener('pointermove', e => {
+        if(e.pointerType !== 'mouse') return;
+        const r = layer.getBoundingClientRect();
+        tx = e.clientX - r.left; ty = e.clientY - r.top;
+        if(!has){ cx = lx = tx; cy = ly = ty; has = true; }
+        inside = true;
+        if(!loop) loop = requestAnimationFrame(frame);
       });
-      why.addEventListener('pointerleave', () => { lx = ly = null; });
+      why.addEventListener('pointerleave', () => { inside = false; has = false; });
     }
   }
   // capabilities tabs
