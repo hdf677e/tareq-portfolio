@@ -71,7 +71,7 @@ function workCard(p){
   return `<${tag} class="wk-card${p.size ? ' wk-' + p.size : ''}"${link} aria-label="${p.name}, ${p.cat}">
     <div class="wk-media">
       <img src="${p.image}" alt="" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
-      <div class="wk-over"><p>${p.desc}</p></div>
+      <div class="wk-over"><p>${p.desc.split(' ').map((w, i) => `<span class="wk-w" style="--i:${i}">${w}</span>`).join(' ')}</p></div>
     </div>
     <div class="wk-name"><b>${p.name}</b><span>${p.cat}</span></div>
   </${tag}>`;
