@@ -106,8 +106,8 @@ export function initWorkCarousel(section, items){
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-  camera.position.set(0, 0.8, 0);
-  camera.lookAt(0, 0.35, -R);
+  camera.position.set(0, 0, 0);
+  camera.lookAt(0, 0, -R);
 
   const geo = new THREE.PlaneGeometry(W, H, 64, 1);
   const cards = items.map(() => {
@@ -139,22 +139,43 @@ export function initWorkCarousel(section, items){
   const blank = makeTex(document.createElement('canvas'));
   cards.forEach(c => { c.u.uUi.value = blank; });
 
+  // Size and place the active card from the page layout: its left edge lines up
+  // with the heading, and it is centred in the space between heading and footer.
+  // Layout offsets (not rects) so reveal transforms don't skew the measurement.
+  const head = section.querySelector('.more-head'), hud = section.querySelector('.wc-hud');
+  const edge = 2 * R * Math.tan(W / 2 / R);   // projected width of the curved card at the camera's distance
   function fit(){
     const w = stage.clientWidth, h = stage.clientHeight;
     renderer.setSize(w, h, false);
-    const aspect = w / h;
-    let viewH = H / 0.44;
-    if(aspect * viewH < W * 1.3) viewH = W * 1.3 / aspect;   // narrow screens: fit the card width
-    camera.aspect = aspect;
-    camera.fov = 2 * Math.atan(viewH / 2 / R) * 180 / Math.PI;
+    const wrap = head.offsetParent;
+    const gap = Math.max(32, Math.min(64, h * 0.06));
+    const left = wrap.offsetLeft + head.offsetLeft;
+    const top = wrap.offsetTop + head.offsetTop + head.offsetHeight + gap;
+    const bottom = hud.offsetTop - gap;
+    let ch = Math.max(140, bottom - top), cw = ch * edge / H;
+    if(cw > head.offsetWidth){ cw = head.offsetWidth; ch = cw * H / edge; }
+    const k = cw / edge;                       // pixels per world unit
+    camera.aspect = w / h;
+    camera.fov = 2 * Math.atan(h / k / 2 / R) * 180 / Math.PI;
+    camera.setViewOffset(w, h, w / 2 - (left + cw / 2), h / 2 - (top + (bottom - top) / 2), w, h);
     camera.updateProjectionMatrix();
   }
   fit();
-  const ro = new ResizeObserver(fit); ro.observe(stage);
+  const ro = new ResizeObserver(fit); ro.observe(stage); ro.observe(head);
 
   let visible = false, revealAt = 0;
   const vio = new IntersectionObserver(es => { visible = es[0].isIntersecting; if(visible && !revealAt) revealAt = performance.now(); });
   vio.observe(section);
+
+  // Each card gets an equal slice of the scroll; it holds in place for the first and
+  // last 20% of its slice and eases to the next card in between.
+  let base = 0;
+  function scrollBase(p){
+    if(n < 2) return 0;
+    const f = p * (n - 1), seg = Math.min(Math.floor(f), n - 2);
+    const t = clamp((f - seg - 0.2) / 0.6, 0, 1);
+    return (seg + t * t * (3 - 2 * t)) * STEP;
+  }
 
   // pointer: drag to move, click a card to open it
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
@@ -189,7 +210,11 @@ export function initWorkCarousel(section, items){
     hover = hit(e);
     canvas.style.cursor = hover >= 0 && items[hover].href ? 'pointer' : 'grab';
   });
-  canvas.addEventListener('pointerup', e => { if(down && !down.moved) open(hit(e)); down = null; canvas.style.cursor = 'grab'; });
+  canvas.addEventListener('pointerup', e => {
+    if(down && !down.moved) open(hit(e));
+    else if(down) drag = Math.round((base + drag) / STEP) * STEP - base;   // settle on the nearest card
+    down = null; canvas.style.cursor = 'grab';
+  });
   canvas.addEventListener('pointercancel', () => { down = null; });
   canvas.addEventListener('pointerleave', () => { if(!down) hover = -1; });
 
@@ -211,7 +236,7 @@ export function initWorkCarousel(section, items){
     const rect = section.getBoundingClientRect();
     const range = rect.height - innerHeight;
     const max = (n - 1) * STEP;
-    const base = range > 0 ? clamp(-rect.top / range, 0, 1) * max : 0;
+    base = scrollBase(range > 0 ? clamp(-rect.top / range, 0, 1) : 0);
     drag = clamp(drag, -base - STEP * 0.4, max - base + STEP * 0.4);
     const prev = cur;
     cur += (base + drag - cur) * (reduce ? 1 : 0.085);
