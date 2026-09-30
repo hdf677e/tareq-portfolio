@@ -145,13 +145,19 @@ function buildShot(hash){
   el.innerHTML = `
   <main class="pj" aria-labelledby="shot-title">
     <p class="pj-crumbs meta"><a href="#more-work">← More work</a></p>
+    <header class="pj-head">
+      <h1 id="shot-title" tabindex="-1">${p.name}</h1>
+      <dl class="pj-facts">
+        <div><dt>Platform <span aria-hidden="true">⟶</span></dt><dd>${p.platform}</dd></div>
+        <div><dt>Built at <span aria-hidden="true">⟶</span></dt><dd>${who}</dd></div>
+      </dl>
+    </header>
     ${shotFrame(p.banner || `img/${p.thumb}.webp`, p.thumbAlt, '2400 × 1350', 'pj-banner', true)}
     <div class="pj-desc">
       <div class="pj-desc-head">
-        <h1 id="shot-title" tabindex="-1">${p.name}</h1>
         <div class="pj-by">
           <img class="pj-avatar" src="img/tareq.webp" alt="" width="40" height="40">
-          <span><b>Tareq Mahmud</b>${p.cat} · ${who}</span>
+          <span><b>Tareq Mahmud</b>Product Designer</span>
         </div>
       </div>
       <div class="pj-desc-body">
