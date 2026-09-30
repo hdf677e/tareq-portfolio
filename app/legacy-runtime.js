@@ -510,11 +510,11 @@ function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
    label | content blocks (Problem, Solution, Process cards, Research, Results),
    and Explore More Case Studies. Existing section content is regrouped by id;
    'decisions' become the numbered Process cards and 'ui' screens fill the image rows. */
-// [id, label, source sections, render as 'text' (Orbix typography) or 'cards' (Process-style)]
+// [id, label, source sections]; every block renders as Orbix-style typography
 const CASE_BLOCKS = [
-  ['problem', 'Problem', ['context', 'problem'], 'text'],
-  ['solution', 'Solution', ['ia', 'iteration'], 'text'],
-  ['research', 'Research', ['users', 'focus', 'flow'], 'cards'],
+  ['problem', 'Problem', ['context', 'problem']],
+  ['solution', 'Solution', ['ia', 'iteration']],
+  ['research', 'Research', ['users', 'focus', 'flow']],
 ];
 // [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
 const CASE_SHOTS = {
@@ -560,8 +560,7 @@ function caseSteps(html){
   return [...tmp.querySelectorAll('article')].map(a => [a.querySelector('h3')?.textContent || '', a.querySelector('p')?.textContent || '']).filter(x => x[0]);
 }
 
-// Flatten a section's card components into paragraphs and items so the same
-// content can render as plain text or as Process-style cards.
+// Flatten a section's card components into paragraphs and list items.
 const CASE_ITEM = 'article, .box, .ia-map-card, .focus-list > div, .problem > div, .pg-case-challenge, .pg-case-role';
 function caseItems(html){
   const t = document.createElement('div'); t.innerHTML = html;
@@ -592,21 +591,18 @@ function buildCase(slug){
   const row = list => (list && list.some(Boolean)) || DEV ? `<div class="cx-row">${[0, 1].map(k => caseFig(list && list[k], '1200 × 900', '')).join('')}</div>` : '';
   const media = (...parts) => { const h = parts.join('').trim(); return h ? `<div class="cx-media">${h}</div>` : ''; };
   const block = (id, label, body) => `<section class="cx-block rv" id="s-${id}" aria-labelledby="h-${id}"><p class="cx-label">${label}</p><div class="cx-content">${body}</div></section>`;
-  const steps = (items) => `<div class="cx-steps" style="--n:${items.length}">${items.map((it, k) => `<article class="cx-step"><span class="cx-step-n">${String(k + 1).padStart(2, '0')}</span><h3>${it.title}</h3>${it.tag ? `<p class="cx-step-tag">${it.tag}</p>` : ''}<p>${it.text}</p></article>`).join('')}</div>`;
-  const render = (sc, mode) => {
+  const list = items => items.length ? `<ul class="cx-list">${items.map(it => `<li><b>${it.tag ? it.tag + ' · ' : ''}${it.title}${/[?!.”"]$/.test(it.title) ? '' : '.'}</b> ${it.text}</li>`).join('')}</ul>` : '';
+  const render = sc => {
     const d = caseItems(sc[3]);
-    const paras = d.paras.map(x => `<p>${x}</p>`).join('');
-    if(mode === 'cards') return paras + (d.items.length ? steps(d.items) : '');
-    const list = d.items.length ? `<ul class="cx-list">${d.items.map(it => `<li><b>${it.tag ? it.tag + ' · ' : ''}${it.title}${/[?!.”"]$/.test(it.title) ? '' : '.'}</b> ${it.text}</li>`).join('')}</ul>` : '';
-    return paras + list + d.notes.map(x => `<p>${x}</p>`).join('');
+    return d.paras.map(x => `<p>${x}</p>`).join('') + list(d.items) + d.notes.map(x => `<p>${x}</p>`).join('');
   };
-  const textBlock = ([id, label, ids, mode]) => {
+  const textBlock = ([id, label, ids]) => {
     const secs = ids.map(x => byId[x]).filter(Boolean);
     if(!secs.length) return '';
-    return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${render(sc, mode)}`).join(''));
+    return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${render(sc)}`).join(''));
   };
   const decisions = byId.decisions ? caseSteps(byId.decisions[3]).map(([title, text]) => ({ title, text })) : [];
-  const process = decisions.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>${steps(decisions)}`) : '';
+  const process = decisions.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>${list(decisions)}`) : '';
   const overview = block('overview', 'Project Overview', `<h2 id="h-overview">${c.title}</h2><p>${c.lead}</p>
     <dl class="cx-facts">${c.meta.map(m => `<div><dt>${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>`);
   const others = ORDER.filter(x => x !== slug).map(x => WORK.find(w => w.href === '#' + x)).filter(Boolean);
