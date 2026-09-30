@@ -183,7 +183,7 @@ ul{margin:0;padding:0;list-style:none}
 
 /* ============ Featured work ============ */
 /* Selected work: 4-column bento grid, .wk-wide spans 2 columns */
-.wk{background:var(--paper);color:#111;padding-block:clamp(96px,12.5vw,180px)}
+.wk{background:var(--paper);color:#111;padding-top:clamp(96px,12.5vw,180px);padding-bottom:clamp(72px,8vw,112px)}
 .wk-head h2{margin:0;font-size:clamp(2.1rem,1.4rem + 2.2vw,3.25rem);font-weight:500;line-height:1.2;letter-spacing:-.01em;color:#111}
 .wk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .wk-card{display:flex;flex-direction:column;gap:14px;min-width:0;color:inherit;text-decoration:none}
@@ -237,7 +237,6 @@ ul{margin:0;padding:0;list-style:none}
 .more{margin-top:clamp(72px,8vw,112px)}
 .more-sec{padding-top:0}
 .more-sec .more{margin-top:0}
-.more-sec .more-head{padding-top:0;border-top:0}
 .more-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;padding-top:clamp(40px,5vw,64px);border-top:1px solid var(--line);margin-bottom:clamp(32px,4vw,52px)}
 .more-head .h2{max-width:20ch;margin:0}
 .more-head .muted-h{color:var(--muted)}
