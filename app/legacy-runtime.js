@@ -55,7 +55,7 @@ const WORK = [
     desc:'Transactions, settlements, refunds and disputes for merchants in one dashboard.' },
   { name:'Packly Drive', cat:'Mobile App', size:'', href:'https://packlydrive.com/', image:'img/work/packly-drive-app.webp',
     desc:'Browse, compare and rent cars in the UAE by category, brand and price.' },
-  { name:'BonsaiHD', cat:'Streaming App', size:'', href:'', image:'img/work/bonsaihd-app.webp',
+  { name:'BonsaiHD', cat:'Streaming App', size:'', href:'#bonsaihd', image:'img/work/bonsaihd-app.webp',
     desc:'A movie and series streaming app built around discovery and quick playback.' },
   { name:'Packly Business Manager V2', cat:'Mobile App', size:'', href:'#packly-business-manager', image:'img/work/packly-business-manager-app-v2.webp',
     desc:'The redesigned merchant app: order status, commerce tools and inventory at a glance.' },
@@ -318,9 +318,55 @@ const CASES = {
       <article class="pg-case-decision"><h3>Make sensitive settings deliberate</h3><p>Mask secret keys and let merchants control webhook events with clear on/off states.</p></article>
     </div>`],
    ['outcome','Outcome','Where it landed', `<div class="two"><div class="box sageb"><span class="meta">Delivered</span><h3>Three connected products</h3><p>Gateway, merchant panel and admin panel designed as one system.</p></div><div class="box sageb"><span class="meta">Consistency</span><h3>One language across roles</h3><p>The same payment reads the same way to payer, merchant and admin.</p></div></div>`]
+  ]},
+
+'bonsaihd': {
+  name:'BonsaiHD', eyebrow:'Case study 05 · Streaming',
+  title:'Designing a streaming app that helps you find what to watch',
+  lead:'A mobile streaming platform for movies and series, built around personalised discovery, mood-based AI recommendations, social viewing and a subscription that earns its value before asking.',
+  meta:[['Role','Product Designer'],['Platform','Mobile app (iOS & Android)'],['Features','Streaming · AI · Social viewing · VIP'],['Status','Shipped']],
+  cover:`<div class="cover-frame"><img src="img/bonsai-hero.webp" alt="BonsaiHD streaming app: home, movie detail and VIP upgrade screens" width="1456" height="819" fetchpriority="high" decoding="async" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>`,
+  sections:[
+   ['intro','Introduction','From opening the app to pressing Play', `<p class="lead">BonsaiHD is a streaming service for movies and series.</p><p>I designed the complete experience: a personalised home, movie and series detail pages, a mood-based AI recommendation tool, social watch parties, a VIP subscription and the full profile flow.</p>`],
+   ['context','Context','A library isn\'t enough', `<p>Streaming users spend as much time deciding what to watch as they do watching. Most apps surface the same trending rows every session. BonsaiHD needed a discovery model that felt mood-aware and personal, not just popularity-ranked.</p>`],
+   ['problem','Problem','What needed solving', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">Browsing felt generic. Users opened the app knowing they wanted to watch something but couldn't quickly find what matched how they felt right now.</p></div><div><span class="meta">Goal</span><p style="margin-top:12px">Make the path from opening the app to pressing Play shorter — through smarter discovery, an AI shortcut and a social layer for watching with others.</p></div></div>
+   <div class="focus-list" style="margin-top:24px">
+     <div><b>Discovery</b><span>Trending rows feel the same every session.</span></div>
+     <div><b>Mood gap</b><span>Users know a feeling, not a title.</span></div>
+     <div><b>Social</b><span>No way to watch together remotely.</span></div>
+     <div><b>Conversion</b><span>VIP upsell appeared before value was clear.</span></div>
+   </div>`],
+   ['ia','Key Features','What the app does', `<div class="focus-list">
+     <div><b>Personalised home</b><span>Just For You row, K-Drama picks, new releases and editorial sections.</span></div>
+     <div><b>Ask Bonsai AI</b><span>A mood-based chatbot that finds one best match and surfaces more options below it.</span></div>
+     <div><b>Watch With Friends</b><span>Create a room, share a code or QR link, invite up to 8 people, watch in sync.</span></div>
+     <div><b>VIP subscription</b><span>Popular Plan and Standard Plan with 7-day trial, shown at the right moment with a time-limited offer.</span></div>
+   </div>`],
+   ['iteration','Subscription Design','Making the upgrade feel earned', `<div class="versions"><div class="box"><span class="meta">Before</span><h3>Hard gate, no context</h3><p>The VIP wall appeared as a blocker with no visible feature comparison or reason to upgrade.</p></div><div class="arrow">→</div><div class="box inkb"><span class="meta">After</span><h3>Value before commitment</h3><p>The paywall shows features first, a countdown makes the offer concrete, and a 7-day trial lowers the risk of signing up.</p></div></div>`],
+   ['decisions','Key Design Decisions','Decisions visible in the shipped product', `<div class="sf-decisions">
+     <article class="sf-decision"><h3>Lead with mood, not genre</h3><p>Ask Bonsai AI opens with a mood selector — emoji-based, immediate — because users often know how they feel before they know what they want to watch.</p></article>
+     <article class="sf-decision"><h3>Surface one best match at 98%</h3><p>The AI result shows a single prominent card with an instant Play button. One confident answer beats a wall of options.</p></article>
+     <article class="sf-decision"><h3>Make the offer visible and honest</h3><p>A live countdown ("Offer ends in 00:59:54") creates urgency that's concrete and transparent, not manufactured by dark patterns.</p></article>
+     <article class="sf-decision"><h3>Treat the profile as a record, not just settings</h3><p>Movies and series watched counts give users a reason to visit profile beyond account management. Stats make the product feel personal.</p></article>
+   </div>`],
+   ['users','Who the App Serves', 'Three viewer types', `<div class="two"><div class="box inkb"><span class="meta">Primary</span><h3>The casual browser</h3><p>Opens the app without a title in mind. Needs discovery that narrows fast — mood chips, AI recommendations, personalised rows.</p></div><div class="box"><span class="meta">Secondary</span><h3>The social watcher</h3><p>Watches with friends or follows what others are watching. Needs Watch With Friends, shared lists and Friends activity.</p></div></div>
+   <div class="two" style="margin-top:16px"><div class="box"><span class="meta">Tertiary</span><h3>The power subscriber</h3><p>Heavy viewer who wants offline downloads, early access to new releases and ad-free playback — the core VIP audience.</p></div><div class="box"><span class="meta">Upsell target</span><h3>The free user</h3><p>Uses the core experience but hasn't committed. The subscription is designed to convert this user by showing value before the ask.</p></div></div>`],
+   ['focus','Design Challenges','Four things the design had to get right', `<div class="focus-list">
+     <div><b>Speed to play</b><span>Reduce the number of decisions between opening the app and pressing Play.</span></div>
+     <div><b>AI that feels useful</b><span>Make Bonsai AI a genuine shortcut, not a chatbot gimmick.</span></div>
+     <div><b>Social without friction</b><span>Watch parties need to be easy to start and join — room codes and QR links, nothing that needs a separate account.</span></div>
+     <div><b>Subscription that converts</b><span>The VIP tier had to earn its price by demonstrating value, not blocking access.</span></div>
+   </div>`],
+   ['flow','Core User Journeys','From intent to action', `<div class="focus-list f4">
+     <div><b>Browse → Play</b><span>Home → Just For You → movie detail → Watch Now</span></div>
+     <div><b>AI → Play</b><span>Ask Bonsai AI → mood → best match card → Play</span></div>
+     <div><b>Party → Watch</b><span>Detail → Watch With Friends → room → invite → Start Party</span></div>
+     <div><b>Free → VIP</b><span>Paywall → plan comparison → time-limited offer → trial start</span></div>
+   </div>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Complete streaming product</h3><p>Discovery, AI, social viewing and subscription designed as one experience.</p></div><div class="box sageb"><span class="meta">AI layer</span><h3>Mood-to-movie in one tap</h3><p>Ask Bonsai AI takes a mood and returns a single best match — no browsing required.</p></div><div class="box sageb"><span class="meta">Social</span><h3>Watch With Friends for 8</h3><p>Room codes and QR sharing let groups of up to 8 watch together in sync.</p></div></div>`]
   ]}
 };
-const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway'];
+const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway','bonsaihd'];
 
 
 
@@ -558,6 +604,13 @@ const CASE_SHOTS = {
     pair2: [['pg-customer-card.png', 'Card payment', 'The customer chooses a method and sees the amount before paying.', 1],
             ['pg-customer-receipt.png', 'Receipt', 'A definite result the customer can keep.', 1]],
     end: ['pg-dash-full.webp', 'Report & analytics', 'KPIs with trends, transaction performance, payment-method mix, refunds, chargebacks, collection breakdown and a monthly report.'] },
+  'bonsaihd': {
+    pair1: [['bonsai-ai-result.webp', 'Ask Bonsai AI — result', 'Mood matched to a 98% best pick. One prominent card, instant Play.', 1],
+            ['bonsai-ai-mood.webp', 'Ask Bonsai AI — mood selector', 'The chatbot opens with a mood question and emoji-based chips to start the recommendation flow.', 1]],
+    wide: ['bonsai-watch-party.webp', 'Watch With Friends', 'Room code, QR link, seat visualisation and one-tap invite for up to 8 people — alongside the video player with sync controls.'],
+    pair2: [['bonsai-vip.webp', 'VIP upgrade', 'Countdown offer, feature checklist and plan comparison before asking for commitment.', 1],
+            ['bonsai-profile.webp', 'Profile', 'Movies and series watched, upgrade banner, watchlist, history, downloads and settings.', 1]],
+    end: ['bonsai-screens.webp', 'App overview', 'Profile, paywall, VIP state, home with AI recommendation and chatbot — the full BonsaiHD experience across screens.'] },
 };
 
 function caseFig(im, size, cls){
