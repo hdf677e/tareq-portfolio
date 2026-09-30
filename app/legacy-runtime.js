@@ -143,7 +143,7 @@ function buildShot(hash){
   const el = document.createElement('div');
   el.innerHTML = `
   <main class="pj" aria-labelledby="shot-title">
-    <p class="pj-crumbs meta"><a href="#more-work">← More work</a></p>
+    <a class="pj-back" href="#more-work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to more work</a>
     <header class="pj-head">
       <h1 id="shot-title" tabindex="-1">${p.name}</h1>
     </header>
