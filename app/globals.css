@@ -1157,10 +1157,30 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 .cx-content li{margin-bottom:4px;color:color-mix(in srgb,var(--text) 80%,transparent)}
 .cx-sub{margin:40px 0 14px;font-size:1.35rem;font-weight:600;line-height:1.25;letter-spacing:-.01em}
 .cx-steps{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:16px;margin:48px 0 0 -264px}
-.cx-step{display:flex;flex-direction:column;padding:18px 16px 22px;border-radius:6px;background:#fff}
+.cx-step{display:flex;flex-direction:column;padding:20px 18px 22px;border-radius:12px;background:#fff}
 .cx-step-n{font-size:1.5rem;line-height:1}
-.cx-step h3{margin:34px 0 12px;font-size:1.125rem;font-weight:500;line-height:1.35}
-.cx-step p{margin:0;font-size:.9rem;line-height:1.5;color:color-mix(in srgb,var(--text) 80%,transparent)}
+.cx-step h3{margin:28px 0 10px;font-size:1.125rem;font-weight:500;line-height:1.35;letter-spacing:-.01em}
+.cx-step p{margin:0;font-size:.9rem;line-height:1.55;color:color-mix(in srgb,var(--text) 80%,transparent)}
+/* one card style for every card inside a case study, matching the Process cards */
+.cx-content :is(.box,.problem,.pg-case-problem article,.pg-case-role,.pg-case-challenge,.market-decision,.focus-list>div,.ia-map){background:#fff;color:var(--text);border:0;border-radius:12px;box-shadow:none;min-height:0;padding:20px 18px 22px}
+.cx-content :is(.two,.three,.outcome,.pg-case-problem,.pg-case-roles,.market-decisions){gap:16px}
+.cx-content :is(.box .meta,.problem .meta,.pg-case-index,.pg-case-challenge span,.market-decision-num,.focus-list .meta){font:.7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)!important;margin:0}
+.cx-content :is(.box h3,.pg-case-problem h3,.pg-case-role h3,.market-decision h3,.ia-map-card h3){margin:22px 0 8px;font-size:1.125rem;font-weight:500;line-height:1.35;letter-spacing:-.01em;max-width:none}
+.cx-content :is(.box p,.problem p,.pg-case-problem p,.pg-case-role p,.pg-case-challenge p,.market-decision p){margin:0;font-size:.9rem;line-height:1.55;letter-spacing:0;color:color-mix(in srgb,var(--text) 80%,transparent)!important;max-width:none}
+.cx-content .pg-case-role b{margin:0 0 10px;font-size:.9rem;font-weight:500;color:var(--text)!important}
+.cx-content .pg-case-role .pg-case-index{margin-bottom:0}
+.cx-content .problem{gap:24px}
+.cx-content .problem p{margin-top:10px}
+.cx-content .pg-case-challenge{display:grid;grid-template-columns:140px 1fr;gap:16px;margin-top:16px}
+.cx-content .focus-list{gap:16px;border-top:0}
+.cx-content .focus-list>div{padding:20px 18px 22px;border-left:0}
+.cx-content .focus-list b{font-size:1rem;font-weight:500}
+.cx-content .focus-list span{font-size:.9rem;color:color-mix(in srgb,var(--text) 80%,transparent)}
+.cx-content .ia-map{padding:0;overflow:hidden}
+.cx-content .ia-map-card{background:#fff}
+.cx-content .market-decision:nth-child(3){grid-column:auto;display:flex}
+.cx-content .market-decisions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cx-content .versions .box{height:100%}
 .cx-more{padding:clamp(56px,7vw,100px) var(--cx-side) var(--sec)}
 .cx-more h2{margin:0 0 clamp(28px,3.5vw,48px);font-size:clamp(2rem,1.4rem + 2vw,3rem);font-weight:500;letter-spacing:-.02em}
 .cx-more h2 em{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-weight:400;color:var(--muted)}
