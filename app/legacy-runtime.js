@@ -106,13 +106,14 @@ function superAppArt(){
     <div><b>Packly Food</b><span>Service</span></div><div><b>Packly Courier</b><span>Service</span></div><div><b>Packly E-commerce</b><span>Service</span></div></div>`;
 }
 function rowItem(p){
-  return `<a class="mw rv" style="--tint:${p.tint}" href="#${shotHash(p)}" aria-label="${p.name}, view project">
-    <div class="mw-head">
+  const tags = [p.cat, p.platform].filter(Boolean).map(t => `<span class="mw-tag">${t}</span>`).join('');
+  return `<a class="mw rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+    <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}</div>
+    <div class="mw-body">
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
+      <div class="mw-tags">${tags}</div>
     </div>
-    <span class="mw-arrow" aria-hidden="true">${ARROW}</span>
-    <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}</div>
   </a>`;
 }
 
