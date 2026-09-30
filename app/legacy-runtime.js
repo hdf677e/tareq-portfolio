@@ -866,63 +866,29 @@ function focusTitle(id){ const t = document.getElementById(id); if(t) t.focus({p
 /* ---------- per-view wiring ---------- */
 let io, spy, pxRaf=0, pxEls=[];
 function wireView(){
-  // how-i-work carousel (transform-based, so every step can be active)
-  const track = view.querySelector('#hwTrack');
-  if(track){
-    const vp=track.parentElement, cardsEl=[...track.children], pills=[...view.querySelectorAll('.hw-seg')], bars=pills.map(p=>p.querySelector('i'));
-    const prev=view.querySelector('#hwPrev'), next=view.querySelector('#hwNext'), sec=track.closest('.hw');
-    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const N=cardsEl.length, DUR=4500;
-    let cur=0, x=0, stopped=reduce, paused=false, inView=false, raf=0, t0=0, elapsed=0;
-    const maxX=()=>Math.max(0, track.scrollWidth - vp.clientWidth);
-    const targetX=i=>Math.min(cardsEl[i].offsetLeft - cardsEl[0].offsetLeft, maxX());
-    const setX=v=>{ x=v; track.style.setProperty('--x', (-v)+'px'); };
-    const setP=(k,v,ease)=>{ bars[k].classList.toggle('ease',!!ease); bars[k].style.setProperty('--p',v); };
-    function goTo(i){
-      cur=(i+N)%N; setX(targetX(cur));
-      cardsEl.forEach((c,k)=>c.classList.toggle('on',k===cur));
-      pills.forEach((p,k)=>{ p.classList.toggle('on',k===cur); p.classList.toggle('done',k<cur); p.setAttribute('aria-current',k===cur?'step':'false'); });
-      bars.forEach((b,k)=>setP(k, k<cur?1:(k===cur?(stopped?1:0):0), true));
-      prev.disabled=cur===0; elapsed=0; t0=performance.now();
-    }
-    // autoplay with a live progress line toward the next pill
-    function loop(now){
-      raf=requestAnimationFrame(loop);
-      if(stopped||paused||!inView){ t0=now-elapsed; return; }
-      elapsed=now-t0;
-      setP(cur, Math.min(1,elapsed/DUR), false);
-      if(elapsed>=DUR) goTo(cur+1);
-    }
-    const stop=()=>{ stopped=true; setP(cur,1,true); };
-    prev.addEventListener('click',()=>{stop(); goTo(cur-1);});
-    next.addEventListener('click',()=>{stop(); goTo(cur+1);});
-    pills.forEach(p=>p.addEventListener('click',()=>{stop(); goTo(+p.dataset.go);}));
-    track.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();stop();goTo(Math.min(N-1,cur+1));} if(e.key==='ArrowLeft'){e.preventDefault();stop();goTo(Math.max(0,cur-1));} });
-    // pause only while the visitor is actually hovering the cards (real pointer movement, not page scroll) or keyboard-focused
-    vp.addEventListener('pointermove',e=>{ if(e.pointerType==='mouse') paused=true; });
-    vp.addEventListener('pointerleave',()=>paused=false);
-    sec.addEventListener('focusin',e=>{ if(e.target.matches(':focus-visible')) paused=true; });
-    sec.addEventListener('focusout',()=>paused=false);
-    // drag / swipe
-    let sx=0, sy=0, bx=0, dragging=false, moved=false;
-    track.addEventListener('pointerdown',e=>{ dragging=true; moved=false; sx=e.clientX; sy=e.clientY; bx=x; track.setPointerCapture(e.pointerId); });
-    track.addEventListener('pointermove',e=>{ if(!dragging) return; const dx=e.clientX-sx;
-      if(!moved && Math.abs(dx)>6 && Math.abs(dx)>Math.abs(e.clientY-sy)){ moved=true; track.classList.add('drag'); stop(); }
-      if(moved){ let v=bx-dx; const m=maxX(); if(v<0) v=v/3; if(v>m) v=m+(v-m)/3; setX(v); } });
-    const end=e=>{ if(!dragging) return; dragging=false; track.classList.remove('drag');
-      if(moved){ const dx=e.clientX-sx; let i=cur; if(dx<-50) i=Math.min(N-1,cur+1); else if(dx>50) i=Math.max(0,cur-1);
-        // if dragged far, jump to the nearest card
-        let best=i,d=1e9; cardsEl.forEach((c,k)=>{ const dd=Math.abs(targetX(k)-x); if(dd<d){d=dd;best=k;} }); if(Math.abs(dx)>220) i=best;
-        goTo(i); }
-      else { const c=e.target.closest('.hw-card'); if(c){ stop(); goTo(+c.dataset.i); } } };
-    track.addEventListener('pointerup',end); track.addEventListener('pointercancel',end);
-    addEventListener('resize',()=>{ track.classList.add('drag'); goTo(cur); requestAnimationFrame(()=>track.classList.remove('drag')); },{passive:true});
-    goTo(0);
-    raf=requestAnimationFrame(loop);
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(es=>es.forEach(e=>{ inView=e.isIntersecting; if(inView) sec.classList.add('in'); }),{threshold:.25}).observe(sec);
-    } else { inView=true; sec.classList.add('in'); }
-    if(reduce) sec.classList.add('in');
+  // how-i-work timeline: the line fills to the middle of the screen and each step lights up as it's reached
+  const tl = view.querySelector('.tl-body');
+  if(tl){
+    const rail = tl.querySelector('.tl-rail'), rows = [...tl.querySelectorAll('.tl-row')], dots = rows.map(r => r.querySelector('.tl-dot'));
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const base = tl.getBoundingClientRect().top;
+      const first = dots[0].parentElement.getBoundingClientRect(), last = dots[dots.length - 1].parentElement.getBoundingClientRect();
+      const start = first.top - base + 16, len = last.top - first.top;
+      rail.style.top = start + 'px';
+      rail.style.setProperty('--rail-h', len + 'px');
+      const mid = innerHeight * 0.5;
+      rail.style.setProperty('--fill', Math.max(0, Math.min(len, mid - (base + start))) + 'px');
+      rows.forEach((row, i) => row.classList.toggle('on', dots[i].parentElement.getBoundingClientRect().top + 16 <= mid));
+    };
+    const onScroll = () => {
+      if(!tl.isConnected){ removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); return; }
+      if(!raf) raf = requestAnimationFrame(tick);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    tick();
   }
   // why-me ring
   const wb=view.querySelector('.why-b');
@@ -976,7 +942,7 @@ function wireView(){
             c.replaceWith(f); } else if(c.nodeType===1 && !c.classList.contains('bw')) walk(c); }); };
       walk(h); h.classList.add('bwrap'); });
     // paragraphs / eyebrows / buttons fade in from blur
-    view.querySelectorAll('.eyebrow, .sec-head p, .hw-head .hw-nav, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .why-head .eyebrow, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
+    view.querySelectorAll('.eyebrow, .sec-head p, .tl-head p, .tl-copy, .tl-pic, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .why-head .eyebrow, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
     // stagger siblings in grids
     view.querySelectorAll('.wk-grid, .mw-grid, .why-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
     view.querySelectorAll('.rv, .bwrap, .bt').forEach(el=>{ if(el.getBoundingClientRect().top > innerHeight*0.92 && !el.closest('.hero')){ el.classList.add('pre'); io.observe(el); } });
