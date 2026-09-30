@@ -205,7 +205,8 @@ ul{margin:0;padding:0;list-style:none}
 @media (max-width:767px){
   .wk-grid{grid-template-columns:1fr;gap:28px}
   .wk-wide{grid-column:auto}
-  .wk-media{height:auto;aspect-ratio:330/352}
+  .wk-media{height:auto;aspect-ratio:1160/1600}
+  .wk-wide .wk-media{aspect-ratio:2000/1346}
   .wk-over{display:none}
   .wk-head h2{font-size:2rem}
   .wk-btn{height:44px;padding-left:18px;font-size:1rem}

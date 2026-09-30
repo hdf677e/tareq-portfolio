@@ -45,35 +45,36 @@ function roleMap(){
    Layout per row: [1, wide, 1] · [wide, 1, 1] · [1, wide, 1]
    href: '#slug' opens a case study, 'https://…' opens in a new tab. */
 const WORK = [
-  { name:'Steadfast Merchant App', cat:'Mobile App', size:'', href:'#steadfast-merchant', image:'img/sf-mockup.webp',
+  { name:'Steadfast Merchant App', cat:'Mobile App', size:'', href:'#steadfast-merchant', image:'img/work/steadfast-merchant-app.webp',
     desc:'Orders, parcels, payments and delivery performance for businesses shipping with Steadfast.' },
-  { name:'Packly Business Manager', cat:'SaaS · ERP', size:'wide', href:'#packly-business-manager', image:'img/pbm-mockup.webp',
+  { name:'Packly Business Manager', cat:'SaaS · Web App', size:'wide', href:'#packly-business-manager', image:'img/work/packly-business-manager-web.webp',
     desc:'A business operating system for products, inventory, orders, sales and campaigns across channels.' },
-  { name:'Packly Marketplace', cat:'Ecommerce', size:'', href:'#packly-marketplace', image:'img/packly-web-home.webp',
+  { name:'Packly Marketplace', cat:'Ecommerce App', size:'', href:'#packly-marketplace', image:'img/work/packly-marketplace-app.webp',
     desc:'A multi-vendor marketplace from product discovery to checkout and orders.' },
-  { name:'Payment Gateway', cat:'Fintech', size:'wide', href:'#payment-gateway', image:'img/pg-dash-top.webp',
-    desc:'Payment processing, transactions, merchant operations and administration across roles.' },
-  { name:'Steadfast Courier Portal', cat:'Web App', size:'', href:'https://steadfast.com.bd/', image:'img/sf-web-home.webp',
-    desc:'Daily delivery tools for couriers: parcels, delivery status and customer details.' },
-  { name:'Dubai Car Rental', cat:'Web Design', size:'', href:'https://packlydrive.com/', image:'img/dcr-web-home.webp',
-    desc:'Customer website, booking panel and car listing management for a Dubai rental service.' },
-  { name:'HRM Platform', cat:'SaaS', size:'', href:'https://zavisoft.packlybd.com/login', image:'img/hrm-web-login.webp',
-    desc:'Employees, attendance, leave and payroll workflows in one clear admin.' },
-  { name:'BanglaDrop Logistics', cat:'Web Design', size:'wide', href:'https://bangladrop.com/', image:'img/bd-web-home.webp',
-    desc:'Customer website and admin panel for cross-border shipping operations.' },
-  { name:'GhorerBazar', cat:'Ecommerce', size:'', href:'https://ghorerbazar.com/', image:'img/gb-web-home.webp',
-    desc:'Shopping app and website, internal ERP screens and the design system behind them.' }
+  { name:'Payment Gateway', cat:'Fintech · Dashboard', size:'wide', href:'#payment-gateway', image:'img/work/payment-gateway-dashboard.webp',
+    desc:'Transactions, settlements, refunds and disputes for merchants in one dashboard.' },
+  { name:'Packly Drive', cat:'Mobile App', size:'', href:'https://packlydrive.com/', image:'img/work/packly-drive-app.webp',
+    desc:'Browse, compare and rent cars in the UAE by category, brand and price.' },
+  { name:'BonsaiHD', cat:'Streaming App', size:'', href:'', image:'img/work/bonsaihd-app.webp',
+    desc:'A movie and series streaming app built around discovery and quick playback.' },
+  { name:'Packly Business Manager V2', cat:'Mobile App', size:'', href:'#packly-business-manager', image:'img/work/packly-business-manager-app-v2.webp',
+    desc:'The redesigned merchant app: order status, commerce tools and inventory at a glance.' },
+  { name:'Packly Drive', cat:'Web Design', size:'wide', href:'https://packlydrive.com/', image:'img/work/packly-drive-web.webp',
+    desc:'Car rental website for Dubai: search thousands of cars, airport transfers, yachts and drivers.' },
+  { name:'Packly Business Manager', cat:'Mobile App', size:'', href:'#packly-business-manager', image:'img/work/packly-business-manager-app.webp',
+    desc:'Products, sales, stock and e-shop management for merchants on the go.' }
 ];
 
 function workCard(p){
-  const external = /^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : '';
-  return `<a class="wk-card${p.size ? ' wk-' + p.size : ''}" href="${p.href}"${external} aria-label="${p.name}, ${p.cat}">
+  const tag = p.href ? 'a' : 'div';
+  const link = p.href ? ` href="${p.href}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : ''}` : '';
+  return `<${tag} class="wk-card${p.size ? ' wk-' + p.size : ''}"${link} aria-label="${p.name}, ${p.cat}">
     <div class="wk-media">
-      <img src="${p.image}" alt="" loading="lazy" decoding="async">
+      <img src="${p.image}" alt="" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
       <div class="wk-over"><p>${p.desc}</p></div>
     </div>
     <div class="wk-name"><b>${p.name}</b><span>${p.cat}</span></div>
-  </a>`;
+  </${tag}>`;
 }
 
 
