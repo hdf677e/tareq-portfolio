@@ -798,6 +798,30 @@ function mountIntroReveal(){
   destroyHome = () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
 }
 
+// More-work images tilt away from the pointer, with a sheen that follows it
+function wireCardTilt(){
+  if(!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  view.querySelectorAll('.mw-shot').forEach(shot => {
+    let raf = 0, ev = null;
+    const apply = () => {
+      raf = 0;
+      const r = shot.getBoundingClientRect();
+      const x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+      shot.style.setProperty('--tx', (x - 0.5).toFixed(3));
+      shot.style.setProperty('--ty', (y - 0.5).toFixed(3));
+      shot.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+      shot.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+    };
+    shot.addEventListener('pointerenter', () => shot.classList.add('is-tilt'));
+    shot.addEventListener('pointermove', e => { ev = e; if(!raf) raf = requestAnimationFrame(apply); });
+    shot.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf); raf = 0;
+      shot.classList.remove('is-tilt');
+      shot.style.setProperty('--tx', 0); shot.style.setProperty('--ty', 0);
+    });
+  });
+}
+
 function mount(kind, slug){
   if(destroyHome){ destroyHome(); destroyHome = null; }
   const frag = kind==='home' ? buildHome() : kind==='shot' ? buildShot(slug) : buildCase(slug);
@@ -806,7 +830,7 @@ function mount(kind, slug){
   current = kind==='home' ? 'home' : slug;
   document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
   wireView();
-  if(kind==='home') mountIntroReveal();
+  if(kind==='home'){ mountIntroReveal(); wireCardTilt(); }
   if(kind==='shot' || kind==='case') wireMoreTrack();
 }
 
