@@ -505,16 +505,17 @@ function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
   const frag=document.createDocumentFragment(); while(el.firstChild) frag.appendChild(el.firstChild); return frag;
 }
 
-/* Case study layout, following orbix.studio case studies: title, full-width banner,
-   Project Overview card (headline, intro, facts, phone), lead, image rows, then
-   label | content blocks (Problem, Solution, Process cards, Research, Results),
-   and Explore More Case Studies. Existing section content is regrouped by id;
-   'decisions' become the numbered Process cards and 'ui' screens fill the image rows. */
+/* Case study layout (from the Excalidraw wireframe), one 1024px column:
+   back, banner image, Overview, two images, Problem, Solution, wide image + two
+   images, Research, Outcome, closing image. Each text block is a label | content
+   row in Orbix-style typography. Existing section content is regrouped by id;
+   'ui' screens fill the image slots below. */
 // [id, label, source sections]; every block renders as Orbix-style typography
 const CASE_BLOCKS = [
   ['problem', 'Problem', ['context', 'problem']],
-  ['solution', 'Solution', ['ia', 'iteration']],
+  ['solution', 'Solution', ['ia', 'iteration', 'decisions']],
   ['research', 'Research', ['users', 'focus', 'flow']],
+  ['outcome', 'Outcome', ['outcome']],
 ];
 // [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
 const CASE_SHOTS = {
@@ -554,12 +555,6 @@ function caseFig(im, size, cls){
   return `<figure class="cx-fig ${cls}${phone ? ' is-phone' : ''}"><div class="cx-frame"><img src="img/${file}" alt="${title}" loading="lazy" decoding="async"></div><figcaption><b>${title}.</b> ${cap}</figcaption></figure>`;
 }
 
-// pull title/text pairs out of a decisions section so they can render as Process cards
-function caseSteps(html){
-  const tmp = document.createElement('div'); tmp.innerHTML = html;
-  return [...tmp.querySelectorAll('article')].map(a => [a.querySelector('h3')?.textContent || '', a.querySelector('p')?.textContent || '']).filter(x => x[0]);
-}
-
 // Flatten a section's card components into paragraphs and list items.
 const CASE_ITEM = 'article, .box, .ia-map-card, .focus-list > div, .problem > div, .pg-case-challenge, .pg-case-role';
 function caseItems(html){
@@ -572,7 +567,7 @@ function caseItems(html){
     const before = e => !titleEl || (e.compareDocumentPosition(titleEl) & Node.DOCUMENT_POSITION_FOLLOWING);
     const labelEl = [...n.querySelectorAll('.meta, .pg-case-index, span')].find(e => e !== titleEl && !e.closest('li') && !e.contains(titleEl) && before(e));
     const title = titleEl ? clean(titleEl.textContent) : labelEl ? clean(labelEl.textContent) : '';
-    const tag = titleEl && labelEl ? clean(labelEl.textContent).replace(/^\d+\s*·\s*/, '') : '';
+    const tag = titleEl && labelEl ? clean(labelEl.textContent).replace(/^\d+\s*(·\s*)?/, '') : '';
     const text = [...n.querySelectorAll('p, span, b')].filter(e => e !== titleEl && e !== labelEl && !e.closest('li') && !e.querySelector('p, span, b'))
       .map(e => e.textContent.trim()).filter(Boolean);
     const list = [...n.querySelectorAll('li')].map(l => clean(l.textContent));
@@ -601,36 +596,29 @@ function buildCase(slug){
     if(!secs.length) return '';
     return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${render(sc)}`).join(''));
   };
-  const decisions = byId.decisions ? caseSteps(byId.decisions[3]).map(([title, text]) => ({ title, text })) : [];
-  const process = decisions.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>${list(decisions)}`) : '';
-  const overview = block('overview', 'Project Overview', `<h2 id="h-overview">${c.title}</h2><p>${c.lead}</p>
+  const intro = byId.intro ? caseItems(byId.intro[3]).paras.map(x => `<p>${x}</p>`).join('') : '';
+  const overview = block('overview', 'Overview', `<h1 id="cs-title" tabindex="-1">${c.name}</h1>
+    <p class="cx-overline">${c.title}</p><p>${c.lead}</p>${intro}
     <dl class="cx-facts">${c.meta.map(m => `<div><dt>${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>`);
-  const others = ORDER.filter(x => x !== slug).map(x => WORK.find(w => w.href === '#' + x)).filter(Boolean);
-  const [problem, solution, research] = CASE_BLOCKS.map(textBlock);
+  const [problem, solution, research, outcome] = CASE_BLOCKS.map(textBlock);
 
+  // Layout from the case study wireframe: back, image, Overview, two images,
+  // Problem, Solution, image + two images, Research, Outcome, image.
   const el = document.createElement('div');
   el.innerHTML = `
   <div class="cx">
-    <div class="cx-wrap">
-      <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
-      <h1 id="cs-title" tabindex="-1">${c.name}</h1>
-    </div>
-    <div class="cx-banner">${c.cover}</div>
     <div class="cx-details">
+      <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
+      <div class="cx-banner">${c.cover}</div>
       ${overview}
-      ${byId.intro ? `<div class="cx-lead">${byId.intro[3]}</div>` : ''}
-      ${media(row(shots.pair1), caseFig(shots.wide, '2400 × 1350', 'cx-wide'))}
+      ${media(row(shots.pair1))}
       ${problem}
-      ${media(row(shots.pair2))}
       ${solution}
-      ${process}
+      ${media(caseFig(shots.wide, '2400 × 1350', 'cx-wide'), row(shots.pair2))}
       ${research}
+      ${outcome}
       ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
     </div>
-    ${others.length ? `<section class="cx-more" aria-labelledby="cx-more-title">
-      <h2 id="cx-more-title">Explore More Case Studies</h2>
-      <div class="cx-more-grid">${others.map(workCard).join('')}</div>
-    </section>` : ''}
   </div>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
