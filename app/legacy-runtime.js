@@ -802,23 +802,30 @@ function mountIntroReveal(){
 function wireCardTilt(){
   if(!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   view.querySelectorAll('.mw-shot').forEach(shot => {
-    let raf = 0, ev = null;
-    const apply = () => {
-      raf = 0;
-      const r = shot.getBoundingClientRect();
-      const x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
-      shot.style.setProperty('--tx', (x - 0.5).toFixed(3));
-      shot.style.setProperty('--ty', (y - 0.5).toFixed(3));
-      shot.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
-      shot.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+    const cur = { x: 0.5, y: 0.5, s: 1 }, tgt = { x: 0.5, y: 0.5, s: 1 };
+    let raf = 0, last = 0;
+    const frame = now => {
+      const k = 1 - Math.exp(-(now - (last || now - 16)) / 110);
+      last = now;
+      for(const key in cur) cur[key] += (tgt[key] - cur[key]) * k;
+      const tx = cur.x - 0.5, ty = cur.y - 0.5;
+      shot.style.transform = `perspective(1400px) rotateY(${(tx * 9).toFixed(3)}deg) rotateX(${(-ty * 7).toFixed(3)}deg) scale(${cur.s.toFixed(4)})`;
+      shot.style.setProperty('--mx', (cur.x * 100).toFixed(2) + '%');
+      shot.style.setProperty('--my', (cur.y * 100).toFixed(2) + '%');
+      const settled = Math.abs(tgt.x - cur.x) + Math.abs(tgt.y - cur.y) + Math.abs(tgt.s - cur.s) < 0.0005;
+      if(settled && tgt.s === 1){ shot.style.transform = ''; raf = 0; last = 0; return; }
+      raf = requestAnimationFrame(frame);
     };
-    shot.addEventListener('pointerenter', () => shot.classList.add('is-tilt'));
-    shot.addEventListener('pointermove', e => { ev = e; if(!raf) raf = requestAnimationFrame(apply); });
-    shot.addEventListener('pointerleave', () => {
-      cancelAnimationFrame(raf); raf = 0;
-      shot.classList.remove('is-tilt');
-      shot.style.setProperty('--tx', 0); shot.style.setProperty('--ty', 0);
-    });
+    const run = () => { if(!raf) raf = requestAnimationFrame(frame); };
+    // measure the untilted box (the parent), not the tilted image, so the target doesn't wobble
+    const aim = e => {
+      const r = shot.parentElement.getBoundingClientRect();
+      tgt.x = Math.min(1, Math.max(0, (e.clientX - r.left) / shot.offsetWidth));
+      tgt.y = Math.min(1, Math.max(0, (e.clientY - r.top) / shot.offsetHeight));
+    };
+    shot.addEventListener('pointerenter', e => { shot.classList.add('is-tilt'); tgt.s = 0.965; aim(e); run(); });
+    shot.addEventListener('pointermove', e => { aim(e); run(); });
+    shot.addEventListener('pointerleave', () => { shot.classList.remove('is-tilt'); tgt.x = tgt.y = 0.5; tgt.s = 1; run(); });
   });
 }
 
