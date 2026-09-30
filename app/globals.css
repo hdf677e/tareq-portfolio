@@ -266,8 +266,7 @@ ul{margin:0;padding:0;list-style:none}
 /* More work — musemind case-study layout */
 .more-sec{background:#0f1112;padding:clamp(64px,8.3vw,120px) 0}
 .mw-wrap{max-width:1440px;margin-inline:auto;padding-inline:24px}
-.mw-grid{--mw-gap:clamp(24px,5.75vw,80px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--mw-gap);align-items:start}
-.mw-grid>.mw:first-child{margin-bottom:clamp(0px,3.5vw,50px)}
+.mw-grid{--mw-gap:clamp(24px,5.75vw,80px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(64px,8.3vw,120px) var(--mw-gap);align-items:start}
 .mw{display:block;text-decoration:none;color:#fff}
 .mw-wide-l,.mw-wide-r{grid-column:1 / -1;width:84.8%}
 .mw-wide-r{justify-self:end}
