@@ -510,11 +510,11 @@ function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
    label | content blocks (Problem, Solution, Process cards, Research, Results),
    and Explore More Case Studies. Existing section content is regrouped by id;
    'decisions' become the numbered Process cards and 'ui' screens fill the image rows. */
+// [id, label, source sections, render as 'text' (Orbix typography) or 'cards' (Process-style)]
 const CASE_BLOCKS = [
-  ['problem', 'Problem', ['context', 'problem']],
-  ['solution', 'Solution', ['ia', 'iteration']],
-  ['research', 'Research', ['users', 'focus', 'flow']],
-  ['outcome', 'Results & Outcomes', ['outcome']],
+  ['problem', 'Problem', ['context', 'problem'], 'text'],
+  ['solution', 'Solution', ['ia', 'iteration'], 'text'],
+  ['research', 'Research', ['users', 'focus', 'flow'], 'cards'],
 ];
 // [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
 const CASE_SHOTS = {
@@ -560,6 +560,31 @@ function caseSteps(html){
   return [...tmp.querySelectorAll('article')].map(a => [a.querySelector('h3')?.textContent || '', a.querySelector('p')?.textContent || '']).filter(x => x[0]);
 }
 
+// Flatten a section's card components into paragraphs and items so the same
+// content can render as plain text or as Process-style cards.
+const CASE_ITEM = 'article, .box, .ia-map-card, .focus-list > div, .problem > div, .pg-case-challenge, .pg-case-role';
+function caseItems(html){
+  const t = document.createElement('div'); t.innerHTML = html;
+  const clean = x => x.replace(/\s+/g, ' ').trim().replace(/[.:]$/, '');
+  const paras = [...t.children].filter(e => e.tagName === 'P').map(e => e.innerHTML.trim()).filter(Boolean);
+  const items = [...t.querySelectorAll(CASE_ITEM)].filter(n => !n.querySelector(CASE_ITEM)).map(n => {
+    const titleEl = n.querySelector('h3') || n.querySelector('b');
+    // a label is small text placed before the title (e.g. PRIMARY, 01 · Gateway app); text after it is body copy
+    const before = e => !titleEl || (e.compareDocumentPosition(titleEl) & Node.DOCUMENT_POSITION_FOLLOWING);
+    const labelEl = [...n.querySelectorAll('.meta, .pg-case-index, span')].find(e => e !== titleEl && !e.closest('li') && !e.contains(titleEl) && before(e));
+    const title = titleEl ? clean(titleEl.textContent) : labelEl ? clean(labelEl.textContent) : '';
+    const tag = titleEl && labelEl ? clean(labelEl.textContent).replace(/^\d+\s*·\s*/, '') : '';
+    const text = [...n.querySelectorAll('p, span, b')].filter(e => e !== titleEl && e !== labelEl && !e.closest('li') && !e.querySelector('p, span, b'))
+      .map(e => e.textContent.trim()).filter(Boolean);
+    const list = [...n.querySelectorAll('li')].map(l => clean(l.textContent));
+    const joined = [...text, list.length ? list.join(', ') + '.' : ''].filter(Boolean)
+      .reduce((acc, x) => acc ? acc + (/[.!?]$/.test(acc) ? ' ' : '. ') + x : x, '');
+    return { title, tag, text: joined };
+  }).filter(it => it.title);
+  const notes = [...t.querySelectorAll('.ia-map-foot')].map(e => e.textContent.trim());
+  return { paras, items, notes };
+}
+
 function buildCase(slug){
   const c = CASES[slug];
   const shots = CASE_SHOTS[slug] || {};
@@ -567,17 +592,25 @@ function buildCase(slug){
   const row = list => (list && list.some(Boolean)) || DEV ? `<div class="cx-row">${[0, 1].map(k => caseFig(list && list[k], '1200 × 900', '')).join('')}</div>` : '';
   const media = (...parts) => { const h = parts.join('').trim(); return h ? `<div class="cx-media">${h}</div>` : ''; };
   const block = (id, label, body) => `<section class="cx-block rv" id="s-${id}" aria-labelledby="h-${id}"><p class="cx-label">${label}</p><div class="cx-content">${body}</div></section>`;
-  const textBlock = ([id, label, ids]) => {
+  const steps = (items) => `<div class="cx-steps" style="--n:${items.length}">${items.map((it, k) => `<article class="cx-step"><span class="cx-step-n">${String(k + 1).padStart(2, '0')}</span><h3>${it.title}</h3>${it.tag ? `<p class="cx-step-tag">${it.tag}</p>` : ''}<p>${it.text}</p></article>`).join('')}</div>`;
+  const render = (sc, mode) => {
+    const d = caseItems(sc[3]);
+    const paras = d.paras.map(x => `<p>${x}</p>`).join('');
+    if(mode === 'cards') return paras + (d.items.length ? steps(d.items) : '');
+    const list = d.items.length ? `<ul class="cx-list">${d.items.map(it => `<li><b>${it.tag ? it.tag + ' · ' : ''}${it.title}${/[?!.”"]$/.test(it.title) ? '' : '.'}</b> ${it.text}</li>`).join('')}</ul>` : '';
+    return paras + list + d.notes.map(x => `<p>${x}</p>`).join('');
+  };
+  const textBlock = ([id, label, ids, mode]) => {
     const secs = ids.map(x => byId[x]).filter(Boolean);
     if(!secs.length) return '';
-    return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${sc[3]}`).join(''));
+    return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${render(sc, mode)}`).join(''));
   };
-  const steps = byId.decisions ? caseSteps(byId.decisions[3]) : [];
-  const process = steps.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>
-    <div class="cx-steps" style="--n:${steps.length}">${steps.map((st, k) => `<article class="cx-step"><span class="cx-step-n">${String(k + 1).padStart(2, '0')}</span><h3>${st[0]}</h3><p>${st[1]}</p></article>`).join('')}</div>`) : '';
-  const hero = [...(shots.pair1 || []), ...(shots.pair2 || [])].find(x => x && x[3]);   // a phone screen for the overview card
+  const decisions = byId.decisions ? caseSteps(byId.decisions[3]).map(([title, text]) => ({ title, text })) : [];
+  const process = decisions.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>${steps(decisions)}`) : '';
+  const overview = block('overview', 'Project Overview', `<h2 id="h-overview">${c.title}</h2><p>${c.lead}</p>
+    <dl class="cx-facts">${c.meta.map(m => `<div><dt>${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>`);
   const others = ORDER.filter(x => x !== slug).map(x => WORK.find(w => w.href === '#' + x)).filter(Boolean);
-  const [problem, solution, research, outcome] = CASE_BLOCKS.map(textBlock);
+  const [problem, solution, research] = CASE_BLOCKS.map(textBlock);
 
   const el = document.createElement('div');
   el.innerHTML = `
@@ -587,16 +620,8 @@ function buildCase(slug){
       <h1 id="cs-title" tabindex="-1">${c.name}</h1>
     </div>
     <div class="cx-banner">${c.cover}</div>
-    <section class="cx-overview" aria-labelledby="cx-ov-title">
-      <div class="cx-ov-text">
-        <p class="cx-ov-eyebrow"><span aria-hidden="true">◂</span> Project Overview <span aria-hidden="true">▸</span></p>
-        <h2 id="cx-ov-title">${c.title}</h2>
-        <p>${c.lead}</p>
-        <dl class="cx-facts">${c.meta.map(m => `<div><dt>${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>
-      </div>
-      ${hero ? `<div class="cx-ov-media"><img src="img/${hero[0]}" alt="${hero[1]} screen" loading="lazy" decoding="async"></div>` : ''}
-    </section>
     <div class="cx-details">
+      ${overview}
       ${byId.intro ? `<div class="cx-lead">${byId.intro[3]}</div>` : ''}
       ${media(row(shots.pair1), caseFig(shots.wide, '2400 × 1350', 'cx-wide'))}
       ${problem}
@@ -605,10 +630,9 @@ function buildCase(slug){
       ${process}
       ${research}
       ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
-      ${outcome}
     </div>
     ${others.length ? `<section class="cx-more" aria-labelledby="cx-more-title">
-      <h2 id="cx-more-title">Explore More <em>Case Studies</em></h2>
+      <h2 id="cx-more-title">Explore More Case Studies</h2>
       <div class="cx-more-grid">${others.map(workCard).join('')}</div>
     </section>` : ''}
   </div>`;
