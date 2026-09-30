@@ -137,6 +137,8 @@ function shotFrame(src, alt, size, cls, eager){
 function buildShot(hash){
   const p = SHOTS[hash];
   const tags = p.cat.split(' · ').concat(p.platform);
+  const at = MORE.indexOf(p);
+  const others = MORE.slice(at + 1).concat(MORE.slice(0, at));
   const pair = [0, 1].map(k => shotFrame(p.pair && p.pair[k], `${p.name} screen ${k + 2}`, '1200 × 900', 'pj-half')).join('');
   const el = document.createElement('div');
   el.innerHTML = `
@@ -160,6 +162,21 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
+    <section class="pj-more" aria-labelledby="pj-more-title">
+      <div class="pj-more-head">
+        <h2 id="pj-more-title">More work</h2>
+        <div class="pj-more-nav">
+          <button type="button" class="pj-arrow" data-dir="-1" aria-label="Previous projects"><i class="ri-arrow-left-line" aria-hidden="true"></i></button>
+          <button type="button" class="pj-arrow" data-dir="1" aria-label="Next projects"><i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div class="pj-track">${others.map(o => `
+        <a class="pj-card" href="#${shotHash(o)}">
+          <span class="pj-card-img"><img src="img/${o.thumb}.webp" alt="" loading="lazy" decoding="async"></span>
+          <span class="pj-card-meta"><b>${o.name}</b><span>${o.cat}</span></span>
+        </a>`).join('')}
+      </div>
+    </section>
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
@@ -525,6 +542,25 @@ function buildCase(slug){
   return frag;
 }
 
+// project page "More work" track: arrows scroll by one card, and grey out at the ends
+function wireMoreTrack(){
+  const track = view.querySelector('.pj-track');
+  if(!track) return;
+  const [prev, next] = view.querySelectorAll('.pj-arrow');
+  const update = () => {
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+  };
+  view.querySelectorAll('.pj-arrow').forEach(b => b.addEventListener('click', () => {
+    const card = track.querySelector('.pj-card');
+    const step = card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth * 0.8;
+    track.scrollBy({ left: step * +b.dataset.dir, behavior: 'smooth' });
+  }));
+  track.addEventListener('scroll', update, { passive: true });
+  new ResizeObserver(update).observe(track);
+  update();
+}
+
 let destroyCarousel = null;
 function mountCarousel(){
   const sec = view.querySelector('.wc');
@@ -546,6 +582,7 @@ function mount(kind, slug){
   document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
   wireView();
   if(kind==='home') mountCarousel();
+  if(kind==='shot') wireMoreTrack();
 }
 
 let swapping = false;
