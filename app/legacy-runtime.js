@@ -325,7 +325,7 @@ const CASES = {
   title:'Designing a streaming app that helps you find what to watch',
   lead:'A mobile streaming platform for movies and series, built around personalised discovery, mood-based AI recommendations, social viewing and a subscription that earns its value before asking.',
   meta:[['Role','Product Designer'],['Platform','Mobile app (iOS & Android)'],['Features','Streaming · AI · Social viewing · VIP'],['Status','Shipped']],
-  cover:`<div class="cover-frame"><img src="img/bonsai-hero.webp" alt="BonsaiHD streaming app: home, movie detail and VIP upgrade screens" width="1456" height="819" fetchpriority="high" decoding="async" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>`,
+  cover:`<div class="cover-frame" style="padding:0!important;background:none"><img src="img/bonsai-hero.webp" alt="BonsaiHD streaming app: home, movie detail and VIP upgrade screens" width="2000" height="1125" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block"></div>`,
   sections:[
    ['intro','Introduction','From opening the app to pressing Play', `<p class="lead">BonsaiHD is a streaming service for movies and series.</p><p>I designed the complete experience: a personalised home, movie and series detail pages, a mood-based AI recommendation tool, social watch parties, a VIP subscription and the full profile flow.</p>`],
    ['context','Context','A library isn\'t enough', `<p>Streaming users spend as much time deciding what to watch as they do watching. Most apps surface the same trending rows every session. BonsaiHD needed a discovery model that felt mood-aware and personal, not just popularity-ranked.</p>`],
