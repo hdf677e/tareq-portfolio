@@ -40,32 +40,43 @@ function roleMap(){
   <div class="rm-bus">One consistent design language across every role</div>`;
 }
 
-/* ---------- featured projects ---------- */
-const FEATURED = [
-  { slug:'steadfast-merchant', n:'01', name:'Steadfast Merchant App', cat:'Logistics · Merchant operations', platform:'Mobile app · Live', role:'UI/UX Designer, Zavisoft',
-    desc:'An app for businesses that ship with Steadfast. Orders, parcels, payments and delivery performance, built for high-volume daily use.',
-    cls:'wide sage', art:()=>`<div class="mock"><img src="img/sf-mockup.webp" srcset="img/sf-mockup-sm.webp 800w, img/sf-mockup.webp 1400w" sizes="(max-width:1080px) 90vw, 700px" alt="Steadfast Merchant app: add parcel, home and parcel summary screens" width="1400" height="1321" loading="lazy" decoding="async"></div>` },
-  { slug:'packly-business-manager', n:'02', name:'Packly Business Manager', cat:'SaaS · ERP · Ecommerce', platform:'Web + Mobile · V1 & V2 · Live', role:'UI/UX Designer, Zavisoft',
-    desc:'A business operating system for merchants managing products, inventory, orders, sales and campaigns across multiple channels.',
-    cls:'wide inkc', art:()=>`<div class="mock"><img src="img/pbm-mockup.webp" srcset="img/pbm-mockup-sm.webp 800w, img/pbm-mockup.webp 1400w" sizes="(max-width:1080px) 90vw, 700px" alt="Packly Business Manager app: finance reports, dashboard and POS sale screens" width="1400" height="1310" loading="lazy" decoding="async"></div>` },
-  { slug:'packly-marketplace', n:'03', name:'Packly Marketplace', cat:'Ecommerce · Multi-vendor', platform:'Web + Mobile · Live', role:'UI/UX Designer, Zavisoft',
-    desc:'A multi-vendor marketplace connecting customers and sellers, from product discovery to checkout and orders.',
-    cls:'half cardc', art:()=>`<div class="shot">${img('packly-web-home','Packly marketplace home page')}</div>` },
-  { slug:'payment-gateway', n:'04', name:'Payment Gateway Ecosystem', cat:'Fintech · Payments', platform:'Gateway app + Web panels', role:'UI/UX Designer, Zavisoft',
-    desc:'Connected products for payment processing, transactions, merchant operations and administration across different roles.',
-    cls:'half limec', art:()=>`<div class="shot">${img('pg-dash-top','Payment gateway analytics dashboard: KPIs, transaction summary and performance')}</div>` }
+/* ---------- selected work grid ----------
+   9 cards, 4-column bento: size 'wide' spans 2 columns.
+   Layout per row: [1, wide, 1] · [wide, 1, 1] · [1, wide, 1]
+   href: '#slug' opens a case study, 'https://…' opens in a new tab. */
+const WORK = [
+  { name:'Steadfast Merchant App', cat:'Mobile App', size:'', href:'#steadfast-merchant', image:'img/sf-mockup.webp',
+    desc:'Orders, parcels, payments and delivery performance for businesses shipping with Steadfast.' },
+  { name:'Packly Business Manager', cat:'SaaS · ERP', size:'wide', href:'#packly-business-manager', image:'img/pbm-mockup.webp',
+    desc:'A business operating system for products, inventory, orders, sales and campaigns across channels.' },
+  { name:'Packly Marketplace', cat:'Ecommerce', size:'', href:'#packly-marketplace', image:'img/packly-web-home.webp',
+    desc:'A multi-vendor marketplace from product discovery to checkout and orders.' },
+  { name:'Payment Gateway', cat:'Fintech', size:'wide', href:'#payment-gateway', image:'img/pg-dash-top.webp',
+    desc:'Payment processing, transactions, merchant operations and administration across roles.' },
+  { name:'Steadfast Courier Portal', cat:'Web App', size:'', href:'https://steadfast.com.bd/', image:'img/sf-web-home.webp',
+    desc:'Daily delivery tools for couriers: parcels, delivery status and customer details.' },
+  { name:'Dubai Car Rental', cat:'Web Design', size:'', href:'https://packlydrive.com/', image:'img/dcr-web-home.webp',
+    desc:'Customer website, booking panel and car listing management for a Dubai rental service.' },
+  { name:'HRM Platform', cat:'SaaS', size:'', href:'https://zavisoft.packlybd.com/login', image:'img/hrm-web-login.webp',
+    desc:'Employees, attendance, leave and payroll workflows in one clear admin.' },
+  { name:'BanglaDrop Logistics', cat:'Web Design', size:'wide', href:'https://bangladrop.com/', image:'img/bd-web-home.webp',
+    desc:'Customer website and admin panel for cross-border shipping operations.' },
+  { name:'GhorerBazar', cat:'Ecommerce', size:'', href:'https://ghorerbazar.com/', image:'img/gb-web-home.webp',
+    desc:'Shopping app and website, internal ERP screens and the design system behind them.' }
 ];
 
-function featCard(p){
-  const body = `<div class="feat-body"><div class="feat-top">
-      <div class="feat-index meta"><span>${p.n}</span><span>Case study</span></div>
-      <h3>${p.name}</h3><p class="cat meta">${p.cat}</p><p class="desc">${p.desc}</p></div>
-      <div style="display:flex;flex-direction:column;gap:20px">
-      <dl class="feat-meta"><dt>Platform</dt><dd>${p.platform}</dd><dt>My role</dt><dd>${p.role}</dd></dl>
-      <span class="feat-cta"><span class="feat-cta-icon">${ARROW}</span>View case study</span></div></div>`;
-  const art = `<div class="feat-art">${p.art()}</div>`;
-  return `<a class="feat ${p.cls} rv" href="#${p.slug}" aria-label="${p.name} case study">${body}${art}</a>`;
+function workCard(p){
+  const external = /^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : '';
+  return `<a class="wk-card${p.size ? ' wk-' + p.size : ''}" href="${p.href}"${external} aria-label="${p.name}, ${p.cat}">
+    <div class="wk-media">
+      <img src="${p.image}" alt="" loading="lazy" decoding="async">
+      <div class="wk-over"><p>${p.desc}</p></div>
+    </div>
+    <div class="wk-name"><b>${p.name}</b><span>${p.cat}</span></div>
+  </a>`;
 }
+
+
 
 /* ---------- more work ---------- */
 const MORE = [
@@ -246,7 +257,7 @@ let current = null;
 
 function buildHome(){
   const frag = tplHome.content.cloneNode(true);
-  frag.getElementById('featured').innerHTML = FEATURED.map(featCard).join('');
+  frag.getElementById('work-grid').innerHTML = WORK.map(workCard).join('');
   frag.getElementById('rows').innerHTML = MORE.map(rowItem).join('');
   return frag;
 }
@@ -614,7 +625,7 @@ function wireView(){
     // paragraphs / eyebrows / buttons fade in from blur
     view.querySelectorAll('.eyebrow, .sec-head p, .hw-head .hw-nav, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .why-head .eyebrow, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
     // stagger siblings in grids
-    view.querySelectorAll('.featured, .mw-grid, .why-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
+    view.querySelectorAll('.wk-grid, .mw-grid, .why-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
     view.querySelectorAll('.rv, .bwrap, .bt').forEach(el=>{ if(el.getBoundingClientRect().top > innerHeight*0.92 && !el.closest('.hero')){ el.classList.add('pre'); io.observe(el); } });
   }
   // parallax
