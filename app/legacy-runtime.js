@@ -135,6 +135,12 @@ function shotFrame(src, alt, size, cls, eager){
 }
 
 // "More work"-style card carousel: heading, arrow buttons, snapping track (wired by wireMoreTrack)
+// case study cards for the carousels, optionally leaving one out
+const caseCards = skip => ORDER.filter(x => x !== skip).map(x => {
+  const w = WORK.find(k => k.href === '#' + x);
+  return { href: '#' + x, image: w ? w.image : '', name: CASES[x].name, cat: w ? w.cat : CASES[x].eyebrow };
+});
+
 function moreTrack(title, cards){
   return `<section class="pj-more" aria-labelledby="pj-more-title">
     <div class="pj-more-head">
@@ -156,8 +162,6 @@ function moreTrack(title, cards){
 function buildShot(hash){
   const p = SHOTS[hash];
   const tags = p.cat.split(' · ').concat(p.platform);
-  const at = MORE.indexOf(p);
-  const others = MORE.slice(at + 1).concat(MORE.slice(0, at));
   const pair = [0, 1].map(k => shotFrame(p.pair && p.pair[k], `${p.name} screen ${k + 2}`, '1200 × 900', 'pj-half')).join('');
   const el = document.createElement('div');
   el.innerHTML = `
@@ -181,7 +185,7 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
-    ${moreTrack('More work', others.map(o => ({ href: '#' + shotHash(o), image: `img/${o.thumb}.webp`, name: o.name, cat: o.cat })))}
+    ${moreTrack('Case studies', caseCards())}
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
@@ -623,10 +627,7 @@ function buildCase(slug){
       ${research}
       ${outcome}
       ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
-      ${moreTrack('More projects', [
-        ...ORDER.filter(x => x !== slug).map(x => { const w = WORK.find(k => k.href === '#' + x); return { href: '#' + x, image: w ? w.image : '', name: CASES[x].name, cat: w ? w.cat : CASES[x].eyebrow }; }),
-        ...MORE.map(o => ({ href: '#' + shotHash(o), image: `img/${o.thumb}.webp`, name: o.name, cat: o.cat })),
-      ])}
+      ${moreTrack('More case studies', caseCards(slug))}
     </div>
   </div>`;
   const frag = document.createDocumentFragment();
