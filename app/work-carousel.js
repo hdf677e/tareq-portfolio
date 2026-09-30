@@ -20,11 +20,19 @@ void main(){
   gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
 }`;
 
+// Dissolve: a noisy left-to-right field. Entry reveals pixels below uIn,
+// exit burns away pixels below uOut; both edges glow lime.
 const cardFrag = `
 uniform sampler2D uImg, uUi;
-uniform float uPar, uDim, uHover, uAlpha;
+uniform float uPar, uDim, uHover, uAlpha, uIn, uOut, uSeed;
 varying vec2 vUv;
 float sdRound(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+float fbm(vec2 p){ float v = 0.0, a = 0.5; for(int i = 0; i < 4; i++){ v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }
 void main(){
   vec2 size = vec2(${W.toFixed(1)}, ${H.toFixed(1)});
   float d = sdRound((vUv - 0.5) * size, size * 0.5, 0.2);
@@ -35,7 +43,17 @@ void main(){
   vec3 col = texture2D(uImg, iuv).rgb;
   vec4 ui = texture2D(uUi, vUv);
   col = mix(col, ui.rgb, ui.a) * uDim;
-  gl_FragColor = vec4(col, mask * uAlpha);
+
+  const float E = 0.055;
+  float f = vUv.x * 0.6 + fbm(vUv * vec2(10.0, 6.5) + uSeed) * 0.4;
+  float tIn = uIn * (1.0 + 2.0 * E) - E, tOut = uOut * (1.0 + 2.0 * E) - E;
+  float shown = (1.0 - smoothstep(tIn - 0.004, tIn + 0.004, f)) * smoothstep(tOut - 0.004, tOut + 0.004, f);
+  float gIn = (1.0 - smoothstep(0.0, E, tIn - f)) * step(uIn, 0.999);
+  float gOut = (1.0 - smoothstep(0.0, E, f - tOut)) * step(0.001, uOut);
+  float g = max(gIn, gOut);
+  vec3 lime = vec3(0.725, 0.886, 0.357);
+  col = mix(col, lime * 0.9, pow(g, 1.6) * 0.9) + mix(lime, vec3(1.0), 0.5) * pow(g, 6.0) * 0.8;
+  gl_FragColor = vec4(col, mask * uAlpha * shown);
 }`;
 
 const floorVert = `
@@ -43,7 +61,7 @@ varying vec2 vP;
 void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vP = w.xz; gl_Position = projectionMatrix * viewMatrix * w; }`;
 
 const floorFrag = `
-uniform float uRot;
+uniform float uRot, uFade;
 varying vec2 vP;
 void main(){
   float c = cos(uRot), s = sin(uRot);
@@ -51,7 +69,7 @@ void main(){
   vec2 w = abs(fract(g - 0.5) - 0.5) / fwidth(g);
   float line = 1.0 - min(min(w.x, w.y), 1.0);
   float fade = smoothstep(34.0, 4.0, length(vP));
-  gl_FragColor = vec4(vec3(1.0), line * 0.14 * fade);
+  gl_FragColor = vec4(vec3(1.0), line * 0.14 * fade * uFade);
 }`;
 
 function loadImage(src){
@@ -111,16 +129,17 @@ export function initWorkCarousel(section, items){
 
   const geo = new THREE.PlaneGeometry(W, H, 64, 1);
   const cards = items.map(() => {
-    const u = { uImg: { value: null }, uUi: { value: null }, uCenter: { value: 0 }, uVel: { value: 0 }, uRise: { value: 0 }, uFar: { value: 0 },
+    const u = { uImg: { value: null }, uUi: { value: null }, uCenter: { value: 0 }, uVel: { value: 0 }, uRise: { value: 0 }, uFar: { value: 0 }, uIn: { value: 0 }, uOut: { value: 0 }, uSeed: { value: 0 },
                 uPar: { value: 0 }, uDim: { value: 1 }, uHover: { value: 0 }, uAlpha: { value: 0 } };
     const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: cardVert, fragmentShader: cardFrag, transparent: true, depthWrite: false });
     const mesh = new THREE.Mesh(geo, mat);
     mesh.frustumCulled = false;
+    u.uSeed.value = Math.random() * 50;
     scene.add(mesh);
     return { u, mat };
   });
 
-  const floorMat = new THREE.ShaderMaterial({ uniforms: { uRot: { value: 0 } }, vertexShader: floorVert, fragmentShader: floorFrag, transparent: true, depthWrite: false });
+  const floorMat = new THREE.ShaderMaterial({ uniforms: { uRot: { value: 0 }, uFade: { value: 0 } }, vertexShader: floorVert, fragmentShader: floorFrag, transparent: true, depthWrite: false });
   const floorGeo = new THREE.PlaneGeometry(90, 90);
   const floor = new THREE.Mesh(floorGeo, floorMat);
   floor.rotation.x = -Math.PI / 2;
@@ -249,35 +268,33 @@ export function initWorkCarousel(section, items){
 
     // entry runs while the section rises into view, exit during the pinned tail;
     // both are smoothed so fast scrolling still glides
-    const enterT = clamp(1 - rect.top / innerHeight, 0, 1);
+    const enterT = clamp(1 - rect.top / (innerHeight * 0.75), 0, 1);
     const exitT = range > 0 ? clamp((-rect.top - cardLen) / (range * EXIT), 0, 1) : 0;
     const k = reduce ? 1 : 0.08;
     enter += (enterT - enter) * k; exit += (exitT - exit) * k;
     const ease = t => 1 - Math.pow(1 - t, 3);
 
-    cards.forEach((c, i) => {
+    for(let i = 0; i < n; i++){
+      const c = cards[i];
       const centre = i * STEP - cur;
-      const inE = ease(clamp(enter * 1.5 - Math.abs(centre / STEP) * 0.18, 0, 1));
-      const outE = ease(clamp(exit * 1.3 - Math.max(0, 1 - Math.abs(centre / STEP)) * 0.25, 0, 1));
+      const dist = Math.abs(centre / STEP);
+      const inT = clamp(enter * 1.15 - dist * 0.22, 0, 1);
+      const outT = clamp(exit * 1.35 - Math.max(0, 1 - dist) * 0.3, 0, 1);
       c.u.uCenter.value = centre;
       c.u.uVel.value = vel;
       c.u.uPar.value = clamp(centre / STEP, -1.5, 1.5) * 0.035;
-      c.u.uDim.value = 1 - Math.min(Math.abs(centre) / STEP, 1.5) * 0.3;
+      c.u.uDim.value = 1 - Math.min(dist, 1.5) * 0.3;
       c.u.uHover.value += ((hover === i && !down ? 1 : 0) - c.u.uHover.value) * 0.12;
-      c.u.uAlpha.value = inE * (1 - outE);
-      c.u.uRise.value = reduce ? 0 : (1 - inE) * 1.8 - outE * 1.2;
-      c.u.uFar.value = reduce ? 0 : (1 - inE) * 7 + outE * 9;
-    });
-
-    // whole scene blurs in and out; header and footer follow the exit
-    const blur = reduce ? 0 : Math.max((1 - enter) * 16, exit * 18);
-    const css = `${blur.toFixed(1)}|${Math.min(1, enter * 1.25).toFixed(2)}|${exit.toFixed(3)}`;
-    if(css !== lastCss){
-      lastCss = css;
-      canvas.style.filter = blur > 0.2 ? `blur(${blur.toFixed(1)}px)` : '';
-      canvas.style.opacity = (Math.min(1, enter * 1.25) * (1 - exit * 0.85)).toFixed(3);
-      section.style.setProperty('--wc-x', exit.toFixed(3));
+      if(reduce){ c.u.uIn.value = 1; c.u.uOut.value = 0; c.u.uAlpha.value = enter * (1 - exit); continue; }
+      c.u.uIn.value = inT; c.u.uOut.value = outT; c.u.uAlpha.value = 1;
+      c.u.uRise.value = 0;
+      c.u.uFar.value = (1 - ease(inT)) * 2.5 + ease(outT) * 3.5;
     }
+
+    // floor fades with the cards; header and footer blur away on exit
+    floorMat.uniforms.uFade.value = Math.min(1, enter * 1.4) * (1 - exit);
+    const css = exit.toFixed(3);
+    if(css !== lastCss){ lastCss = css; section.style.setProperty('--wc-x', css); }
     floorMat.uniforms.uRot.value = -cur / R;
 
     const i = clamp(Math.round(cur / STEP), 0, n - 1);
