@@ -106,18 +106,66 @@ function superAppArt(){
     <div><b>Packly Food</b><span>Service</span></div><div><b>Packly Courier</b><span>Service</span></div><div><b>Packly E-commerce</b><span>Service</span></div></div>`;
 }
 function rowItem(p){
-  const link = p.links[0];
-  const tag = link ? 'a' : 'div';
-  const attrs = link ? ` href="${link[0]}" target="_blank" rel="noopener" aria-label="${p.name}, open live product"` : '';
-  const who = p.n==='10' ? 'GhorerBazar · 2023–25' : 'Zavisoft · 2025–26';
-  return `<${tag} class="mw rv" style="--tint:${p.tint}"${attrs}>
+  return `<a class="mw rv" style="--tint:${p.tint}" href="#${shotHash(p)}" aria-label="${p.name}, view project">
     <div class="mw-head">
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
     </div>
-    ${link ? `<span class="mw-arrow" aria-hidden="true">${EXT}</span>` : ''}
+    <span class="mw-arrow" aria-hidden="true">${ARROW}</span>
     <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}</div>
-  </${tag}>`;
+  </a>`;
+}
+
+/* ---------- project pages (More work), Dribbble-style shots ----------
+   URL: #project/<slug>. Add more screens to a project with
+   `shots: ['img/work/more/<slug>/2.webp', ...]` on its MORE entry. */
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const shotHash = p => `project/${slugify(p.name)}`;
+const SHOTS = Object.fromEntries(MORE.map(p => [shotHash(p), p]));
+
+function buildShot(hash){
+  const p = SHOTS[hash];
+  const list = MORE, i = list.indexOf(p);
+  const prev = list[(i + list.length - 1) % list.length], next = list[(i + 1) % list.length];
+  const who = p.n==='10' ? 'GhorerBazar · 2023–25' : 'Zavisoft · 2025–26';
+  const images = [`img/${p.thumb}.webp`, ...(p.shots || [])];
+  const tags = p.cat.split(' · ').concat(p.platform);
+  const live = p.links[0];
+  const others = list.filter(o => o !== p).slice(0, 4);
+  const el = document.createElement('div');
+  el.innerHTML = `
+  <main class="pj" aria-labelledby="shot-title">
+    <div class="shot-top">
+      <p class="shot-crumbs meta"><a href="#more-work">← More work</a></p>
+      <h1 id="shot-title" tabindex="-1">${p.name}</h1>
+      <div class="shot-by">
+        <img class="shot-avatar" src="img/tareq.webp" alt="" width="48" height="48">
+        <div class="shot-who"><b>Tareq Mahmud</b><span>${p.cat} · ${who}</span></div>
+        <div class="shot-actions">
+          ${live ? `<a class="shot-btn" href="${live[0]}" target="_blank" rel="noopener">Visit live ${EXT}</a>` : ''}
+          <a class="shot-btn shot-btn-ink" href="#contact">Get in touch</a>
+        </div>
+      </div>
+    </div>
+    <div class="shot-media">
+      ${images.map((src, k) => `<figure class="shot-frame"><img src="${src}" alt="${k ? `${p.name} screen ${k + 1}` : p.thumbAlt}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></figure>`).join('')}
+    </div>
+    <div class="shot-top shot-about">
+      <p>${p.text}</p>
+      <ul class="shot-tags" aria-label="Tags">${tags.map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>
+    <section class="shot-more" aria-labelledby="shot-more-title">
+      <div class="shot-more-head"><h2 id="shot-more-title">More by Tareq Mahmud</h2><a href="#more-work">View all work →</a></div>
+      <div class="shot-grid">${others.map(o => `<a href="#${shotHash(o)}"><span class="shot-thumb"><img src="img/${o.thumb}.webp" alt="" loading="lazy" decoding="async"></span><b>${o.name}</b></a>`).join('')}</div>
+      <nav class="shot-pager" aria-label="More projects">
+        <a href="#${shotHash(prev)}"><span class="meta">← Previous</span>${prev.name}</a>
+        <a href="#${shotHash(next)}"><span class="meta">Next →</span>${next.name}</a>
+      </nav>
+    </section>
+  </main>`;
+  const frag = document.createDocumentFragment();
+  while(el.firstChild) frag.appendChild(el.firstChild);
+  return frag;
 }
 
 /* ---------- case studies ---------- */
@@ -483,7 +531,7 @@ let destroyCarousel = null;
 function mountCarousel(){
   const sec = view.querySelector('.wc');
   if(!sec) return;
-  const items = MORE.map(p => ({ name:p.name, cat:p.cat, image:`img/${p.thumb}.webp`, href:p.links[0] ? p.links[0][0] : '' }));
+  const items = MORE.map(p => ({ name:p.name, cat:p.cat, image:`img/${p.thumb}.webp`, href:`#${shotHash(p)}` }));
   let cancelled = false;
   destroyCarousel = () => { cancelled = true; };
   import('./work-carousel')
@@ -493,11 +541,11 @@ function mountCarousel(){
 
 function mount(kind, slug){
   if(destroyCarousel){ destroyCarousel(); destroyCarousel = null; }
-  const frag = kind==='home' ? buildHome() : buildCase(slug);
+  const frag = kind==='home' ? buildHome() : kind==='shot' ? buildShot(slug) : buildCase(slug);
   frag.appendChild(tplContact.content.cloneNode(true));
   view.replaceChildren(frag);
   current = kind==='home' ? 'home' : slug;
-  document.title = kind==='home' ? 'Tareq Mahmud' : CASES[slug].name + ' · Tareq Mahmud';
+  document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
   wireView();
   if(kind==='home') mountCarousel();
 }
@@ -505,11 +553,12 @@ function mount(kind, slug){
 let swapping = false;
 function go(){
   const h = decodeURIComponent(location.hash.slice(1));
-  const wantCase = !!CASES[h];
+  const kind = CASES[h] ? 'case' : SHOTS[h] ? 'shot' : 'home';
+  const wantCase = kind !== 'home';
   const target = wantCase ? null : (h || 'top');
   const needSwap = wantCase ? current !== h : current !== 'home';
   const finish = () => {
-    if(wantCase){ window.scrollTo({top:0, behavior:'instant'}); focusTitle('cs-title'); }
+    if(wantCase){ window.scrollTo({top:0, behavior:'instant'}); focusTitle(kind==='shot' ? 'shot-title' : 'cs-title'); }
     else {
       const el = document.getElementById(target);
       if(el && target !== 'top'){ requestAnimationFrame(()=>el.scrollIntoView({behavior: needSwap ? 'instant':'smooth', block:'start'})); }
@@ -517,11 +566,11 @@ function go(){
     }
   };
   if(!needSwap){ finish(); return; }
-  if(current === null){ mount(wantCase?'case':'home', h); finish(); return; }
+  if(current === null){ mount(kind, h); finish(); return; }
   if(swapping) return;
   swapping = true;
   view.classList.add('leaving');
-  setTimeout(()=>{ mount(wantCase?'case':'home', h); finish(); requestAnimationFrame(()=>{ view.classList.remove('leaving'); swapping=false; }); }, 220);
+  setTimeout(()=>{ mount(kind, h); finish(); requestAnimationFrame(()=>{ view.classList.remove('leaving'); swapping=false; }); }, 220);
 }
 function focusTitle(id){ const t = document.getElementById(id); if(t) t.focus({preventScroll:true}); }
 
@@ -682,7 +731,7 @@ document.addEventListener('click', e=>{
   if(!a) return;
   const id = a.getAttribute('href').slice(1);
   closeMenu();
-  if(current !== 'home' && !CASES[id]){
+  if(current !== 'home' && !CASES[id] && !SHOTS[id]){
     const el = document.getElementById(id);
     if(el && view.contains(el)){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
   }

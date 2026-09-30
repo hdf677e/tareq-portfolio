@@ -196,7 +196,12 @@ export function initWorkCarousel(section, items){
     return ((j % SLOTS) + SLOTS) % SLOTS;
   }
   const itemAt = slot => slot < 0 ? -1 : slots[slot].item;
-  const open = i => { if(i >= 0 && items[i].href) window.open(items[i].href, '_blank', 'noopener'); };
+  const open = i => {
+    const href = i >= 0 && items[i].href;
+    if(!href) return;
+    if(href[0] === '#') location.hash = href.slice(1);          // in-site project page
+    else window.open(href, '_blank', 'noopener');
+  };
 
   canvas.addEventListener('pointerdown', e => {
     if(e.button !== 0) return;
