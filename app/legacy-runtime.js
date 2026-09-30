@@ -237,7 +237,7 @@ const CASES = {
   title:'Designing a business operating system for modern merchants',
   lead:'One product, on mobile and web, where Packly merchants manage products, stock, orders, sales, customers and campaigns across more than one sales channel.',
   meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Mobile app + Web'],['Versions','V1 and V2'],['Status',`<a href="${PB}com.packlybusiness.app" target="_blank" rel="noopener">Live ↗</a>`]],
-  cover:`<div class="cover-frame cover-mock"><img src="img/pbm-mockup.webp" srcset="img/pbm-mockup-sm.webp 800w, img/pbm-mockup.webp 1400w" sizes="(max-width:900px) 92vw, 820px" alt="Packly Business Manager app: finance reports, dashboard and POS sale screens" width="1400" height="1310" fetchpriority="high" decoding="async"></div>`,
+  cover:`<div class="cover-frame" style="padding:0!important;background:none"><img src="img/pbm-hero.webp" alt="Packly Business Manager: finance, dashboard and POS sale screens" width="2000" height="1125" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block"></div>`,
   sections:[
    ['intro','Introduction','A back office in the merchant\'s pocket', `<p class="lead">Packly Business Manager is where merchants run their business on Packly.</p><p>I designed the mobile app for everyday merchant work and the web platform for merchants operating at a larger scale, and evolved both from V1 to V2.</p>`],
    ['context','Context','A lot of business in one product', `<p>The product covers the full operating loop of a merchant. Each area is a product in its own right, and they all depend on each other.</p><div class="chips" style="margin-top:4px">${['Products','Inventory','Orders','Sales','Customers','Campaigns','Warehouses','Multiple channels','Marketplace operations'].map(x=>`<span class="chip" style="color:var(--text);border-color:var(--line)">${x}</span>`).join('')}</div><figure class="wide-shot" style="margin-top:24px"><div class="frame"><img src="img/pbm-cover.jpg" alt="Packly Business Manager campaign image showing a small business owner using the app" width="2048" height="1000" loading="lazy" decoding="async"></div><figcaption>Packly Business Manager brings the tools for running a small business into one mobile app.</figcaption></figure>`],
@@ -629,12 +629,12 @@ const CASE_SHOTS = {
             ['sf-merchant-fraud.webp', 'Fraud check', 'Customer success rate before booking.', 1]],
     end: null },
   'packly-business-manager': {
-    pair1: [['pbm-app-inventory.webp', 'Product list', 'Status filters with counts, stock and price on each row.', 1],
-            ['pbm-app-orders.webp', 'Shop orders', 'Order ID, amount, payment type and customer in one card.', 1]],
-    wide: null,
-    pair2: [['pbm-app-pos.webp', 'POS sale', 'Search, scan and image-first product grid.', 1],
-            ['pbm-app-payouts.webp', 'Payouts', 'Available balance and the full earnings breakdown.', 1]],
-    end: null },
+    pair1: [['pbm-finance-accounts.webp', 'Finance — Accounts', 'Cash in hand, bank balance and linked accounts side by side.'],
+            ['pbm-finance-report.webp', 'Finance — Reports', 'Business overview, stock and purchase-and-sales reports grouped by type.']],
+    wide: ['pbm-screens.webp', 'Dashboard, Finance & POS', 'Three core screens of the V1 app: the merchant dashboard, finance module and POS sale product grid.'],
+    pair2: [['pbm-pos-sale.webp', 'POS Sale', 'Scan or search product grid with filter shortcut — built for fast counter billing.'],
+            ['pbm-product-list.webp', 'Product list', 'All, Active, Inactive and Draft filter tabs with name, SKU, price, stock and status on each row.']],
+    end: ['pbm-overview.webp', 'App overview', 'Five key screens: dashboard, product list, POS sale, finance accounts and finance report — the full Packly Business Manager V1 experience.'] },
   'packly-marketplace': {
     pair1: [['pk-app-home.webp', 'Home', 'Search, banner, campaigns and categories above the fold.', 1],
             ['pk-app-categories.webp', 'Categories', 'Two-level browsing with image tiles.', 1]],
