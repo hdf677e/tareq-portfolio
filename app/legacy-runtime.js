@@ -135,11 +135,13 @@ function shotFrame(src, alt, size, cls, eager){
 }
 
 // "More work"-style card carousel: heading, arrow buttons, snapping track (wired by wireMoreTrack)
-// case study cards for the carousels, optionally leaving one out
-const caseCards = skip => ORDER.filter(x => x !== skip).map(x => {
-  const w = WORK.find(k => k.href === '#' + x);
-  return { href: '#' + x, image: w ? w.image : '', name: CASES[x].name, cat: w ? w.cat : CASES[x].eyebrow };
-});
+// all WORK cards for the carousels, optionally leaving out the current one (by its hash slug)
+const caseCards = skip => WORK.filter(w => skip ? w.href !== '#' + skip : true).map(w => ({
+  href: w.href,
+  image: w.image,
+  name: w.name,
+  cat: w.cat
+}));
 
 function moreTrack(title, cards){
   return `<section class="pj-more" aria-labelledby="pj-more-title">
@@ -166,7 +168,7 @@ function buildShot(hash){
   const el = document.createElement('div');
   el.innerHTML = `
   <main class="pj" aria-labelledby="shot-title">
-    <a class="pj-back" href="#more-work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to more work</a>
+    <a class="pj-back" href="#"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to home</a>
     <header class="pj-head">
       <h1 id="shot-title" tabindex="-1">${p.name}</h1>
     </header>
@@ -185,7 +187,7 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
-    ${moreTrack('Case studies', caseCards())}
+    ${moreTrack('More work', caseCards())}
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
@@ -617,7 +619,7 @@ function buildCase(slug){
   el.innerHTML = `
   <div class="cx">
     <div class="cx-details">
-      <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
+      <a class="pj-back" href="#"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to home</a>
       <div class="cx-banner">${c.cover}</div>
       ${overview}
       ${media(row(shots.pair1))}
@@ -627,7 +629,7 @@ function buildCase(slug){
       ${research}
       ${outcome}
       ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
-      ${moreTrack('More case studies', caseCards(slug))}
+      ${moreTrack('More work', caseCards(slug))}
     </div>
   </div>`;
   const frag = document.createDocumentFragment();
