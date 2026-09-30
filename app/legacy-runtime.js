@@ -605,11 +605,11 @@ const CASE_SHOTS = {
             ['pg-customer-receipt.png', 'Receipt', 'A definite result the customer can keep.', 1]],
     end: ['pg-dash-full.webp', 'Report & analytics', 'KPIs with trends, transaction performance, payment-method mix, refunds, chargebacks, collection breakdown and a monthly report.'] },
   'bonsaihd': {
-    pair1: [['bonsai-ai-result.webp', 'Ask Bonsai AI — result', 'Mood matched to a 98% best pick. One prominent card, instant Play.', 1],
-            ['bonsai-ai-mood.webp', 'Ask Bonsai AI — mood selector', 'The chatbot opens with a mood question and emoji-based chips to start the recommendation flow.', 1]],
+    pair1: [['bonsai-ai-result.webp', 'Ask Bonsai AI — result', 'Mood matched to a 98% best pick. One prominent card, instant Play.'],
+            ['bonsai-ai-mood.webp', 'Ask Bonsai AI — mood selector', 'The chatbot opens with a mood question and emoji-based chips to start the recommendation flow.']],
     wide: ['bonsai-watch-party.webp', 'Watch With Friends', 'Room code, QR link, seat visualisation and one-tap invite for up to 8 people — alongside the video player with sync controls.'],
-    pair2: [['bonsai-vip.webp', 'VIP upgrade', 'Countdown offer, feature checklist and plan comparison before asking for commitment.', 1],
-            ['bonsai-profile.webp', 'Profile', 'Movies and series watched, upgrade banner, watchlist, history, downloads and settings.', 1]],
+    pair2: [['bonsai-vip.webp', 'VIP upgrade', 'Countdown offer, feature checklist and plan comparison before asking for commitment.'],
+            ['bonsai-profile.webp', 'Profile', 'Movies and series watched, upgrade banner, watchlist, history, downloads and settings.']],
     end: ['bonsai-screens.webp', 'App overview', 'Profile, paywall, VIP state, home with AI recommendation and chatbot — the full BonsaiHD experience across screens.'] },
 };
 
