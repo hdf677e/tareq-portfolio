@@ -105,10 +105,13 @@ function superAppArt(){
     <div class="hub"><b>Packly Super App</b><span>One account, one navigation, shared discovery</span></div>
     <div><b>Packly Food</b><span>Service</span></div><div><b>Packly Courier</b><span>Service</span></div><div><b>Packly E-commerce</b><span>Service</span></div></div>`;
 }
-function rowItem(p){
-  const tags = [p.cat, p.platform].filter(Boolean).map(t => `<span class="mw-tag">${t}</span>`).join('');
-  return `<a class="mw rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
-    <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}</div>
+// musemind rhythm: wide (left) · short + tall · wide (right) · tall + short
+const MW_LAYOUT = ['wide-l', 'short', 'tall', 'wide-r', 'tall', 'short'];
+function rowItem(p, i){
+  const kind = MW_LAYOUT[i % MW_LAYOUT.length];
+  const tags = [...p.cat.split(' · '), p.platform].filter(Boolean).map(t => `<span class="mw-tag">${t}</span>`).join('');
+  return `<a class="mw mw-${kind} rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+    <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}<span class="mw-plus" aria-hidden="true">${PLUS}</span></div>
     <div class="mw-body">
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
