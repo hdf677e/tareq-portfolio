@@ -110,13 +110,17 @@ const MW_LAYOUT = ['wide-l', 'short', 'tall', 'wide-r', 'tall', 'short'];
 function rowItem(p, i){
   const kind = MW_LAYOUT[i % MW_LAYOUT.length];
   const tags = [...p.cat.split(' · '), p.platform].filter(Boolean).map(t => `<span class="mw-tag">${t}</span>`).join('');
-  return `<a class="mw mw-${kind} rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
-    <div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}<span class="mw-plus" aria-hidden="true">${PLUS}</span></div>
+  const inner = `<div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}<span class="mw-plus" aria-hidden="true">${PLUS}</span></div>
     <div class="mw-body">
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
       <div class="mw-tags">${tags}</div>
-    </div>
+    </div>`;
+  if(i === 0) return `<a class="mw mw-${kind} mw-intro" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+    <div class="mw-stick">${inner}</div><div class="mw-pin" aria-hidden="true"></div>
+  </a>`;
+  return `<a class="mw mw-${kind} rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+    ${inner}
   </a>`;
 }
 
@@ -765,27 +769,44 @@ function wireMoreTrack(){
   update();
 }
 
-let destroyCarousel = null;
-function mountCarousel(){
-  const sec = view.querySelector('.wc');
-  if(!sec) return;
-  const items = MORE.map(p => ({ name:p.name, cat:p.cat, image:`img/${p.thumb}.webp`, href:`#${shotHash(p)}` }));
-  let cancelled = false;
-  destroyCarousel = () => { cancelled = true; };
-  import('./work-carousel')
-    .then(({ initWorkCarousel }) => { if(!cancelled && sec.isConnected) destroyCarousel = initWorkCarousel(sec, items); })
-    .catch(() => sec.classList.add('wc-off'));
+// First More-work card: pinned while a circular mask opens with scroll (musemind-style)
+let destroyHome = null;
+function mountIntroReveal(){
+  const card = view.querySelector('.mw-intro');
+  if(!card || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const shot = card.querySelector('.mw-shot'), pic = shot.querySelector('img'), body = card.querySelector('.mw-body');
+  const clamp = v => Math.min(1, Math.max(0, v));
+  let raf = 0;
+  const tick = () => {
+    raf = 0;
+    const vh = innerHeight, top = card.getBoundingClientRect().top;
+    const pin = card.querySelector('.mw-pin').offsetHeight;
+    const p = clamp((vh * 0.9 - top) / (vh * 0.9 - 100 + pin * 0.6));
+    const e = p * p * (3 - 2 * p);
+    const full = Math.hypot(shot.offsetWidth, shot.offsetHeight) / 2 + 2;
+    shot.style.clipPath = p >= 1 ? 'none' : `circle(${48 + (full - 48) * e}px at 50% 50%)`;
+    if(pic) pic.style.scale = String(1.1 - 0.1 * e);
+    const t = clamp((p - 0.85) / 0.15);
+    body.style.opacity = t;
+    body.style.translate = `0 ${30 * (1 - t)}px`;
+  };
+  const onScroll = () => { if(!raf) raf = requestAnimationFrame(tick); };
+  card.classList.add('is-live');
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  tick();
+  destroyHome = () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
 }
 
 function mount(kind, slug){
-  if(destroyCarousel){ destroyCarousel(); destroyCarousel = null; }
+  if(destroyHome){ destroyHome(); destroyHome = null; }
   const frag = kind==='home' ? buildHome() : kind==='shot' ? buildShot(slug) : buildCase(slug);
   frag.appendChild(tplContact.content.cloneNode(true));
   view.replaceChildren(frag);
   current = kind==='home' ? 'home' : slug;
   document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
   wireView();
-  if(kind==='home') mountCarousel();
+  if(kind==='home') mountIntroReveal();
   if(kind==='shot' || kind==='case') wireMoreTrack();
 }
 

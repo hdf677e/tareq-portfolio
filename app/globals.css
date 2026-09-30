@@ -279,6 +279,12 @@ a.mw:hover .mw-shot img{transform:scale(1.04)}
 .mw-shot .services{height:100%;border-radius:0;padding:12px;min-height:0}
 .mw-shot .services b{font-size:.9rem;line-height:1.25}
 .mw-shot .services span{font-size:.72rem}
+.mw-stick{position:sticky;top:100px}
+.mw-pin{display:none}
+.mw-intro.is-live .mw-pin{display:block;height:min(70vh,680px)}
+.mw-intro.is-live .mw-shot{clip-path:circle(48px at 50% 50%);will-change:clip-path}
+.mw-intro.is-live .mw-body{opacity:0}
+.mw-intro.is-live .mw-shot img{scale:1.1}
 .mw-plus{position:absolute;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#0f1112;font-size:24px;transition:transform .4s var(--ease)}
 a.mw:hover .mw-plus{transform:rotate(90deg)}
 .mw-body{margin-top:40px}
