@@ -425,6 +425,9 @@ a.mw:hover .mw-plus{transform:rotate(90deg)}
 .why-loc-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 max(16px,2.08vw);overflow:hidden}
 .why-loc-text{margin:0;width:100%;max-height:100%;padding:4.16vw 0;font-size:max(1.9rem,5vw);font-weight:400;letter-spacing:-.03em;line-height:1.2}
 .loc-w{display:inline-block;opacity:.08;transition:opacity .12s linear}
+.why-trail{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.why-trail img{position:absolute;left:0;top:0;height:auto;border-radius:6px;box-shadow:0 24px 48px -20px rgba(0,0,0,.6);will-change:transform,opacity}
+.why-loc-text{position:relative;z-index:1}
 
 /* ============ Capabilities (tabs) ============ */
 .cap-wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:stretch}

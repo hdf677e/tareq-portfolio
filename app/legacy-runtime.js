@@ -905,13 +905,54 @@ function wireView(){
       if(b !== a) words[b].style.opacity = (0.08 + 0.92 * f).toFixed(3);
       lastA = a; lastB = b;
     };
-    const onScroll = () => {
+    // start at 5vw and shrink until the whole list fits the pinned screen, clear of the nav
+    const text = why.querySelector('.why-loc-text');
+    const fit = () => {
+      const room = innerHeight - Math.max(120, innerHeight * 0.14) * 2;
+      let fs = Math.max(30, innerWidth * 0.05);
+      text.style.fontSize = fs + 'px';
+      while(text.scrollHeight > room && fs > 24){ fs *= 0.95; text.style.fontSize = fs + 'px'; }
+    };
+    let fitW = 0, fitH = 0;
+    const onScroll = e => {
       if(!why.isConnected){ removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); return; }
+      if(e && e.type === 'resize' && (innerWidth !== fitW || innerHeight !== fitH)){ fitW = innerWidth; fitH = innerHeight; fit(); }
       if(!raf) raf = requestAnimationFrame(tick);
     };
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', onScroll);
+    fitW = innerWidth; fitH = innerHeight; fit();
+    if(document.fonts) document.fonts.ready.then(() => { if(why.isConnected) fit(); });
     tick();
+
+    // mouse trail: project images drop at the cursor, stack, then fade away
+    const layer = why.querySelector('.why-trail');
+    if(layer && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const srcs = [...new Set([...WORK.map(w => w.image), ...MORE.filter(m => m.thumb).map(m => `img/${m.thumb}.webp`)])];
+      srcs.forEach(src => { const im = new Image(); im.src = src; });
+      let k = 0, z = 1, lx = null, ly = null;
+      const STEP = 90, MAX = 14;
+      why.addEventListener('pointermove', e => {
+        if(e.pointerType !== 'mouse') return;
+        const r = layer.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+        if(lx !== null && Math.hypot(x - lx, y - ly) < STEP) return;
+        lx = x; ly = y;
+        const im = document.createElement('img');
+        im.src = srcs[k++ % srcs.length]; im.alt = ''; im.decoding = 'async';
+        im.style.zIndex = z++;
+        im.style.width = (190 + Math.random() * 90).toFixed(0) + 'px';
+        const at = s => `translate(${x}px,${y}px) translate(-50%,-50%) scale(${s})`;
+        layer.appendChild(im);
+        while(layer.children.length > MAX) layer.firstElementChild.remove();
+        im.animate([
+          { opacity: 0, transform: at(0.6) },
+          { opacity: 1, transform: at(1), offset: 0.18 },
+          { opacity: 1, transform: at(1), offset: 0.7 },
+          { opacity: 0, transform: at(0.92) }
+        ], { duration: 1300, easing: 'cubic-bezier(.22,.8,.2,1)', fill: 'forwards' }).onfinish = () => im.remove();
+      });
+      why.addEventListener('pointerleave', () => { lx = ly = null; });
+    }
   }
   // capabilities tabs
   const ctabs=[...view.querySelectorAll('.cap-tab')], cpan=[...view.querySelectorAll('.cap-panel')];
