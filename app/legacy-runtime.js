@@ -505,37 +505,106 @@ function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
   const frag=document.createDocumentFragment(); while(el.firstChild) frag.appendChild(el.firstChild); return frag;
 }
 
+/* Case study layout (from the wireframe): sticky sidebar with title, meta, contents
+   and live link; main column = banner, Overview, two images, Problem, Solution,
+   wide image, two images, Research, Outcome, closing image.
+   Existing section content is regrouped by id; 'ui' screens move into the image
+   slots below and 'live' becomes the sidebar link. */
+const CASE_GROUPS = [
+  ['overview', 'Overview', ['intro', 'context']],
+  ['problem', 'Problem', ['problem']],
+  ['solution', 'Solution', ['ia', 'iteration', 'decisions']],
+  ['research', 'Research', ['users', 'focus', 'flow']],
+  ['outcome', 'Outcome', ['outcome']],
+];
+// [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
+const CASE_SHOTS = {
+  'steadfast-merchant': {
+    pair1: [['sf-merchant-1.webp', 'Home and parcel details', 'Frequent actions on top. Parcel details with COD, charges, recipient and rider.', 1],
+            ['sf-merchant-summary.webp', 'Parcel summary', 'Every status as a tile with one number.', 1]],
+    wide: null,
+    pair2: [['sf-merchant-wallet.webp', 'Wallet', 'Requestable amount first, calculation beneath.', 1],
+            ['sf-merchant-fraud.webp', 'Fraud check', 'Customer success rate before booking.', 1]],
+    end: null },
+  'packly-business-manager': {
+    pair1: [['pbm-app-inventory.webp', 'Product list', 'Status filters with counts, stock and price on each row.', 1],
+            ['pbm-app-orders.webp', 'Shop orders', 'Order ID, amount, payment type and customer in one card.', 1]],
+    wide: null,
+    pair2: [['pbm-app-pos.webp', 'POS sale', 'Search, scan and image-first product grid.', 1],
+            ['pbm-app-payouts.webp', 'Payouts', 'Available balance and the full earnings breakdown.', 1]],
+    end: null },
+  'packly-marketplace': {
+    pair1: [['pk-app-home.webp', 'Home', 'Search, banner, campaigns and categories above the fold.', 1],
+            ['pk-app-categories.webp', 'Categories', 'Two-level browsing with image tiles.', 1]],
+    wide: ['pk-v2-home.webp', 'Marketplace V2', 'The V2 home in development: campaign-led, with flash sales and daily picks.'],
+    pair2: [['pk-app-flash.webp', 'Flash sale', 'Countdown and discount on every card.', 1],
+            ['pk-app-cart.webp', 'Cart', 'Items grouped under each shop.', 1]],
+    end: null },
+  'payment-gateway': {
+    pair1: [['pg-store.webp', 'Store settings', 'Payment methods, API keys, webhooks and checkout redirects for one store, with a live summary on the side.'],
+            ['pg-emi.webp', 'EMI configuration', 'Bank EMI rules, tenure plans with interest and monthly amount, and eligible card networks.']],
+    wide: ['pg-transactions.webp', 'Transactions', 'Status summary cards, status tabs with counts, and every row showing method, amount, fee, net, payment status and settlement status.'],
+    pair2: [['pg-customer-card.png', 'Card payment', 'The customer chooses a method and sees the amount before paying.', 1],
+            ['pg-customer-receipt.png', 'Receipt', 'A definite result the customer can keep.', 1]],
+    end: ['pg-dash-full.webp', 'Report & analytics', 'KPIs with trends, transaction performance, payment-method mix, refunds, chargebacks, collection breakdown and a monthly report.'] },
+};
+
+function caseFig(im, size, cls){
+  if(!im) return DEV ? `<figure class="csx-fig ${cls}"><div class="csx-frame pj-empty" aria-hidden="true"><span>${size}</span></div></figure>` : '';
+  const [file, title, cap, phone] = im;
+  return `<figure class="csx-fig ${cls}${phone ? ' is-phone' : ''}"><div class="csx-frame"><img src="img/${file}" alt="${title}" loading="lazy" decoding="async"></div><figcaption><b>${title}.</b> ${cap}</figcaption></figure>`;
+}
+
 function buildCase(slug){
   const c = CASES[slug];
   const i = ORDER.indexOf(slug);
-  const prev = CASES[ORDER[(i+ORDER.length-1)%ORDER.length]], prevSlug = ORDER[(i+ORDER.length-1)%ORDER.length];
-  const next = CASES[ORDER[(i+1)%ORDER.length]], nextSlug = ORDER[(i+1)%ORDER.length];
-  const secs = c.sections.map((s,k)=>{
-    const num = String(k+1).padStart(2,'0');
-    return `<section class="cs-sec rv" id="s-${s[0]}" aria-labelledby="h-${s[0]}"><span class="meta">${num} · ${s[1]}</span><h2 id="h-${s[0]}">${s[2]}</h2>${s[3]}</section>`;
-  }).join('');
-  const toc = c.sections.map((s,k)=>`<a href="#s-${s[0]}" data-sec="s-${s[0]}"><span class="meta">${String(k+1).padStart(2,'0')}</span>${s[1]}</a>`).join('');
+  const prevSlug = ORDER[(i+ORDER.length-1)%ORDER.length], nextSlug = ORDER[(i+1)%ORDER.length];
+  const prev = CASES[prevSlug], next = CASES[nextSlug];
+  const shots = CASE_SHOTS[slug] || {};
+  const byId = Object.fromEntries(c.sections.map(sc => [sc[0], sc]));
+  const liveSec = byId.live && byId.live[3].match(/href="([^"]+)"/);
+  const live = liveSec ? liveSec[1] : null;
+
+  const groups = CASE_GROUPS.map(([id, label, ids]) => [id, label, ids.map(x => byId[x]).filter(Boolean)]).filter(g => g[2].length);
+  const group = (id, n) => {
+    const g = groups.find(x => x[0] === id);
+    if(!g) return '';
+    const body = g[2].map((sc, k) => `${k ? `<h3 class="csx-sub">${sc[2]}</h3>` : `<h2 id="h-${g[0]}">${sc[2]}</h2>`}${sc[3]}`).join('');
+    return `<section class="cs-sec rv" id="s-${g[0]}" aria-labelledby="h-${g[0]}"><span class="meta">${String(groups.indexOf(g) + 1).padStart(2, '0')} · ${g[1]}</span>${body}</section>`;
+  };
+  const pair = list => list && list.some(Boolean) || DEV ? `<div class="csx-pair">${[0, 1].map(k => caseFig(list && list[k], '1200 × 900', '')).join('')}</div>` : '';
+  const toc = groups.map((g, k) => `<a href="#s-${g[0]}" data-sec="s-${g[0]}"><span class="meta">${String(k+1).padStart(2,'0')}</span>${g[1]}</a>`).join('');
+
   const el = document.createElement('div');
   el.innerHTML = `
-  <section class="cs-hero" aria-labelledby="cs-title">
-    <div class="wrap cs-hero-inner">
-      <p class="crumbs meta"><a href="#work">← Work</a><span>/</span><span>${c.eyebrow}</span></p>
-      <p class="meta" style="color:var(--lime);margin-bottom:14px">${c.name}</p>
-      <h1 id="cs-title" tabindex="-1">${c.title}</h1>
-      <p class="lead">${c.lead}</p>
-      <div class="cs-meta">${c.meta.map(m=>`<div><span class="meta">${m[0]}</span>${m[1]}</div>`).join('')}</div>
+  <div class="wrap csx">
+    <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
+    <div class="csx-layout">
+      <aside class="csx-side">
+        <p class="meta csx-eyebrow">${c.eyebrow}</p>
+        <h1 id="cs-title" tabindex="-1">${c.name}</h1>
+        <p class="csx-lead">${c.lead}</p>
+        <dl class="csx-meta">${c.meta.map(m => `<div><dt class="meta">${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>
+        <nav class="toc" aria-label="Case study sections">${toc}</nav>
+        ${live ? `<a class="csx-live" href="${live}" target="_blank" rel="noopener"><i class="ri-arrow-right-up-line" aria-hidden="true"></i>${live.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '').split('/')[0]}</a>` : ''}
+      </aside>
+      <div class="csx-main">
+        <div class="csx-banner">${c.cover}</div>
+        ${group('overview')}
+        ${pair(shots.pair1)}
+        ${group('problem')}
+        ${group('solution')}
+        ${caseFig(shots.wide, '2400 × 1350', 'csx-wide')}
+        ${pair(shots.pair2)}
+        ${group('research')}
+        ${group('outcome')}
+        ${caseFig(shots.end, '2400 × 1350', 'csx-wide')}
+        <nav class="next" aria-label="More case studies">
+          <a href="#${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
+          <a href="#${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
+        </nav>
+      </div>
     </div>
-  </section>
-  <div class="cs-cover"><div class="wrap">${c.cover}</div></div>
-  <div class="wrap cs-body">
-    <div class="cs-layout">
-      <nav class="toc" aria-label="Case study sections">${toc}</nav>
-      <div class="cs-sections">${secs}</div>
-    </div>
-    <nav class="next" aria-label="More case studies">
-      <a href="#${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
-      <a href="#${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
-    </nav>
   </div>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
