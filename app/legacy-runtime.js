@@ -57,7 +57,7 @@ const WORK = [
     desc:'Browse, compare and rent cars in the UAE by category, brand and price.' },
   { name:'BonsaiHD', cat:'Streaming App', size:'', href:'#bonsaihd', image:'img/work/bonsaihd-app.webp',
     desc:'A movie and series streaming app built around discovery and quick playback.' },
-  { name:'Packly Business Manager V2', cat:'Mobile App', size:'', href:'#packly-business-manager', image:'img/work/packly-business-manager-app-v2.webp',
+  { name:'Packly Business Manager V2', cat:'Mobile App', size:'', href:'#packly-business-manager-v2', image:'img/work/packly-business-manager-app-v2.webp',
     desc:'The redesigned merchant app: order status, commerce tools and inventory at a glance.' },
   { name:'Packly Drive', cat:'Web Design', size:'wide', href:'https://packlydrive.com/', image:'img/work/packly-drive-web.webp',
     desc:'Car rental website for Dubai: search thousands of cars, airport transfers, yachts and drivers.' },
@@ -364,9 +364,54 @@ const CASES = {
      <div><b>Free → VIP</b><span>Paywall → plan comparison → time-limited offer → trial start</span></div>
    </div>`],
    ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Complete streaming product</h3><p>Discovery, AI, social viewing and subscription designed as one experience.</p></div><div class="box sageb"><span class="meta">AI layer</span><h3>Mood-to-movie in one tap</h3><p>Ask Bonsai AI takes a mood and returns a single best match — no browsing required.</p></div><div class="box sageb"><span class="meta">Social</span><h3>Watch With Friends for 8</h3><p>Room codes and QR sharing let groups of up to 8 watch together in sync.</p></div></div>`]
+  ]},
+
+'packly-business-manager-v2': {
+  name:'Packly Business Manager V2', eyebrow:'Case study 06 · SaaS / Mobile',
+  title:'Redesigning the merchant app for clarity and speed',
+  lead:'A ground-up redesign of the Packly Business Manager mobile app — a cleaner home, smarter product management, and performance analytics merchants can read at a glance.',
+  meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Mobile app (Android)'],['Version','V2 — redesign of V1'],['Status',`<a href="https://play.google.com/store/apps/details?id=com.packlybusiness.app" target="_blank" rel="noopener">Live on Google Play ↗</a>`]],
+  cover:`<div class="cover-frame" style="padding:0!important;background:none"><img src="img/pbmv2-hero.webp" alt="Packly Business Manager V2: My Shop, home and analytics screens" width="2000" height="1125" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block"></div>`,
+  sections:[
+   ['intro','Introduction','From V1 to a faster, cleaner merchant tool', `<p class="lead">Packly Business Manager is the merchant's command centre on Packly.</p><p>I redesigned the V2 mobile app from the ground up — restructuring the home, rebuilding product management, and adding an analytics screen that puts earnings and performance numbers front and centre.</p>`],
+   ['context','Context','A lot to manage, not enough clarity', `<p>Packly merchants use the app every day to track orders, manage products, check performance and run their shop. V1 covered all the jobs. V2 needed to make each one faster — especially for merchants handling high volumes of orders and large product catalogues.</p>`],
+   ['problem','Problem','What needed changing', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">The home was dense and hard to scan. Key numbers — order counts, earnings, channel performance — required too many steps to reach. Product management lacked clear status visibility.</p></div><div><span class="meta">Goal</span><p style="margin-top:12px">Restructure the information hierarchy so the most-used data is always one look away, and the most-common tasks are one tap from home.</p></div></div>
+   <div class="focus-list" style="margin-top:24px">
+     <div><b>Home clarity</b><span>Order status buried in navigation, not visible on load.</span></div>
+     <div><b>Analytics</b><span>Earnings and KPIs required multiple screens to piece together.</span></div>
+     <div><b>Product management</b><span>No clear status filters; adding a product was a single long form.</span></div>
+     <div><b>Shop tools</b><span>Seller profile and shop management not accessible from home.</span></div>
+   </div>`],
+   ['ia','Key Features','What the redesign delivers', `<div class="focus-list">
+     <div><b>Redesigned home</b><span>Order status tiles (Pending, Processing, Delivered) at the top — visible the moment you open the app. Packly Commerce and Product &amp; Inventory shortcuts grouped separately.</span></div>
+     <div><b>Analytics screen</b><span>Net earnings chart with period comparison, four KPI tiles (Total Sales, Total Orders, Total Expense, Gross Profit) and trend indicators vs previous period.</span></div>
+     <div><b>Product management</b><span>Status-filtered list (All, My Product, Draft, Trash) with product name, SKU, price, stock and status badge on each row. Add Product uses a stepped form with drag-to-reorder image upload.</span></div>
+     <div><b>My Shop</b><span>Seller profile with followers, product count and rating score. In-app shop and product listing management.</span></div>
+   </div>`],
+   ['iteration','V1 → V2','How the redesign changed the product', `<div class="versions"><div class="box"><span class="meta">V1</span><h3>Full feature coverage</h3><p>Every merchant job covered in one app — products, inventory, orders, sales, customers, campaigns and payouts.</p></div><div class="arrow">→</div><div class="box inkb"><span class="meta">V2</span><h3>Faster, clearer, better organised</h3><p>Same feature set, rebuilt information hierarchy. Daily tasks are now visible or reachable in one tap from a cleaner home.</p></div></div>`],
+   ['decisions','Key Design Decisions','Decisions visible in the shipped product', `<div class="sf-decisions">
+     <article class="sf-decision"><h3>Surface order status first</h3><p>Pending, Processing and Delivered counts sit at the very top of home as prominent tiles — the first thing merchants see when they open the app.</p></article>
+     <article class="sf-decision"><h3>Group tools by mental model</h3><p>Packly Commerce (shop-facing: My Shop, Reviews, Returns) and Product &amp; Inventory (stock-facing: Products, Purchase, Sales, Stock) are different jobs, so they live in separate sections.</p></article>
+     <article class="sf-decision"><h3>Show earnings in context</h3><p>The analytics chart plots net earnings against a trend line with previous-period comparison, so merchants can see direction without doing the maths themselves.</p></article>
+     <article class="sf-decision"><h3>Break product creation into steps</h3><p>A two-step Add Product flow (Basic Information → Advanced Details) with drag-to-reorder image upload replaces the original single scrolling form.</p></article>
+   </div>`],
+   ['users','Who the App Serves','Merchants at different scales', `<div class="two"><div class="box inkb"><span class="meta">Primary</span><h3>Merchant owner</h3><p>Checks order status daily, monitors earnings and channel performance, manages the product catalogue and runs the shop.</p></div><div class="box"><span class="meta">Secondary</span><h3>Merchant manager</h3><p>Handles product listing, order management and inventory on behalf of the owner — uses the app throughout the day.</p></div></div>`],
+   ['focus','Design Challenges','Four things the redesign had to get right', `<div class="focus-list">
+     <div><b>Scannability</b><span>The most important numbers visible without scrolling or tapping.</span></div>
+     <div><b>Task speed</b><span>Frequent actions (check orders, add a product, see earnings) reachable in one tap.</span></div>
+     <div><b>Product scale</b><span>A list of 120+ products needs clear filters and status badges, not just a flat scroll.</span></div>
+     <div><b>Shop in-app</b><span>Merchants needed to manage their Packly seller profile without leaving the app.</span></div>
+   </div>`],
+   ['flow','Core User Journeys','From intent to action', `<div class="focus-list f4">
+     <div><b>Daily check</b><span>Home → order tiles → channel mix → act on priority orders</span></div>
+     <div><b>Product work</b><span>Products tab → status filter → select item → edit or add new</span></div>
+     <div><b>Performance</b><span>Analytics tab → earnings chart → KPI tiles → period comparison</span></div>
+     <div><b>Shop</b><span>Packly Commerce → My Shop → profile, followers, ratings, listings</span></div>
+   </div>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on Google Play</h3><p>V2 released to Packly merchants as the primary mobile management tool.</p></div><div class="box sageb"><span class="meta">Home</span><h3>Orders visible on open</h3><p>Pending, Processing and Delivered counts surface immediately without any navigation.</p></div><div class="box sageb"><span class="meta">Analytics</span><h3>Performance at a glance</h3><p>Net earnings, sales, orders, expense and profit in one screen with trend context.</p></div></div>`]
   ]}
 };
-const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway','bonsaihd'];
+const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway','bonsaihd','packly-business-manager-v2'];
 
 
 
@@ -604,6 +649,13 @@ const CASE_SHOTS = {
     pair2: [['pg-customer-card.png', 'Card payment', 'The customer chooses a method and sees the amount before paying.', 1],
             ['pg-customer-receipt.png', 'Receipt', 'A definite result the customer can keep.', 1]],
     end: ['pg-dash-full.webp', 'Report & analytics', 'KPIs with trends, transaction performance, payment-method mix, refunds, chargebacks, collection breakdown and a monthly report.'] },
+  'packly-business-manager-v2': {
+    pair1: [['pbmv2-analytics.webp', 'Analytics', 'Net earnings chart with period filter, and four KPI tiles — total sales, orders, expense and gross profit with trend vs previous period.'],
+            ['pbmv2-products.webp', 'Product list', 'Status-filtered list (All, My Product, Draft, Trash) with name, SKU, price, stock and status badge on every row.']],
+    wide: ['pbmv2-screens.webp', 'My Shop, Home & Analytics', 'Three core screens of the V2 redesign: the seller shop profile, the restructured merchant home and the analytics dashboard.'],
+    pair2: [['pbmv2-add-product.webp', 'Add Product', 'Step 1 of the two-step product creation flow: name, category, drag-to-reorder images and product details.'],
+            ['pbmv2-home.webp', 'Home', 'Order status tiles up front, followed by Packly Commerce and Product & Inventory shortcuts, and channel sales at the bottom.']],
+    end: ['pbmv2-overview.webp', 'App overview', 'Five key screens: home, analytics, add product, product list and My Shop — the full Packly Business Manager V2 experience.'] },
   'bonsaihd': {
     pair1: [['bonsai-ai-result.webp', 'Ask Bonsai AI — result', 'Mood matched to a 98% best pick. One prominent card, instant Play.'],
             ['bonsai-ai-mood.webp', 'Ask Bonsai AI — mood selector', 'The chatbot opens with a mood question and emoji-based chips to start the recommendation flow.']],
