@@ -1111,43 +1111,69 @@ a.chip::after{content:"↗";font-size:.75em;opacity:.6}
 .pj-card-meta span{color:var(--muted);font-size:.9rem}
 @media (max-width:560px){.pj-track{grid-auto-columns:82%}.pj-arrow{width:42px;height:42px}}
 
-/* ============ Case study (wireframe): sticky sidebar + banner/sections/image slots ============ */
-.csx{padding-top:clamp(112px,14vh,156px);padding-bottom:var(--sec)}
-.csx-layout{display:grid;grid-template-columns:minmax(240px,3fr) minmax(0,9fr);gap:clamp(32px,4vw,72px)}
-.csx-side{position:sticky;top:110px;align-self:start;display:flex;flex-direction:column;gap:22px}
-.csx-eyebrow{margin:0;color:var(--muted)}
-.csx-side h1{margin:-8px 0 0;font-size:clamp(1.7rem,1.3rem + 1.1vw,2.3rem);font-weight:500;line-height:1.08;letter-spacing:-.03em}
-.csx-lead{margin:0;color:#3a3c33;font-size:.98rem;line-height:1.6}
-.csx-meta{display:flex;flex-direction:column;gap:12px;margin:0;padding:18px 0;border-block:1px solid var(--line)}
-.csx-meta div{display:flex;flex-direction:column;gap:3px}
-.csx-meta dt{color:var(--muted)}
-.csx-meta dd{margin:0;font-size:.92rem}
-.csx-side .toc{position:static}
-.csx-live{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;color:var(--text);font-weight:500;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:4px;transition:border-color .25s}
-.csx-live i{color:var(--lime-2);font-size:18px}
-.csx-live:hover{border-color:var(--text)}
-.csx-main{display:flex;flex-direction:column;gap:clamp(48px,6vw,88px);min-width:0}
-.csx-banner .cover-frame{border-radius:clamp(14px,1.6vw,24px)}
-.csx-pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px)}
-.csx-fig{margin:0;display:flex;flex-direction:column;gap:12px}
-.csx-frame{border-radius:clamp(12px,1.4vw,20px);overflow:hidden;background:#fff;border:1px solid var(--line)}
-.csx-frame img{display:block;width:100%;height:auto}
-.csx-pair .csx-frame{aspect-ratio:4/3}
-.csx-pair .csx-frame img{height:100%;object-fit:cover;object-position:top}
-.csx-fig.is-phone .csx-frame{--pad:clamp(16px,2.4vw,32px);position:relative;background:var(--paper-2);border:0}
-.csx-fig.is-phone .csx-frame img{position:absolute;inset:var(--pad) 0;margin:auto;width:auto;height:calc(100% - var(--pad) * 2);max-width:calc(100% - var(--pad) * 2);object-fit:contain;border-radius:14px;box-shadow:0 18px 40px -18px rgba(20,22,14,.35)}
-.csx-wide.is-phone .csx-frame{aspect-ratio:4/3}
-.csx-pair .is-phone .csx-frame{aspect-ratio:1/1}
-.csx-fig figcaption{font-size:.88rem;color:var(--muted);line-height:1.5}
-.csx-fig figcaption b{color:var(--text);font-weight:500}
-.csx-frame.pj-empty{aspect-ratio:16/9}
-.csx-pair .csx-frame.pj-empty{aspect-ratio:4/3}
-.csx .cs-sec h2{max-width:24ch}
-.csx-sub{margin:18px 0 0;font-size:clamp(1.2rem,1rem + .6vw,1.5rem);font-weight:500;line-height:1.2;letter-spacing:-.02em}
-.csx .next{margin-top:0}
-@media (max-width:960px){
-  .csx-layout{grid-template-columns:1fr}
-  .csx-side{position:static}
-  .csx-side .toc{display:none}
+/* ============ Case study (orbix.studio structure) ============ */
+.cx{--cx-side:clamp(16px,2.1vw,30px);padding-top:clamp(112px,14vh,160px)}
+.cx-wrap,.cx-banner,.cx-overview,.cx-more{max-width:1380px;margin-inline:auto}
+.cx-wrap{padding-inline:var(--cx-side)}
+.cx h1{margin:0 0 clamp(28px,4vw,60px);font-size:clamp(2.4rem,1.4rem + 3.6vw,4rem);font-weight:500;line-height:1.1;letter-spacing:-.02em}
+.cx-banner{padding-inline:var(--cx-side)}
+.cx-banner .cover-frame{border-radius:clamp(16px,1.8vw,24px);min-height:clamp(320px,46vw,760px);align-items:flex-end}
+.cx-banner .cover-mock{align-items:center}
+.cx-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);align-items:center;gap:clamp(32px,6vw,120px);margin-top:clamp(20px,3vw,60px);margin-inline:max(var(--cx-side),calc((100% - 1380px) / 2));padding:clamp(40px,8.3vw,120px) clamp(24px,5.5vw,80px);border-radius:clamp(16px,1.8vw,24px);background:#fff}
+.cx-ov-eyebrow{display:flex;align-items:center;gap:14px;margin:0 0 clamp(28px,4vw,56px);font-size:1rem}
+.cx-ov-eyebrow span{color:var(--lime-2);font-size:.8rem}
+.cx-overview h2{margin:0 0 clamp(20px,2.5vw,36px);font-size:clamp(1.7rem,1.2rem + 1.6vw,2.5rem);font-weight:500;line-height:1.3;letter-spacing:-.02em}
+.cx-ov-text>p{margin:0;max-width:60ch;font-size:1.0625rem;line-height:1.5}
+.cx-facts{margin:clamp(32px,4vw,56px) 0 0}
+.cx-facts div{display:flex;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cx-facts div:last-child{border-bottom:0}
+.cx-facts dt{font-size:.95rem}
+.cx-facts dd{margin:0;text-align:right;font-size:.95rem}
+.cx-ov-media{display:flex;justify-content:center}
+.cx-ov-media img{display:block;width:auto;max-width:100%;max-height:570px;border-radius:22px;filter:drop-shadow(0 30px 40px rgba(20,22,14,.18))}
+.cx-details{max-width:1024px;margin-inline:auto;padding:clamp(56px,5.5vw,80px) var(--cx-side) clamp(80px,10vw,140px);box-sizing:content-box;display:flex;flex-direction:column;gap:clamp(56px,7vw,100px)}
+.cx-lead{max-width:924px;margin-inline:auto}
+.cx-lead p{margin:0 0 16px;font-size:clamp(1.2rem,1rem + .6vw,1.5rem);font-weight:500;line-height:1.25;letter-spacing:-.01em;color:var(--text)}
+.cx-lead p:last-child{margin-bottom:0}
+.cx-media{display:flex;flex-direction:column;gap:20px}
+.cx-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cx-fig{margin:0;display:flex;flex-direction:column;gap:12px}
+.cx-frame{border-radius:clamp(14px,1.4vw,20px);overflow:hidden;background:#fff}
+.cx-frame img{display:block;width:100%;height:auto}
+.cx-row .cx-frame{aspect-ratio:502/483}
+.cx-row .cx-frame img{height:100%;object-fit:cover;object-position:top}
+.cx-fig.is-phone .cx-frame{--pad:clamp(18px,2.6vw,36px);position:relative;background:var(--paper-2)}
+.cx-fig.is-phone .cx-frame img{position:absolute;inset:var(--pad) 0;margin:auto;width:auto;height:calc(100% - var(--pad) * 2);max-width:calc(100% - var(--pad) * 2);object-fit:contain;border-radius:16px;box-shadow:0 18px 40px -18px rgba(20,22,14,.35)}
+.cx-fig figcaption{font-size:.88rem;color:var(--muted);line-height:1.5}
+.cx-fig figcaption b{color:var(--text);font-weight:500}
+.cx-frame.pj-empty{aspect-ratio:16/9}
+.cx-row .cx-frame.pj-empty{aspect-ratio:502/483}
+.cx-block{display:flex;gap:64px;scroll-margin-top:110px}
+.cx-label{flex:0 0 200px;margin:0;font-size:1.125rem;line-height:1.2;text-transform:uppercase}
+.cx-content{flex:1;min-width:0}
+.cx-content>h2{margin:0 0 16px;font-size:clamp(1.5rem,1.2rem + 1vw,2rem);font-weight:600;line-height:1.2;letter-spacing:-.01em;max-width:none}
+.cx-content p{margin:0 0 16px;font-size:1.125rem;line-height:1.4;color:var(--text);max-width:none}
+.cx-content ul{padding-left:20px}
+.cx-content li{margin-bottom:4px;color:color-mix(in srgb,var(--text) 80%,transparent)}
+.cx-sub{margin:40px 0 14px;font-size:1.35rem;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.cx-steps{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:16px;margin:48px 0 0 -264px}
+.cx-step{display:flex;flex-direction:column;padding:18px 16px 22px;border-radius:6px;background:#fff}
+.cx-step-n{font-size:1.5rem;line-height:1}
+.cx-step h3{margin:34px 0 12px;font-size:1.125rem;font-weight:500;line-height:1.35}
+.cx-step p{margin:0;font-size:.9rem;line-height:1.5;color:color-mix(in srgb,var(--text) 80%,transparent)}
+.cx-more{padding:clamp(56px,7vw,100px) var(--cx-side) var(--sec)}
+.cx-more h2{margin:0 0 clamp(28px,3.5vw,48px);font-size:clamp(2rem,1.4rem + 2vw,3rem);font-weight:500;letter-spacing:-.02em}
+.cx-more h2 em{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-weight:400;color:var(--muted)}
+.cx-more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cx-more-grid .wk-wide{grid-column:auto}
+@media (max-width:980px){
+  .cx-overview{grid-template-columns:1fr}
+  .cx-block{flex-direction:column;gap:18px}
+  .cx-label{flex:none}
+  .cx-steps{grid-template-columns:repeat(2,minmax(0,1fr));margin-left:0}
+  .cx-more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:560px){.csx-pair{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .cx-row{grid-template-columns:1fr}
+  .cx-steps,.cx-more-grid{grid-template-columns:1fr}
+}

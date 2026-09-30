@@ -505,17 +505,16 @@ function buildCleanPaymentStory(prev, prevSlug, next, nextSlug){
   const frag=document.createDocumentFragment(); while(el.firstChild) frag.appendChild(el.firstChild); return frag;
 }
 
-/* Case study layout (from the wireframe): sticky sidebar with title, meta, contents
-   and live link; main column = banner, Overview, two images, Problem, Solution,
-   wide image, two images, Research, Outcome, closing image.
-   Existing section content is regrouped by id; 'ui' screens move into the image
-   slots below and 'live' becomes the sidebar link. */
-const CASE_GROUPS = [
-  ['overview', 'Overview', ['intro', 'context']],
-  ['problem', 'Problem', ['problem']],
-  ['solution', 'Solution', ['ia', 'iteration', 'decisions']],
+/* Case study layout, following orbix.studio case studies: title, full-width banner,
+   Project Overview card (headline, intro, facts, phone), lead, image rows, then
+   label | content blocks (Problem, Solution, Process cards, Research, Results),
+   and Explore More Case Studies. Existing section content is regrouped by id;
+   'decisions' become the numbered Process cards and 'ui' screens fill the image rows. */
+const CASE_BLOCKS = [
+  ['problem', 'Problem', ['context', 'problem']],
+  ['solution', 'Solution', ['ia', 'iteration']],
   ['research', 'Research', ['users', 'focus', 'flow']],
-  ['outcome', 'Outcome', ['outcome']],
+  ['outcome', 'Results & Outcomes', ['outcome']],
 ];
 // [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
 const CASE_SHOTS = {
@@ -550,61 +549,68 @@ const CASE_SHOTS = {
 };
 
 function caseFig(im, size, cls){
-  if(!im) return DEV ? `<figure class="csx-fig ${cls}"><div class="csx-frame pj-empty" aria-hidden="true"><span>${size}</span></div></figure>` : '';
+  if(!im) return DEV ? `<figure class="cx-fig ${cls}"><div class="cx-frame pj-empty" aria-hidden="true"><span>${size}</span></div></figure>` : '';
   const [file, title, cap, phone] = im;
-  return `<figure class="csx-fig ${cls}${phone ? ' is-phone' : ''}"><div class="csx-frame"><img src="img/${file}" alt="${title}" loading="lazy" decoding="async"></div><figcaption><b>${title}.</b> ${cap}</figcaption></figure>`;
+  return `<figure class="cx-fig ${cls}${phone ? ' is-phone' : ''}"><div class="cx-frame"><img src="img/${file}" alt="${title}" loading="lazy" decoding="async"></div><figcaption><b>${title}.</b> ${cap}</figcaption></figure>`;
+}
+
+// pull title/text pairs out of a decisions section so they can render as Process cards
+function caseSteps(html){
+  const tmp = document.createElement('div'); tmp.innerHTML = html;
+  return [...tmp.querySelectorAll('article')].map(a => [a.querySelector('h3')?.textContent || '', a.querySelector('p')?.textContent || '']).filter(x => x[0]);
 }
 
 function buildCase(slug){
   const c = CASES[slug];
-  const i = ORDER.indexOf(slug);
-  const prevSlug = ORDER[(i+ORDER.length-1)%ORDER.length], nextSlug = ORDER[(i+1)%ORDER.length];
-  const prev = CASES[prevSlug], next = CASES[nextSlug];
   const shots = CASE_SHOTS[slug] || {};
   const byId = Object.fromEntries(c.sections.map(sc => [sc[0], sc]));
-  const liveSec = byId.live && byId.live[3].match(/href="([^"]+)"/);
-  const live = liveSec ? liveSec[1] : null;
-
-  const groups = CASE_GROUPS.map(([id, label, ids]) => [id, label, ids.map(x => byId[x]).filter(Boolean)]).filter(g => g[2].length);
-  const group = (id, n) => {
-    const g = groups.find(x => x[0] === id);
-    if(!g) return '';
-    const body = g[2].map((sc, k) => `${k ? `<h3 class="csx-sub">${sc[2]}</h3>` : `<h2 id="h-${g[0]}">${sc[2]}</h2>`}${sc[3]}`).join('');
-    return `<section class="cs-sec rv" id="s-${g[0]}" aria-labelledby="h-${g[0]}"><span class="meta">${String(groups.indexOf(g) + 1).padStart(2, '0')} · ${g[1]}</span>${body}</section>`;
+  const row = list => (list && list.some(Boolean)) || DEV ? `<div class="cx-row">${[0, 1].map(k => caseFig(list && list[k], '1200 × 900', '')).join('')}</div>` : '';
+  const media = (...parts) => { const h = parts.join('').trim(); return h ? `<div class="cx-media">${h}</div>` : ''; };
+  const block = (id, label, body) => `<section class="cx-block rv" id="s-${id}" aria-labelledby="h-${id}"><p class="cx-label">${label}</p><div class="cx-content">${body}</div></section>`;
+  const textBlock = ([id, label, ids]) => {
+    const secs = ids.map(x => byId[x]).filter(Boolean);
+    if(!secs.length) return '';
+    return block(id, label, secs.map((sc, k) => `${k ? `<h3 class="cx-sub">${sc[2]}</h3>` : `<h2 id="h-${id}">${sc[2]}</h2>`}${sc[3]}`).join(''));
   };
-  const pair = list => list && list.some(Boolean) || DEV ? `<div class="csx-pair">${[0, 1].map(k => caseFig(list && list[k], '1200 × 900', '')).join('')}</div>` : '';
-  const toc = groups.map((g, k) => `<a href="#s-${g[0]}" data-sec="s-${g[0]}"><span class="meta">${String(k+1).padStart(2,'0')}</span>${g[1]}</a>`).join('');
+  const steps = byId.decisions ? caseSteps(byId.decisions[3]) : [];
+  const process = steps.length ? block('process', 'Process', `<h2 id="h-process">${byId.decisions[2]}</h2>
+    <div class="cx-steps" style="--n:${steps.length}">${steps.map((st, k) => `<article class="cx-step"><span class="cx-step-n">${String(k + 1).padStart(2, '0')}</span><h3>${st[0]}</h3><p>${st[1]}</p></article>`).join('')}</div>`) : '';
+  const hero = [...(shots.pair1 || []), ...(shots.pair2 || [])].find(x => x && x[3]);   // a phone screen for the overview card
+  const others = ORDER.filter(x => x !== slug).map(x => WORK.find(w => w.href === '#' + x)).filter(Boolean);
+  const [problem, solution, research, outcome] = CASE_BLOCKS.map(textBlock);
 
   const el = document.createElement('div');
   el.innerHTML = `
-  <div class="wrap csx">
-    <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
-    <div class="csx-layout">
-      <aside class="csx-side">
-        <p class="meta csx-eyebrow">${c.eyebrow}</p>
-        <h1 id="cs-title" tabindex="-1">${c.name}</h1>
-        <p class="csx-lead">${c.lead}</p>
-        <dl class="csx-meta">${c.meta.map(m => `<div><dt class="meta">${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>
-        <nav class="toc" aria-label="Case study sections">${toc}</nav>
-        ${live ? `<a class="csx-live" href="${live}" target="_blank" rel="noopener"><i class="ri-arrow-right-up-line" aria-hidden="true"></i>${live.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '').split('/')[0]}</a>` : ''}
-      </aside>
-      <div class="csx-main">
-        <div class="csx-banner">${c.cover}</div>
-        ${group('overview')}
-        ${pair(shots.pair1)}
-        ${group('problem')}
-        ${group('solution')}
-        ${caseFig(shots.wide, '2400 × 1350', 'csx-wide')}
-        ${pair(shots.pair2)}
-        ${group('research')}
-        ${group('outcome')}
-        ${caseFig(shots.end, '2400 × 1350', 'csx-wide')}
-        <nav class="next" aria-label="More case studies">
-          <a href="#${prevSlug}"><span class="meta muted">← Previous</span><span class="h3">${prev.name}</span></a>
-          <a href="#${nextSlug}"><span class="meta muted">Next →</span><span class="h3">${next.name}</span></a>
-        </nav>
-      </div>
+  <div class="cx">
+    <div class="cx-wrap">
+      <a class="pj-back" href="#work"><span class="pj-back-icon" aria-hidden="true"><i class="ri-arrow-left-line"></i></span>Back to work</a>
+      <h1 id="cs-title" tabindex="-1">${c.name}</h1>
     </div>
+    <div class="cx-banner">${c.cover}</div>
+    <section class="cx-overview" aria-labelledby="cx-ov-title">
+      <div class="cx-ov-text">
+        <p class="cx-ov-eyebrow"><span aria-hidden="true">◂</span> Project Overview <span aria-hidden="true">▸</span></p>
+        <h2 id="cx-ov-title">${c.title}</h2>
+        <p>${c.lead}</p>
+        <dl class="cx-facts">${c.meta.map(m => `<div><dt>${m[0]}</dt><dd>${m[1]}</dd></div>`).join('')}</dl>
+      </div>
+      ${hero ? `<div class="cx-ov-media"><img src="img/${hero[0]}" alt="${hero[1]} screen" loading="lazy" decoding="async"></div>` : ''}
+    </section>
+    <div class="cx-details">
+      ${byId.intro ? `<div class="cx-lead">${byId.intro[3]}</div>` : ''}
+      ${media(row(shots.pair1), caseFig(shots.wide, '2400 × 1350', 'cx-wide'))}
+      ${problem}
+      ${media(row(shots.pair2))}
+      ${solution}
+      ${process}
+      ${research}
+      ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
+      ${outcome}
+    </div>
+    ${others.length ? `<section class="cx-more" aria-labelledby="cx-more-title">
+      <h2 id="cx-more-title">Explore More <em>Case Studies</em></h2>
+      <div class="cx-more-grid">${others.map(workCard).join('')}</div>
+    </section>` : ''}
   </div>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
