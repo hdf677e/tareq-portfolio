@@ -890,9 +890,29 @@ function wireView(){
     addEventListener('resize', onScroll);
     tick();
   }
-  // why-me ring
-  const wb=view.querySelector('.why-b');
-  if(wb){ if('IntersectionObserver' in window){ const o=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ wb.classList.add('seen'); o.disconnect(); } }),{threshold:.4}); o.observe(wb); } else wb.classList.add('seen'); }
+  // why-me: one spotlight moves through the list; the current phrase crossfades into the next
+  const why = view.querySelector('.why-loc');
+  if(why){
+    const words = [...why.querySelectorAll('.loc-w')], N = words.length;
+    let raf = 0, lastA = -1, lastB = -1;
+    const tick = () => {
+      raf = 0;
+      const r = why.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (why.offsetHeight - innerHeight)));
+      const h = p * (N - 1), a = Math.floor(h), f = h - a, b = Math.min(N - 1, a + 1);
+      [lastA, lastB].forEach(i => { if(i >= 0 && i !== a && i !== b) words[i].style.opacity = ''; });
+      words[a].style.opacity = (0.08 + 0.92 * (1 - f)).toFixed(3);
+      if(b !== a) words[b].style.opacity = (0.08 + 0.92 * f).toFixed(3);
+      lastA = a; lastB = b;
+    };
+    const onScroll = () => {
+      if(!why.isConnected){ removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); return; }
+      if(!raf) raf = requestAnimationFrame(tick);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    tick();
+  }
   // capabilities tabs
   const ctabs=[...view.querySelectorAll('.cap-tab')], cpan=[...view.querySelectorAll('.cap-panel')];
   if(ctabs.length){
@@ -942,16 +962,15 @@ function wireView(){
             c.replaceWith(f); } else if(c.nodeType===1 && !c.classList.contains('bw')) walk(c); }); };
       walk(h); h.classList.add('bwrap'); });
     // paragraphs / eyebrows / buttons fade in from blur
-    view.querySelectorAll('.eyebrow, .sec-head p, .tl-head p, .tl-copy, .tl-pic, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .why-head .eyebrow, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
+    view.querySelectorAll('.eyebrow, .sec-head p, .tl-head p, .tl-copy, .tl-pic, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
     // stagger siblings in grids
-    view.querySelectorAll('.wk-grid, .mw-grid, .why-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
+    view.querySelectorAll('.wk-grid, .mw-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
     view.querySelectorAll('.rv, .bwrap, .bt').forEach(el=>{ if(el.getBoundingClientRect().top > innerHeight*0.92 && !el.closest('.hero')){ el.classList.add('pre'); io.observe(el); } });
   }
   // parallax
   if(pxRaf) cancelAnimationFrame(pxRaf);
   // only elements that have hidden overflow room get parallax, and the shift is clamped to that room
   pxEls = reduce ? [] : [
-    ...[...view.querySelectorAll('.why-bg')].map(e=>[e,0.06]),
     ...[...view.querySelectorAll('.ab-photo img')].map(e=>[e,0.05]),
     ...[...view.querySelectorAll('.hero-media video')].map(e=>[e,0.24]),
   ];
