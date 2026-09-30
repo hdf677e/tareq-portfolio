@@ -109,12 +109,10 @@ function superAppArt(){
 const MW_LAYOUT = ['wide-l', 'short', 'tall', 'wide-r', 'tall', 'short'];
 function rowItem(p, i){
   const kind = MW_LAYOUT[i % MW_LAYOUT.length];
-  const tags = [...p.cat.split(' · '), p.platform].filter(Boolean).map(t => `<span class="mw-tag">${t}</span>`).join('');
   const inner = `<div class="mw-shot">${p.thumb ? img(p.thumb, p.thumbAlt) : superAppArt()}<span class="mw-plus" aria-hidden="true">${PLUS}</span></div>
     <div class="mw-body">
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
-      <div class="mw-tags">${tags}</div>
     </div>`;
   if(i === 0) return `<a class="mw mw-${kind} mw-intro" href="#${shotHash(p)}" aria-label="${p.name}, view project">
     <div class="mw-stick">${inner}</div><div class="mw-pin" aria-hidden="true"></div>
