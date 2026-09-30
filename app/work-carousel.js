@@ -10,12 +10,12 @@ const TEX_W = 1600, TEX_H = 1000;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 const cardVert = `
-uniform float uCenter, uVel, uRise;
+uniform float uCenter, uVel, uRise, uFar;
 varying vec2 vUv;
 void main(){
   vUv = uv;
   float th = (uCenter + position.x) / ${R.toFixed(1)};
-  float r = ${R.toFixed(1)} - sin(uv.x * 3.14159265) * uVel * 0.6;
+  float r = ${R.toFixed(1)} + uFar - sin(uv.x * 3.14159265) * uVel * 0.6;
   vec3 p = vec3(sin(th) * r, position.y * (1.0 + abs(uVel) * 0.015) - uRise, -cos(th) * r);
   gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
 }`;
@@ -111,7 +111,7 @@ export function initWorkCarousel(section, items){
 
   const geo = new THREE.PlaneGeometry(W, H, 64, 1);
   const cards = items.map(() => {
-    const u = { uImg: { value: null }, uUi: { value: null }, uCenter: { value: 0 }, uVel: { value: 0 }, uRise: { value: 2.5 },
+    const u = { uImg: { value: null }, uUi: { value: null }, uCenter: { value: 0 }, uVel: { value: 0 }, uRise: { value: 0 }, uFar: { value: 0 },
                 uPar: { value: 0 }, uDim: { value: 1 }, uHover: { value: 0 }, uAlpha: { value: 0 } };
     const mat = new THREE.ShaderMaterial({ uniforms: u, vertexShader: cardVert, fragmentShader: cardFrag, transparent: true, depthWrite: false });
     const mesh = new THREE.Mesh(geo, mat);
@@ -163,10 +163,13 @@ export function initWorkCarousel(section, items){
   fit();
   const ro = new ResizeObserver(fit); ro.observe(stage); ro.observe(head);
 
-  let visible = false, revealAt = 0;
-  const vio = new IntersectionObserver(es => { visible = es[0].isIntersecting; if(visible && !revealAt) revealAt = performance.now(); });
+  let visible = false;
+  const vio = new IntersectionObserver(es => { visible = es[0].isIntersecting; });
   vio.observe(section);
 
+  // Scroll timeline while pinned: card slices, then an exit tail (EXIT of the
+  // pinned distance, matching the extra 70svh in the section's CSS height).
+  const EXIT = 0.7 / ((n - 1) * 0.55 + 0.7);
   // Each card gets an equal slice of the scroll; it holds in place for the first and
   // last 20% of its slice and eases to the next card in between.
   let base = 0;
@@ -224,37 +227,57 @@ export function initWorkCarousel(section, items){
       e.preventDefault();
       const to = clamp(idx + (e.key === 'ArrowRight' ? 1 : -1), 0, n - 1);
       drag = 0;
-      const range = section.offsetHeight - innerHeight;
-      window.scrollTo({ top: section.getBoundingClientRect().top + scrollY + range * to / (n - 1), behavior: reduce ? 'instant' : 'smooth' });
+      const cardLen = (section.offsetHeight - innerHeight) * (1 - EXIT);
+      window.scrollTo({ top: section.getBoundingClientRect().top + scrollY + cardLen * to / (n - 1), behavior: reduce ? 'instant' : 'smooth' });
     } else if(e.key === 'Enter') open(idx);
   };
   stage.addEventListener('keydown', onKey);
 
-  let raf = requestAnimationFrame(function frame(now){
+  let enter = 0, exit = 0, lastCss = '';
+  let raf = requestAnimationFrame(function frame(){
     raf = requestAnimationFrame(frame);
     if(!visible) return;
     const rect = section.getBoundingClientRect();
-    const range = rect.height - innerHeight;
+    const range = rect.height - innerHeight, cardLen = range * (1 - EXIT);
     const max = (n - 1) * STEP;
-    base = scrollBase(range > 0 ? clamp(-rect.top / range, 0, 1) : 0);
+    base = scrollBase(cardLen > 0 ? clamp(-rect.top / cardLen, 0, 1) : 0);
     drag = clamp(drag, -base - STEP * 0.4, max - base + STEP * 0.4);
     const prev = cur;
     cur += (base + drag - cur) * (reduce ? 1 : 0.085);
     vel += (clamp((cur - prev) * 4, -1, 1) - vel) * 0.12;
     if(reduce) vel = 0;
 
+    // entry runs while the section rises into view, exit during the pinned tail;
+    // both are smoothed so fast scrolling still glides
+    const enterT = clamp(1 - rect.top / innerHeight, 0, 1);
+    const exitT = range > 0 ? clamp((-rect.top - cardLen) / (range * EXIT), 0, 1) : 0;
+    const k = reduce ? 1 : 0.08;
+    enter += (enterT - enter) * k; exit += (exitT - exit) * k;
+    const ease = t => 1 - Math.pow(1 - t, 3);
+
     cards.forEach((c, i) => {
       const centre = i * STEP - cur;
-      const t = reduce ? 1 : clamp((now - revealAt - i * 110) / 1000, 0, 1);
-      const e = 1 - Math.pow(1 - t, 3);
+      const inE = ease(clamp(enter * 1.5 - Math.abs(centre / STEP) * 0.18, 0, 1));
+      const outE = ease(clamp(exit * 1.3 - Math.max(0, 1 - Math.abs(centre / STEP)) * 0.25, 0, 1));
       c.u.uCenter.value = centre;
       c.u.uVel.value = vel;
       c.u.uPar.value = clamp(centre / STEP, -1.5, 1.5) * 0.035;
       c.u.uDim.value = 1 - Math.min(Math.abs(centre) / STEP, 1.5) * 0.3;
       c.u.uHover.value += ((hover === i && !down ? 1 : 0) - c.u.uHover.value) * 0.12;
-      c.u.uAlpha.value = e;
-      c.u.uRise.value = (1 - e) * 2.5;
+      c.u.uAlpha.value = inE * (1 - outE);
+      c.u.uRise.value = reduce ? 0 : (1 - inE) * 1.8 - outE * 1.2;
+      c.u.uFar.value = reduce ? 0 : (1 - inE) * 7 + outE * 9;
     });
+
+    // whole scene blurs in and out; header and footer follow the exit
+    const blur = reduce ? 0 : Math.max((1 - enter) * 16, exit * 18);
+    const css = `${blur.toFixed(1)}|${Math.min(1, enter * 1.25).toFixed(2)}|${exit.toFixed(3)}`;
+    if(css !== lastCss){
+      lastCss = css;
+      canvas.style.filter = blur > 0.2 ? `blur(${blur.toFixed(1)}px)` : '';
+      canvas.style.opacity = (Math.min(1, enter * 1.25) * (1 - exit * 0.85)).toFixed(3);
+      section.style.setProperty('--wc-x', exit.toFixed(3));
+    }
     floorMat.uniforms.uRot.value = -cur / R;
 
     const i = clamp(Math.round(cur / STEP), 0, n - 1);
