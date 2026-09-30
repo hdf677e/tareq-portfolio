@@ -134,6 +134,25 @@ function shotFrame(src, alt, size, cls, eager){
   return DEV ? `<figure class="pj-frame ${cls} pj-empty" aria-hidden="true"><span>${size}</span></figure>` : '';
 }
 
+// "More work"-style card carousel: heading, arrow buttons, snapping track (wired by wireMoreTrack)
+function moreTrack(title, cards){
+  return `<section class="pj-more" aria-labelledby="pj-more-title">
+    <div class="pj-more-head">
+      <h2 id="pj-more-title">${title}</h2>
+      <div class="pj-more-nav">
+        <button type="button" class="pj-arrow" data-dir="-1" aria-label="Previous projects"><i class="ri-arrow-left-line" aria-hidden="true"></i></button>
+        <button type="button" class="pj-arrow" data-dir="1" aria-label="Next projects"><i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="pj-track">${cards.map(o => `
+      <a class="pj-card" href="${o.href}">
+        <span class="pj-card-img"><img src="${o.image}" alt="" loading="lazy" decoding="async"></span>
+        <span class="pj-card-meta"><b>${o.name}</b><span>${o.cat}</span></span>
+      </a>`).join('')}
+    </div>
+  </section>`;
+}
+
 function buildShot(hash){
   const p = SHOTS[hash];
   const tags = p.cat.split(' · ').concat(p.platform);
@@ -162,21 +181,7 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
-    <section class="pj-more" aria-labelledby="pj-more-title">
-      <div class="pj-more-head">
-        <h2 id="pj-more-title">More work</h2>
-        <div class="pj-more-nav">
-          <button type="button" class="pj-arrow" data-dir="-1" aria-label="Previous projects"><i class="ri-arrow-left-line" aria-hidden="true"></i></button>
-          <button type="button" class="pj-arrow" data-dir="1" aria-label="Next projects"><i class="ri-arrow-right-line" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <div class="pj-track">${others.map(o => `
-        <a class="pj-card" href="#${shotHash(o)}">
-          <span class="pj-card-img"><img src="img/${o.thumb}.webp" alt="" loading="lazy" decoding="async"></span>
-          <span class="pj-card-meta"><b>${o.name}</b><span>${o.cat}</span></span>
-        </a>`).join('')}
-      </div>
-    </section>
+    ${moreTrack('More work', others.map(o => ({ href: '#' + shotHash(o), image: `img/${o.thumb}.webp`, name: o.name, cat: o.cat })))}
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
@@ -618,6 +623,10 @@ function buildCase(slug){
       ${research}
       ${outcome}
       ${media(caseFig(shots.end, '2400 × 1350', 'cx-wide'))}
+      ${moreTrack('More projects', [
+        ...ORDER.filter(x => x !== slug).map(x => { const w = WORK.find(k => k.href === '#' + x); return { href: '#' + x, image: w ? w.image : '', name: CASES[x].name, cat: w ? w.cat : CASES[x].eyebrow }; }),
+        ...MORE.map(o => ({ href: '#' + shotHash(o), image: `img/${o.thumb}.webp`, name: o.name, cat: o.cat })),
+      ])}
     </div>
   </div>`;
   const frag = document.createDocumentFragment();
@@ -665,7 +674,7 @@ function mount(kind, slug){
   document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
   wireView();
   if(kind==='home') mountCarousel();
-  if(kind==='shot') wireMoreTrack();
+  if(kind==='shot' || kind==='case') wireMoreTrack();
 }
 
 let swapping = false;
