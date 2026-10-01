@@ -60,18 +60,22 @@
 <!-- ================= HOME TEMPLATE ================= -->
 <template id="tpl-home">
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero-media" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="media/footer-globe.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="wrap hero-inner">
-      <h1 id="hero-title" tabindex="-1">I design digital products that make complex business workflows <em>feel simple.</em></h1>
-      <p class="hero-sub lead">Product Designer with 3+ years of experience designing real-world products across ecommerce, logistics, ERP, payments and SaaS.</p>
-      <div class="hero-actions">
-        <a class="btn btn-lime" href="#work">View selected work
-          <i class="ri-arrow-down-line" aria-hidden="true"></i></a>
-        <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <i class="ri-download-line" aria-hidden="true"></i></a>
+    <div class="hv-stage">
+      <div class="hero-media" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="metadata" poster="media/hero-globe-poster.jpg">
+          <source src="media/hero-globe-540.mp4" type="video/mp4" media="(max-width: 860px)">
+          <source src="media/hero-globe-1080.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="wrap hv-inner">
+        <h1 id="hero-title" class="hv-title" tabindex="-1"><span class="hv-t1">Complex<br>workflows,</span> <span class="hv-t2">made<br><em>simple.</em></span></h1>
+        <div class="hv-foot">
+          <p>Hi, I’m Tareq, a product designer with 3+ years shipping SaaS, ecommerce, ERP, fintech and logistics products that people understand on first use.</p>
+          <div class="hero-actions">
+            <a class="btn btn-lime" href="#work">View case studies <i class="ri-arrow-down-line" aria-hidden="true"></i></a>
+            <a class="btn btn-ghost" href="cv/tareq-mahmud-cv.pdf" target="_blank" rel="noopener">Download CV <i class="ri-download-line" aria-hidden="true"></i></a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="strip">
@@ -83,7 +87,7 @@
 
   <section class="dark intro" aria-label="Summary">
     <div class="wrap">
-      <p class="statement rv">I design for merchants, customers, operators and internal teams. <span>Most of my work sits behind the storefront: orders, inventory, deliveries, payments and the admin tools that keep a business running.</span></p>
+      <p class="statement">Anyone can design a pretty storefront. I design what’s behind it: orders, inventory, deliveries, payments and the admin tools a business actually runs on. I make them so clear your support team gets bored.</p>
       <div class="facts">
         <div class="fact light rv">
           <div class="fav" aria-hidden="true"><span><img src="logos/steadfast-mark.webp" alt=""></span><span><img src="logos/packly-teal-mark.webp" alt=""></span><span><img src="logos/zavisoft-mark.webp" alt=""></span><i>+</i></div>
@@ -116,42 +120,26 @@
       <div class="tl-head">
         <span class="eyebrow meta">How I work</span>
         <h2 class="h2" id="approach-title">Good product design <span class="tl-sub">starts before the pixels.</span></h2>
-        <p>Five steps I follow on every product, from the first conversation to the release.</p>
+        <p>Four steps I follow on every product, from the first conversation to the release.</p>
       </div>
-      <div class="tl-body">
-        <div class="tl-rail" aria-hidden="true"><span class="tl-fill"></span></div>
-        <ol class="tl-list">
-        <li class="tl-row" style="--k:0">
-          <div class="tl-side"><span class="tl-tag">Step 1</span><b class="tl-word">Understand</b></div>
-          <div class="tl-mark" aria-hidden="true"><span class="tl-dot"><i class="ri-arrow-down-s-fill"></i></span></div>
-          <div class="tl-copy"><h3>Understand the requirement</h3><p>I talk to stakeholders and users to learn the business goal, the constraints and where the current flow breaks.</p></div>
-          <figure class="tl-pic"><img src="img/pbm-cover.jpg" alt="A small business owner using the Packly Business Manager app" loading="lazy" decoding="async"></figure>
+      <ol class="hw-grid">
+        <li class="hw-card">
+          <div class="hw-top"><i class="ri-search-line hw-icon" aria-hidden="true"></i><span class="hw-num">01</span></div>
+          <div class="hw-text"><h3>Understand and research</h3><p>I talk to stakeholders and users, audit competitors and read the data to learn the goal and where the current flow breaks.</p></div>
         </li>
-        <li class="tl-row" style="--k:1">
-          <div class="tl-side"><span class="tl-tag">Step 2</span><b class="tl-word">Research</b></div>
-          <div class="tl-mark" aria-hidden="true"><span class="tl-dot"><i class="ri-arrow-down-s-fill"></i></span></div>
-          <div class="tl-copy"><h3>Research the problem</h3><p>Competitor audits, user interviews and product data show what people actually need, not what we assume.</p></div>
-          <figure class="tl-pic"><img src="img/pg-dash-top.webp" alt="Payment gateway analytics dashboard" loading="lazy" decoding="async"></figure>
+        <li class="hw-card">
+          <div class="hw-top"><i class="ri-node-tree hw-icon" aria-hidden="true"></i><span class="hw-num">02</span></div>
+          <div class="hw-text"><h3>Structure the product</h3><p>I map the information architecture, roles and user flows, then wireframe, so every screen has a clear place.</p></div>
         </li>
-        <li class="tl-row" style="--k:2">
-          <div class="tl-side"><span class="tl-tag">Step 3</span><b class="tl-word">Structure</b></div>
-          <div class="tl-mark" aria-hidden="true"><span class="tl-dot"><i class="ri-arrow-down-s-fill"></i></span></div>
-          <div class="tl-copy"><h3>Structure the product</h3><p>I map the information architecture, roles and user flows, then wireframe, so every screen has a clear place.</p></div>
-          <figure class="tl-pic"><img src="img/pbmv2-overview.webp" alt="Five connected screens of the Packly Business Manager V2 flow" loading="lazy" decoding="async"></figure>
+        <li class="hw-card">
+          <div class="hw-top"><i class="ri-user-voice-line hw-icon" aria-hidden="true"></i><span class="hw-num">03</span></div>
+          <div class="hw-text"><h3>Run usability tests</h3><p>I test prototypes with real users, find the steps that confuse them and feed each round into the next iteration.</p></div>
         </li>
-        <li class="tl-row" style="--k:3">
-          <div class="tl-side"><span class="tl-tag">Step 4</span><b class="tl-word">Test</b></div>
-          <div class="tl-mark" aria-hidden="true"><span class="tl-dot"><i class="ri-arrow-down-s-fill"></i></span></div>
-          <div class="tl-copy"><h3>Run usability tests</h3><p>I test prototypes with real users, find the steps that confuse them and feed each round into the next iteration.</p></div>
-          <figure class="tl-pic"><img src="img/bonsai-screens.webp" alt="BonsaiHD screens across several states" loading="lazy" decoding="async"></figure>
+        <li class="hw-card">
+          <div class="hw-top"><i class="ri-rocket-2-line hw-icon" aria-hidden="true"></i><span class="hw-num">04</span></div>
+          <div class="hw-text"><h3>Deliver and hand off</h3><p>High-fidelity UI on a shared design system, every state documented, and I stay close to developers through QA.</p></div>
         </li>
-        <li class="tl-row" style="--k:4">
-          <div class="tl-side"><span class="tl-tag">Step 5</span><b class="tl-word">Deliver</b></div>
-          <div class="tl-mark" aria-hidden="true"><span class="tl-dot"><i class="ri-arrow-down-s-fill"></i></span></div>
-          <div class="tl-copy"><h3>Deliver and hand off</h3><p>High-fidelity UI on a shared design system, every state documented, and I stay close to developers through QA.</p></div>
-          <figure class="tl-pic"><img src="img/pbm-hero.webp" alt="Shipped Packly Business Manager screens" loading="lazy" decoding="async"></figure>
-        </li>
-        </ol>
+      </ol>
       </div>
     </div>
   </section>
@@ -160,7 +148,7 @@
     <div class="why-loc-sticky">
       <h2 class="sr" id="why-title">Why hire me</h2>
       <div class="why-trail" aria-hidden="true"></div>
-      <p class="why-loc-text"><span class="loc-w">Real products over concepts,</span> <span class="loc-w">10+ shipped apps and platforms,</span> <span class="loc-w">3+ years in product design,</span> <span class="loc-w">Fintech,</span> <span class="loc-w">Ecommerce,</span> <span class="loc-w">Logistics,</span> <span class="loc-w">Research before pixels,</span> <span class="loc-w">Complex made simple,</span> <span class="loc-w">Clear user flows,</span> <span class="loc-w">Design systems that scale,</span> <span class="loc-w">Tested with real users,</span> <span class="loc-w">Clean developer handoff,</span> <span class="loc-w">Fast iterations,</span> <span class="loc-w">I stay after launch,</span> <span class="loc-w">Always a better version two.</span></p>
+      <p class="why-loc-text"><span class="loc-w">Real products,</span> <span class="loc-w">10+ shipped,</span> <span class="loc-w">3+ years,</span> <span class="loc-w">Fintech,</span> <span class="loc-w">Ecommerce,</span> <span class="loc-w">Logistics,</span> <span class="loc-w">SaaS,</span> <span class="loc-w">ERP,</span> <span class="loc-w">Research first,</span> <span class="loc-w">Complex made simple,</span> <span class="loc-w">Real user flows,</span> <span class="loc-w">Edge cases covered,</span> <span class="loc-w">Design systems,</span> <span class="loc-w">Clean handoff,</span> <span class="loc-w">Business minded,</span> <span class="loc-w">Data backed,</span> <span class="loc-w">Fast iterations,</span> <span class="loc-w">Zero ego,</span> <span class="loc-w">I stay after launch,</span> <span class="loc-w">Always a better V2.</span></p>
     </div>
   </section>
 

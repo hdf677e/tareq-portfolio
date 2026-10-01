@@ -1,8 +1,22 @@
+import Lenis from 'lenis';
+
 export function initLegacyPortfolio(){
 if (window.__portfolioRuntimeStarted) return;
 window.__portfolioRuntimeStarted = true;
 "use strict";
 document.documentElement.classList.add('js');
+
+/* ---------- smooth scrolling (Lenis): wheel and trackpad glide instead of stepping ---------- */
+const REDUCE_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const lenis = REDUCE_MOTION ? null : new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 });
+window.__lenis = lenis;
+if(lenis){ const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); }
+// every programmatic scroll goes through here so it never fights Lenis
+function scrollToTarget(target, instant){
+  if(lenis){ lenis.scrollTo(target, { immediate: !!instant, offset: target === 0 ? 0 : -(parseFloat(getComputedStyle(target).scrollMarginTop) || 0) }); return; }
+  if(target === 0) window.scrollTo({ top: 0, behavior: instant ? 'instant' : 'smooth' });
+  else target.scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: 'start' });
+}
 
 /* ---------- small helpers ---------- */
 const ARROW = '<i class="ri-arrow-right-line" aria-hidden="true"></i>';
@@ -65,12 +79,21 @@ const WORK = [
     desc:'Products, sales, stock and e-shop management for merchants on the go.' }
 ];
 
+// pre-shrunk copies (image-300/600/1000 for phones, image-640/1280/1920 for wide shots) so the browser
+// never has to scale a 2000px file down 4x on the fly, which made small UI text look jagged.
+// The full-size original is left out on purpose: once cached, Chrome would keep picking it.
+function workSrcset(p){
+  const base = p.image.replace(/\.webp$/, '');
+  const ws = p.size ? [640, 1280, 1920] : [300, 600, 1000];
+  return `srcset="${ws.map(w => `${base}-${w}.webp ${w}w`).join(', ')}" sizes="(max-width: 720px) 92vw, ${p.size ? 600 : 300}px"`;
+}
+
 function workCard(p){
   const tag = p.href ? 'a' : 'div';
   const link = p.href ? ` href="${p.href}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : ''}` : '';
   return `<${tag} class="wk-card${p.size ? ' wk-' + p.size : ''}"${link} aria-label="${p.name}, ${p.cat}">
     <div class="wk-media">
-      <img src="${p.image}" alt="" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
+      <img src="${p.image}" ${workSrcset(p)} alt="" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
       <div class="wk-over"><p>${p.desc.split(' ').map((w, i) => `<span class="wk-w" style="--i:${i}">${w}</span>`).join(' ')}</p></div>
     </div>
     <div class="wk-name"><b>${p.name}</b><span>${p.cat}</span></div>
@@ -81,24 +104,24 @@ function workCard(p){
 
 /* ---------- more work ---------- */
 const MORE = [
-  { n:'05', name:'Steadfast Courier Portal', tint:'#cfe9dc', short:'Daily delivery tools for couriers: parcels, delivery status and customer details, built for speed and repeat tasks.', cat:'Logistics · Operations', platform:'Web', thumb:'sf-web-home', thumbAlt:'steadfast.com.bd home page',
-    text:'The courier-facing platform for daily delivery work: parcel management, delivery status, customer information and operational workflows. A practical interface built for speed, clarity and repetitive tasks.',
-    links:[['https://steadfast.com.bd/','steadfast.com.bd']] },
-  { n:'06', name:'Dubai Car Rental', tint:'#d6e2ee', short:'Customer website, booking panel and car listing management for a Dubai car-rental service.', cat:'Rental · Booking · V1 & V2', platform:'Web', thumb:'dcr-web-home', thumbAlt:'Packly Drive car rental home page',
-    text:'A complete car-rental experience for the Dubai market: customer website, booking panel, car listing management and the internal workflows behind it. Focused on simple vehicle discovery and booking, and scalable tools for teams managing listings and reservations.',
-    links:[['https://packlydrive.com/','packlydrive.com']] },
-  { n:'07', name:'HRM Platform', tint:'#e2dbf1', short:'Employees, attendance, leave and payroll-related workflows, organised into one clear admin.', cat:'SaaS · HR', platform:'Web', thumb:'hrm-web-login', thumbAlt:'HRM platform sign-in screen',
-    text:'An HR management platform for employee management, attendance, leave, payroll-related operations and admin processes. Complex HR requirements turned into structured, easy-to-navigate screens.',
-    links:[['https://zavisoft.packlybd.com/login','Live product']] },
-  { n:'08', name:'BanglaDrop Logistics', tint:'#f3dccd', short:'Customer website and admin panel for cross-border shipping and logistics operations.', cat:'Logistics · Cross-border', platform:'Web + Admin', thumb:'bd-web-home', thumbAlt:'BanglaDrop home page',
-    text:'The BanglaDrop ecosystem: customer-facing website and admin panel for shipment workflows, operations and logistics administration, with a focus on clarity across high-volume work.',
-    links:[['https://bangladrop.com/','bangladrop.com']] },
-  { n:'09', name:'Packly Marketplace V2', tint:'#d3ece5', short:'The second version of the Packly multi-vendor store: campaign-led home, flash sales, daily picks and Packly Play short videos.', cat:'Ecommerce · Multi-vendor · V2', platform:'Web', thumb:'pk-v2-home', thumbAlt:'Packly marketplace V2 home page',
-    text:'Second iteration of the Packly multi-vendor commerce platform, reworking the product architecture and UX into a more scalable, conversion-focused experience. In development.',
+  { n:'05', name:'Papi’s Grill', tint:'#f3dcc6', short:'Website redesign for Papi’s Grill, an Afro-fusion restaurant and bar: bold food-first hero, menu, reservations and events.', cat:'Restaurant · Website Redesign', platform:'Web', thumb:'papis-grill-home', thumbAlt:'Papi’s Grill restaurant home page',
+    text:'A redesign of the Papi’s Grill restaurant and bar website. The new home page leads with the food and a bold headline, and puts the key actions up front: browse the menu, book a reservation, see upcoming events and get in touch.',
     links:[] },
-  { n:'10', name:'GhorerBazar', tint:'#f1e3c6', short:'Shopping app and website, internal ERP screens, and the Figma design system behind them.', cat:'Ecommerce · ERP · Design system', platform:'Web + App', thumb:'gb-web-home', thumbAlt:'GhorerBazar shop home page',
-    text:'End-to-end shopping experience across the app and website: discovery, search, categories, cart, checkout, order tracking, accounts and promotions. Also internal ERP screens for inventory, finance, HR and orders, and the Figma design system behind both.',
-    links:[['https://ghorerbazar.com/','ghorerbazar.com'],['https://play.google.com/store/apps/details?id=com.ghorerbazar.official','Android app']] }
+  { n:'06', name:'Fitchat AI', tint:'#e2dbf6', short:'AI fitness coach app: chat about your goals and get tailored tips and generated workout videos.', cat:'AI · Health & Fitness', platform:'Mobile App', thumb:'fitchat-ai-chat', thumbAlt:'Fitchat AI chat screen on a phone',
+    text:'A mobile app where people chat with an AI fitness coach. Users describe their goals and progress in plain words, and the assistant replies with tailored advice and generated workout videos. The chat stays simple, with photo, file and voice input in one compact bar.',
+    links:[] },
+  { n:'07', name:'MeLABS Creative Studio', tint:'#d9f2e6', short:'Website for MeLABS, a Dhaka creative studio: bold black hero, services at a glance and an interactive project list.', cat:'Creative Studio · Web Design', platform:'Web', thumb:'melabs-home', thumbAlt:'MeLABS creative studio home page',
+    text:'A website for MeLABS, a creative studio in Dhaka offering branding, social media, model photography and web design. A striking black hero introduces the studio and its services, followed by a project list where hovering a name brings up its photos, so the work speaks first.',
+    links:[] },
+  { n:'08', name:'Constra Fitness', tint:'#e3d6f7', short:'Website for Constra, a fitness brand: bold hero, class bookings, trainer stats and an app download.', cat:'Fitness · Web Design', platform:'Web', thumb:'constra-home', thumbAlt:'Constra fitness website home page',
+    text:'A website for Constra, a fitness brand. The hero pairs a bold headline with clear next steps: join, book an upcoming class like Pilates, or scan a code to download the app. Member and trainer numbers build trust, and a floating menu keeps programs, blog and sign-up one tap away.',
+    links:[] },
+  { n:'09', name:'Royale Luxury Hotel', tint:'#efe3d3', short:'Website for Royale, a luxury hotel in Bali: cinematic hero, rooms and suites, experiences and easy reservations.', cat:'Hospitality · Web Design', platform:'Web', thumb:'royale-hotel-home', thumbAlt:'Royale luxury hotel website home page',
+    text:'A website for Royale, a luxury hotel in Bali. A dark, cinematic hero with elegant serif type sets the mood, a numbered section bar guides guests through rooms and suites, experiences, testimonials and gallery, and Reserve Now stays in reach throughout.',
+    links:[] },
+  { n:'10', name:'Noorayn Academy', tint:'#d5e8dc', short:'Website for an online Qur’an and Arabic academy: 1-to-1 classes with certified tutors, courses and a free evaluation.', cat:'Education · Web Design', platform:'Web', thumb:'noorayn-academy-home', thumbAlt:'Noorayn Academy website home page',
+    text:'A website for Noorayn Academy, which teaches Qur’an, Tajweed, Hifz and Arabic through live 1-to-1 online classes. The hero explains the offer in one line and leads to a free evaluation, with learner numbers, ratings, round-the-clock support and certified teachers building trust right away.',
+    links:[] }
 ];
 function superAppArt(){
   return `<div class="services" role="img" aria-label="Packly Super App service structure">
@@ -847,11 +870,11 @@ function go(){
   const target = wantCase ? null : (h || 'top');
   const needSwap = wantCase ? current !== h : current !== 'home';
   const finish = () => {
-    if(wantCase){ window.scrollTo({top:0, behavior:'instant'}); focusTitle(kind==='shot' ? 'shot-title' : 'cs-title'); }
+    if(wantCase){ scrollToTarget(0, true); focusTitle(kind==='shot' ? 'shot-title' : 'cs-title'); }
     else {
       const el = document.getElementById(target);
-      if(el && target !== 'top'){ requestAnimationFrame(()=>el.scrollIntoView({behavior: needSwap ? 'instant':'smooth', block:'start'})); }
-      else if(needSwap || target==='top'){ window.scrollTo({top:0, behavior: needSwap?'instant':'smooth'}); }
+      if(el && target !== 'top'){ requestAnimationFrame(()=>scrollToTarget(el, needSwap)); }
+      else if(needSwap || target==='top'){ scrollToTarget(0, needSwap); }
     }
   };
   if(!needSwap){ finish(); return; }
@@ -863,55 +886,80 @@ function go(){
 }
 function focusTitle(id){ const t = document.getElementById(id); if(t) t.focus({preventScroll:true}); }
 
+/* ---------- scroll-driven motion ---------- */
+// hero: the two headline halves drift apart, the video eases in, everything fades as you leave.
+// case-study cards reveal in CSS, driven by the shared .rv/.pre reveal so card and image move together.
+let fxRaf = 0, fxItems = [];
+function wireScrollFx(){
+  fxItems = [];
+  if(REDUCE_MOTION) return;
+  const stage = view.querySelector('.hv-stage');
+  if(stage){
+    const t1 = stage.querySelector('.hv-t1'), t2 = stage.querySelector('.hv-t2'), foot = stage.querySelector('.hv-foot'), vid = stage.querySelector('.hero-media video');
+    fxItems.push(() => {
+      const h = stage.offsetHeight, p = Math.min(1, Math.max(0, scrollY / h));
+      if(t1){ t1.style.transform = `translate3d(${(-p * 6).toFixed(2)}vw,${(-p * 90).toFixed(1)}px,0)`; t1.style.opacity = (1 - p * 1.3).toFixed(3); }
+      if(t2){ t2.style.transform = `translate3d(${(p * 6).toFixed(2)}vw,${(p * 40).toFixed(1)}px,0)`; t2.style.opacity = (1 - p * 1.1).toFixed(3); }
+      if(foot){ foot.style.transform = `translate3d(0,${(p * 60).toFixed(1)}px,0)`; foot.style.opacity = (1 - p * 1.6).toFixed(3); }
+      if(vid) vid.style.scale = (1 + p * 0.14).toFixed(4);
+    });
+  }
+  const tick = () => { fxRaf = 0; fxItems.forEach(f => f()); };
+  if(!window.__fxBound){ window.__fxBound = true; addEventListener('scroll', () => { if(!fxRaf) fxRaf = requestAnimationFrame(() => window.__fxTick()); }, { passive: true }); addEventListener('resize', () => { if(!fxRaf) fxRaf = requestAnimationFrame(() => window.__fxTick()); }); }
+  window.__fxTick = tick;
+  tick();
+}
+
+/* ---------- button hover: letters roll up one after another like a wave ---------- */
+// each letter gets a copy of itself just below (text-shadow); on hover the letters slide up in a stagger,
+// so the copy rolls into place. Screen readers get the plain label from a hidden span.
+function waveButtons(root){
+  root.querySelectorAll('.btn:not([data-wave])').forEach(b => {
+    b.dataset.wave = '1';
+    [...b.childNodes].forEach(n => {
+      if(n.nodeType !== 3 || !n.textContent.trim()) return;
+      const txt = n.textContent.trim();
+      const wrap = document.createElement('span');
+      wrap.className = 'wt'; wrap.setAttribute('aria-hidden', 'true');
+      [...txt].forEach((ch, i) => { const l = document.createElement('span'); l.className = 'wl'; l.style.setProperty('--i', i); l.textContent = ch === ' ' ? ' ' : ch; wrap.appendChild(l); });
+      const label = document.createElement('span'); label.className = 'sr'; label.textContent = txt;
+      n.replaceWith(wrap, label);
+    });
+  });
+}
+
 /* ---------- per-view wiring ---------- */
 let io, spy, pxRaf=0, pxEls=[];
 function wireView(){
-  // how-i-work timeline: the line fills to the middle of the screen and each step lights up as it's reached
-  const tl = view.querySelector('.tl-body');
-  if(tl){
-    const rail = tl.querySelector('.tl-rail'), rows = [...tl.querySelectorAll('.tl-row')], dots = rows.map(r => r.querySelector('.tl-dot'));
-    let raf = 0;
-    const tick = () => {
-      raf = 0;
-      const base = tl.getBoundingClientRect().top;
-      const first = dots[0].parentElement.getBoundingClientRect(), last = dots[dots.length - 1].parentElement.getBoundingClientRect();
-      const start = first.top - base + 16, len = last.top - first.top;
-      rail.style.top = start + 'px';
-      rail.style.setProperty('--rail-h', len + 'px');
-      const mid = innerHeight * 0.5;
-      rail.style.setProperty('--fill', Math.max(0, Math.min(len, mid - (base + start))) + 'px');
-      rows.forEach((row, i) => row.classList.toggle('on', dots[i].parentElement.getBoundingClientRect().top + 16 <= mid));
-    };
-    const onScroll = () => {
-      if(!tl.isConnected){ removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); return; }
-      if(!raf) raf = requestAnimationFrame(tick);
-    };
-    addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', onScroll);
-    tick();
+  wireScrollFx();
+  waveButtons(document);
+  // videos cloned in from a <template> don't autoplay on their own, so start them here (muted, so browsers allow it)
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const playAll = () => view.querySelectorAll('video[autoplay]').forEach(v => { v.muted = true; const p = v.play(); if(p) p.catch(() => {}); });
+    playAll();
+    // browsers pause background videos while the tab is hidden; pick them back up when the visitor returns
+    if(!window.__vidResume){ window.__vidResume = true; document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'visible') playAll(); }); }
   }
   // why-me: one spotlight moves through the list; the current phrase crossfades into the next
   const why = view.querySelector('.why-loc');
   if(why){
     const words = [...why.querySelectorAll('.loc-w')], N = words.length;
-    let raf = 0, lastA = -1, lastB = -1;
+    let raf = 0;
     const tick = () => {
       raf = 0;
       const r = why.getBoundingClientRect();
       const p = Math.min(1, Math.max(0, -r.top / (why.offsetHeight - innerHeight)));
-      const h = p * (N - 1), a = Math.floor(h), f = h - a, b = Math.min(N - 1, a + 1);
-      [lastA, lastB].forEach(i => { if(i >= 0 && i !== a && i !== b) words[i].style.opacity = ''; });
-      words[a].style.opacity = (0.08 + 0.92 * (1 - f)).toFixed(3);
-      if(b !== a) words[b].style.opacity = (0.08 + 0.92 * f).toFixed(3);
-      lastA = a; lastB = b;
+      const h = p * (N - 1);
+      // the current phrase is lit, its neighbours glow softly, everything else stays dim
+      words.forEach((w, i) => { w.style.opacity = Math.max(0.1, 1 - 0.55 * Math.abs(i - h)).toFixed(3); });
     };
-    // start at 5vw and shrink until the whole list fits the pinned screen, clear of the nav
+    // grow the list to the largest size that still fits the pinned screen below the nav, so it fills the view
     const text = why.querySelector('.why-loc-text');
     const fit = () => {
-      const room = innerHeight - Math.max(120, innerHeight * 0.14) * 2;
-      let fs = Math.max(30, innerWidth * 0.05);
-      text.style.fontSize = fs + 'px';
-      while(text.scrollHeight > room && fs > 24){ fs *= 0.95; text.style.fontSize = fs + 'px'; }
+      const room = innerHeight - 72 - 24;
+      let lo = 24, hi = Math.max(48, innerWidth * 0.12);
+      while(hi - lo > 0.5){ const mid = (lo + hi) / 2; text.style.fontSize = mid + 'px'; if(text.scrollHeight > room) hi = mid; else lo = mid; }
+      text.style.fontSize = lo + 'px';
     };
     let fitW = 0, fitH = 0;
     const onScroll = e => {
@@ -925,19 +973,22 @@ function wireView(){
     if(document.fonts) document.fonts.ready.then(() => { if(why.isConnected) fit(); });
     tick();
 
-    // mouse trail: a smoothed cursor glides after the pointer and drops project images at even spacing
+    // mouse trail (Revelatio-style): a card pops in right under the cursor every half card-width,
+    // holds for a beat, then shrinks away. No lag, no tilt: the snap in and slow ease out is what makes it feel smooth.
     const layer = why.querySelector('.why-trail');
     if(layer && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
-      const srcs = [...new Set([...WORK.map(w => w.image), ...MORE.filter(m => m.thumb).map(m => `img/${m.thumb}.webp`)])];
-      // shrink every image once to 2x its trail size and decode it, so each drop is small and never paints blank
+      const srcs = [1, 2, 3, 4, 5, 6, 7, 8].map(n => `img/trail/trail-${n}.webp`);
+      const cardW = () => Math.round(Math.min(384, Math.max(240, innerWidth * 0.2)));
+      // shrink every image once to 2x its card size and decode it, so each drop is light and never paints blank
       const pool = [];
       const prep = src => new Promise(done => {
         const big = new Image(); big.src = src;
         big.decode().then(() => {
-          const wide = big.naturalWidth >= big.naturalHeight, w = (wide ? 250 : 170) * 2;
           const c = document.createElement('canvas');
-          c.width = w; c.height = Math.round(w * big.naturalHeight / big.naturalWidth);
-          c.getContext('2d').drawImage(big, 0, 0, c.width, c.height);
+          c.width = 768; c.height = 512;
+          // crop to 3:2 like a card
+          const r = big.naturalWidth / big.naturalHeight, sw = r > 1.5 ? big.naturalHeight * 1.5 : big.naturalWidth, sh = sw / 1.5;
+          c.getContext('2d').drawImage(big, (big.naturalWidth - sw) / 2, (big.naturalHeight - sh) / 2, sw, sh, 0, 0, c.width, c.height);
           c.toBlob(b => {
             if(!b) return done();
             const im = new Image(); im.src = URL.createObjectURL(b);
@@ -947,51 +998,29 @@ function wireView(){
       });
       const idle = window.requestIdleCallback || (f => setTimeout(f, 200));
       srcs.reduce((chain, src) => chain.then(() => new Promise(r => idle(() => prep(src).then(r)))), Promise.resolve());
-      const STEP = 72, MAX = 16;
-      let k = 0, z = 1, tx = 0, ty = 0, cx = 0, cy = 0, lx = 0, ly = 0, has = false, inside = false, loop = 0, last = 0;
-      const drop = (x, y) => {
+      let k = 0, z = 1, lx = null, ly = null;
+      const spawn = (x, y) => {
         if(!pool.length) return;
-        const base = pool[k++ % pool.length];
-        const im = base.cloneNode();
-        const wide = base.naturalWidth >= base.naturalHeight;
-        const w = wide ? 250 : 170, h = Math.round(w * base.naturalHeight / base.naturalWidth);
+        const w = cardW(), h = Math.round(w / 1.5);
+        const im = pool[k++ % pool.length].cloneNode();
         im.alt = '';
-        im.style.cssText = `width:${w}px;height:${h}px;z-index:${z++}`;
-        const at = (s, dy) => `translate3d(${(x - w / 2).toFixed(1)}px,${(y - h / 2 + dy).toFixed(1)}px,0) scale(${s})`;
+        im.style.cssText = `width:${w}px;height:${h}px;z-index:${z++};left:${x - w / 2}px;top:${y - h / 2}px`;
         layer.appendChild(im);
-        while(layer.children.length > MAX) layer.firstElementChild.remove();
         im.animate([
-          { opacity: 0, transform: at(0.86, 12) },
-          { opacity: 1, transform: at(1, 0), offset: 0.22 },
-          { opacity: 1, transform: at(1, 0), offset: 0.62 },
-          { opacity: 0, transform: at(0.94, -6) }
-        ], { duration: 1500, easing: 'cubic-bezier(.33,1,.68,1)', fill: 'forwards' }).onfinish = () => im.remove();
-      };
-      const frame = now => {
-        const dt = last ? Math.min(64, now - last) : 16; last = now;
-        const f = 1 - Math.exp(-dt / 70);
-        cx += (tx - cx) * f; cy += (ty - cy) * f;
-        // walk the smoothed path and drop an image every STEP px, so spacing stays even at any speed
-        let d = Math.hypot(cx - lx, cy - ly);
-        while(d >= STEP){
-          const t = STEP / d;
-          lx += (cx - lx) * t; ly += (cy - ly) * t;
-          drop(lx, ly);
-          d = Math.hypot(cx - lx, cy - ly);
-        }
-        const moving = Math.hypot(tx - cx, ty - cy) > 0.5;
-        loop = (inside || moving) ? requestAnimationFrame(frame) : 0;
-        if(!loop) last = 0;
+          { opacity: 0, transform: 'scale(0)', easing: 'cubic-bezier(.625,.05,0,1)' },
+          { opacity: 1, transform: 'scale(1)', offset: 1 / 3, easing: 'cubic-bezier(.625,0,.875,0)' },
+          { opacity: 0, transform: 'scale(0)' }
+        ], { duration: 1200, fill: 'forwards' }).onfinish = () => im.remove();
+        lx = x; ly = y;
       };
       why.addEventListener('pointermove', e => {
         if(e.pointerType !== 'mouse') return;
         const r = layer.getBoundingClientRect();
-        tx = e.clientX - r.left; ty = e.clientY - r.top;
-        if(!has){ cx = lx = tx; cy = ly = ty; has = true; }
-        inside = true;
-        if(!loop) loop = requestAnimationFrame(frame);
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        if(lx === null){ spawn(x, y); return; }
+        if(Math.hypot(x - lx, y - ly) >= cardW() * 0.5) spawn(x, y);
       });
-      why.addEventListener('pointerleave', () => { inside = false; has = false; });
+      why.addEventListener('pointerleave', () => { lx = ly = null; });
     }
   }
   // capabilities tabs
@@ -1029,13 +1058,47 @@ function wireView(){
     let settled=false; const fail=()=>{ if(!settled){ settled=true; selectEmail(b); } };
     try{ navigator.clipboard.writeText(v).then(()=>{ settled=true; done(); }, fail); setTimeout(fail,1200); }catch(e){ fail(); }
   }));
+  // intro statement: words light up one by one as it scrolls through the screen (same feel as why-me)
+  const st = view.querySelector('.statement');
+  if(st && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    if(!st.dataset.read){
+      st.dataset.read = '1';
+      const walk = n => [...n.childNodes].forEach(c => {
+        if(c.nodeType === 3){
+          const f = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(w => { if(!w) return;
+            if(/^\s+$/.test(w)) f.appendChild(document.createTextNode(w));
+            else { const sp = document.createElement('span'); sp.className = 'rd-w'; sp.textContent = w; f.appendChild(sp); } });
+          c.replaceWith(f);
+        } else if(c.nodeType === 1) walk(c);
+      });
+      walk(st);
+    }
+    const words = [...st.querySelectorAll('.rd-w')];
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const r = st.getBoundingClientRect(), vh = innerHeight;
+      // starts when the paragraph enters the lower part of the screen, finishes as it passes the middle
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.85 - vh * 0.35 + r.height * 0.5)));
+      const h = p * words.length;
+      words.forEach((w, i) => { w.style.opacity = (0.15 + 0.85 * Math.min(1, Math.max(0, h - i))).toFixed(3); });
+    };
+    const onScroll = () => {
+      if(!st.isConnected){ removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); return; }
+      if(!raf) raf = requestAnimationFrame(tick);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    tick();
+  }
   // reveal: only elements below the fold get a pre-state
   if(io) io.disconnect();
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if('IntersectionObserver' in window && !reduce){
     io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.remove('pre'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px'});
     // headings: split into words (text nodes only, keeps inner spans)
-    view.querySelectorAll('.h2, .cs-sec h2, .contact h2, .ab-lead, .statement, .pg-section h2').forEach(h=>{
+    view.querySelectorAll('.h2, .cs-sec h2, .contact h2, .ab-lead, .pg-section h2').forEach(h=>{
       if(h.dataset.split) return; h.dataset.split='1'; let i=0;
       const walk=n=>{ [...n.childNodes].forEach(c=>{ if(c.nodeType===3){ const f=document.createDocumentFragment();
             c.textContent.split(/(\s+)/).forEach(w=>{ if(!w) return; if(/^\s+$/.test(w)){ f.appendChild(document.createTextNode(w)); return; }
@@ -1043,8 +1106,9 @@ function wireView(){
             c.replaceWith(f); } else if(c.nodeType===1 && !c.classList.contains('bw')) walk(c); }); };
       walk(h); h.classList.add('bwrap'); });
     // paragraphs / eyebrows / buttons fade in from blur
-    view.querySelectorAll('.eyebrow, .sec-head p, .tl-head p, .tl-copy, .tl-pic, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
+    view.querySelectorAll('.eyebrow, .sec-head p, .tl-head p, .ab-text > p:not(.ab-lead), .ab-actions, .cs-sec p, .more-head p, .cap-tabs, .contact-card, .c-actions, .c-sign').forEach((el,k)=>{ if(!el.closest('.hero')) el.classList.add('bt'); });
     // stagger siblings in grids
+    view.querySelectorAll('.hw-grid').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',k*0.08+'s'); }); });
     view.querySelectorAll('.wk-grid, .mw-grid, .gallery, .outcome, .three, .two').forEach(g=>{ [...g.children].forEach((c,k)=>{ c.classList.add('rv'); c.style.setProperty('--d',(k%3)*0.09+'s'); }); });
     view.querySelectorAll('.rv, .bwrap, .bt').forEach(el=>{ if(el.getBoundingClientRect().top > innerHeight*0.92 && !el.closest('.hero')){ el.classList.add('pre'); io.observe(el); } });
   }
@@ -1088,7 +1152,7 @@ document.addEventListener('click', e=>{
   closeMenu();
   if(current !== 'home' && !CASES[id] && !SHOTS[id]){
     const el = document.getElementById(id);
-    if(el && view.contains(el)){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(el && view.contains(el)){ e.preventDefault(); scrollToTarget(el); }
   }
 });
 
@@ -1108,10 +1172,11 @@ addEventListener('scroll', ()=>{ if(ticking) return; ticking=true; requestAnimat
 
 /* ---------- mobile menu ---------- */
 const menuBtn = document.getElementById('menuBtn');
-function closeMenu(){ document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); menuBtn.setAttribute('aria-label','Open menu'); }
+function closeMenu(){ if(lenis) lenis.start(); document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); menuBtn.setAttribute('aria-label','Open menu'); }
 menuBtn.addEventListener('click', ()=>{
   const open = !document.body.classList.contains('menu-open');
   document.body.classList.toggle('menu-open', open);
+  if(lenis){ open ? lenis.stop() : lenis.start(); }
   menuBtn.setAttribute('aria-expanded', String(open));
   menuBtn.setAttribute('aria-label', open?'Close menu':'Open menu');
 });

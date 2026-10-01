@@ -115,7 +115,7 @@ export function initWorkCarousel(section, items){
   catch(e){ section.classList.add('wc-off'); return () => {}; }
   section.style.setProperty('--wc-n', n - 1);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 1);
+  renderer.setClearColor(0x14160e, 1); // same olive near-black as --ink
   host.appendChild(renderer.domElement);
   const canvas = renderer.domElement;
 
