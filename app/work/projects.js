@@ -10,9 +10,9 @@ export const projects = [
     role: "Mid UI/UX Designer, Zavisoft",
     platform: "Mobile app",
     status: "Live on Google Play",
-    image: "/img/sf-mockup.webp",
-    imageWidth: 1400,
-    imageHeight: 1321,
+    image: "/img/sf-cs-banner.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
     imageAlt:
       "Steadfast Merchant app screens for parcel booking, parcel summaries and merchant payments",
     challenge:
@@ -49,9 +49,9 @@ export const projects = [
     role: "Mid UI/UX Designer, Zavisoft",
     platform: "Mobile app and web",
     status: "Live · V1 and V2",
-    image: "/img/pbm-cover.jpg",
-    imageWidth: 2048,
-    imageHeight: 1000,
+    image: "/img/pbm-web-banner.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
     imageAlt:
       "Packly Business Manager campaign image showing a merchant using the business app",
     challenge:
@@ -92,9 +92,9 @@ export const projects = [
     role: "Mid UI/UX Designer, Zavisoft",
     platform: "Web and mobile",
     status: "V1 live · V2 in development",
-    image: "/img/packly-web-home.webp",
-    imageWidth: 800,
-    imageHeight: 500,
+    image: "/img/pkv2-banner.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
     imageAlt: "Packly Marketplace ecommerce storefront and product discovery page",
     challenge:
       "A marketplace should feel like one store to the customer while products, stock and orders remain connected to their individual sellers. The experience needed to support discovery and purchase without hiding who fulfills each order.",
@@ -160,8 +160,212 @@ export const projects = [
     outcome:
       "The gateway app, merchant panel and admin panel form one connected system. Payment and settlement information uses a consistent language across payers, merchants and administrators.",
   },
+  {
+    slug: "bonsaihd",
+    name: "BonsaiHD",
+    seoTitle: "BonsaiHD Streaming App UX Case Study",
+    category: "Streaming · Mobile app",
+    title: "Designing a streaming app that helps you find what to watch",
+    description:
+      "A streaming app UX case study: personalised discovery, mood-based AI recommendations, watch parties with friends and a VIP subscription that shows its value first.",
+    role: "Product Designer",
+    platform: "Mobile app (iOS and Android)",
+    status: "Shipped",
+    image: "/img/bonsai-hero.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
+    imageAlt: "BonsaiHD streaming app: home, movie detail and VIP upgrade screens",
+    challenge:
+      "Streaming users spend as much time deciding what to watch as they do watching. Browsing felt generic: people opened the app wanting to watch something but could not quickly find what matched how they felt.",
+    approach:
+      "I designed the complete experience: a personalised home, movie and series details, a mood-based AI recommendation tool, social watch parties, a VIP subscription and the full profile flow, all aimed at shortening the path from opening the app to pressing Play.",
+    decisions: [
+      {
+        title: "Lead with mood, not genre",
+        text: "Ask Bonsai AI starts from how the viewer feels, returns one best match and offers more options below it.",
+      },
+      {
+        title: "Make watching together simple",
+        text: "Watch With Friends creates a room shared by code or QR link, with up to eight people watching in sync.",
+      },
+      {
+        title: "Show value before the paywall",
+        text: "The VIP screen leads with features, a time-limited offer and a 7-day trial instead of a hard gate.",
+      },
+    ],
+    outcome:
+      "BonsaiHD shipped with personalised discovery, AI recommendations, social viewing and a subscription flow that earns the upgrade.",
+  },
+  {
+    slug: "packly-business-manager-v2",
+    name: "Packly Business Manager V2",
+    seoTitle: "Packly Business Manager V2 App Redesign Case Study",
+    category: "SaaS · Mobile app redesign",
+    title: "Redesigning the merchant app for clarity and speed",
+    description:
+      "A mobile app redesign case study: a cleaner merchant home, status-based product management and analytics that show earnings and KPIs at a glance.",
+    role: "Mid UI/UX Designer, Zavisoft",
+    platform: "Mobile app (Android)",
+    status: "Live on Google Play",
+    image: "/img/pbmv2-hero.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
+    imageAlt: "Packly Business Manager V2: My Shop, home and analytics screens",
+    challenge:
+      "The V1 home was dense and hard to scan. Order counts, earnings and channel performance took too many steps to reach, and product management lacked clear status visibility.",
+    approach:
+      "I redesigned the app from the ground up: restructured the home, rebuilt product management and added an analytics screen that puts earnings and performance first, so the most-used data is one look away and common tasks are one tap from home.",
+    decisions: [
+      {
+        title: "Order status on the home screen",
+        text: "Pending, processing and delivered tiles are visible the moment the app opens.",
+      },
+      {
+        title: "Analytics in one view",
+        text: "A net earnings chart with period comparison and four KPI tiles replaces several screens.",
+      },
+      {
+        title: "Status-filtered products",
+        text: "All, My Product, Draft and Trash filters with SKU, price, stock and status on each row; adding a product is a stepped form.",
+      },
+    ],
+    outcome:
+      "Packly Business Manager V2 is live on Google Play with a faster home, clearer product management and readable analytics.",
+    link: "https://play.google.com/store/apps/details?id=com.packlybusiness.app",
+    linkLabel: "View on Google Play",
+  },
+  {
+    slug: "packly-drive",
+    name: "Packly Drive",
+    seoTitle: "Packly Drive Car Rental Website UX Case Study",
+    category: "Car rental · Marketplace",
+    title: "Helping people in Dubai find the right car in one search",
+    description:
+      "A car rental marketplace UX case study for Dubai: search-first home, category browsing and car cards that show price and host trust before the click.",
+    role: "Mid UI/UX Designer, Zavisoft",
+    platform: "Web and mobile app",
+    status: "Live · V1 and V2",
+    image: "/img/pd-banner.webp",
+    imageWidth: 2000,
+    imageHeight: 1125,
+    imageAlt: "Packly Drive home page: car search over a white sports car",
+    challenge:
+      "Renters in Dubai compare car type, brand, price, distance limits and host trust across thousands of cars from many rental companies. It was hard to narrow down to a trusted car at an understood price.",
+    approach:
+      "I designed the customer website across two versions: a search-first home, categories, listings, car cards and the paths into booking and the app, with services and host tools one level away.",
+    decisions: [
+      {
+        title: "Search as the front door",
+        text: "Type, brand and rent-or-buy sit in one bar at the top of the home page.",
+      },
+      {
+        title: "Browse by need",
+        text: "Categories like luxury, SUV, sports, affordable and monthly help renters start from what they need.",
+      },
+      {
+        title: "Trust and price on every card",
+        text: "Verified badges, ratings, trips, host name and day or month prices with distance limits appear before a car is opened.",
+      },
+    ],
+    outcome:
+      "Packly Drive is live with two versions of the website, getting renters from the home page to a shortlist faster.",
+    link: "https://packlydrive.com/",
+    linkLabel: "Visit packlydrive.com",
+  },
 ];
 
 export function getProject(slug) {
   return projects.find((project) => project.slug === slug);
+}
+
+// "More work" project pages (live at /project/<slug>)
+export const shots = [
+  {
+    slug: "papi-s-grill",
+    name: "Papi’s Grill",
+    seoTitle: "Papi’s Grill Restaurant Website Redesign",
+    category: "Restaurant · Website Redesign",
+    platform: "Web",
+    description:
+      "Website redesign for Papi’s Grill, an Afro-fusion restaurant and bar: a bold food-first hero, menu, reservations and events.",
+    text: "A redesign of the Papi’s Grill restaurant and bar website. The new home page leads with the food and a bold headline, and puts the key actions up front: browse the menu, book a reservation, see upcoming events and get in touch.",
+    image: "/img/papis-grill-home.webp",
+    imageAlt: "Papi’s Grill restaurant home page",
+    pair: ["/img/papis-grill-1.webp", "/img/papis-grill-2.webp"],
+    wide: "/img/papis-grill-wide.webp",
+  },
+  {
+    slug: "fitchat-ai",
+    name: "Fitchat AI",
+    seoTitle: "Fitchat AI Fitness Coach App Design",
+    category: "AI · Health & Fitness",
+    platform: "Mobile App",
+    description:
+      "AI fitness coach app design: chat about your goals and get tailored tips and generated workout videos.",
+    text: "A mobile app where people chat with an AI fitness coach. Users describe their goals and progress in plain words, and the assistant replies with tailored advice and generated workout videos. The chat stays simple, with photo, file and voice input in one compact bar.",
+    image: "/img/fitchat-ai-chat.webp",
+    imageAlt: "Fitchat AI chat screen on a phone",
+    pair: ["/img/fitchat-1.webp", "/img/fitchat-2.webp"],
+    wide: "/img/fitchat-wide.webp",
+  },
+  {
+    slug: "melabs-creative-studio",
+    name: "MeLABS Creative Studio",
+    seoTitle: "MeLABS Creative Studio Website Design",
+    category: "Creative Studio · Web Design",
+    platform: "Web",
+    description:
+      "Website design for MeLABS, a Dhaka creative studio: bold black hero, services at a glance and an interactive project list.",
+    text: "A website for MeLABS, a creative studio in Dhaka offering branding, social media, model photography and web design. A striking black hero introduces the studio and its services, followed by a project list where hovering a name brings up its photos, so the work speaks first.",
+    image: "/img/melabs-home.webp",
+    imageAlt: "MeLABS creative studio home page",
+    pair: ["/img/melabs-1.webp", "/img/melabs-2.webp"],
+    wide: "/img/melabs-wide.webp",
+  },
+  {
+    slug: "constra-fitness",
+    name: "Constra Fitness",
+    seoTitle: "Constra Fitness Website Design",
+    category: "Fitness · Web Design",
+    platform: "Web",
+    description:
+      "Fitness brand website design for Constra: bold hero, class bookings, trainer stats and an app download.",
+    text: "A website for Constra, a fitness brand. The hero pairs a bold headline with clear next steps: join, book an upcoming class like Pilates, or scan a code to download the app. Member and trainer numbers build trust, and a floating menu keeps programs, blog and sign-up one tap away.",
+    image: "/img/constra-home.webp",
+    imageAlt: "Constra fitness website home page",
+    pair: ["/img/constra-1.webp", "/img/constra-2.webp"],
+    wide: "/img/constra-wide.webp",
+  },
+  {
+    slug: "royale-luxury-hotel",
+    name: "Royale Luxury Hotel",
+    seoTitle: "Royale Luxury Hotel Website Design",
+    category: "Hospitality · Web Design",
+    platform: "Web",
+    description:
+      "Luxury hotel website design for Royale in Bali: cinematic hero, rooms and suites, experiences and easy reservations.",
+    text: "A website for Royale, a luxury hotel in Bali. A dark, cinematic hero with elegant serif type sets the mood, a numbered section bar guides guests through rooms and suites, experiences, testimonials and gallery, and Reserve Now stays in reach throughout.",
+    image: "/img/royale-hotel-home.webp",
+    imageAlt: "Royale luxury hotel website home page",
+    pair: ["/img/royale-1.webp", "/img/royale-2.webp"],
+    wide: "/img/royale-wide.webp",
+  },
+  {
+    slug: "noorayn-academy",
+    name: "Noorayn Academy",
+    seoTitle: "Noorayn Academy Online Learning Website Design",
+    category: "Education · Web Design",
+    platform: "Web",
+    description:
+      "Website design for an online Qur’an and Arabic academy: 1-to-1 classes with certified tutors, courses and a free evaluation.",
+    text: "A website for Noorayn Academy, which teaches Qur’an, Tajweed, Hifz and Arabic through live 1-to-1 online classes. The hero explains the offer in one line and leads to a free evaluation, with learner numbers, ratings, round-the-clock support and certified teachers building trust right away.",
+    image: "/img/noorayn-academy-home.webp",
+    imageAlt: "Noorayn Academy website home page",
+    pair: ["/img/noorayn-1.webp", "/img/noorayn-2.webp"],
+    wide: "/img/noorayn-wide.webp",
+  },
+];
+
+export function getShot(slug) {
+  return shots.find((shot) => shot.slug === slug);
 }

@@ -11,8 +11,15 @@ const REDUCE_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const lenis = REDUCE_MOTION ? null : new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 });
 window.__lenis = lenis;
 if(lenis){ const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); }
+// the app puts the visitor back where they were itself (see go()); the browser's own scroll restoration fought it and moved the page ~150px
+if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 // every programmatic scroll goes through here so it never fights Lenis
 function scrollToTarget(target, instant){
+  if(typeof target === 'number' && target !== 0){
+    // a saved pixel position: re-measure first, because the page height just changed when the view was swapped
+    if(lenis){ lenis.resize(); lenis.scrollTo(target, { immediate: true, force: true }); return; }
+    window.scrollTo({ top: target, behavior: 'instant' }); return;
+  }
   if(lenis){ lenis.scrollTo(target, { immediate: !!instant, offset: target === 0 ? 0 : -(parseFloat(getComputedStyle(target).scrollMarginTop) || 0) }); return; }
   if(target === 0) window.scrollTo({ top: 0, behavior: instant ? 'instant' : 'smooth' });
   else target.scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: 'start' });
@@ -73,7 +80,7 @@ const WORK = [
     desc:'A movie and series streaming app built around discovery and quick playback.' },
   { name:'Packly Business Manager V2', cat:'Mobile App', size:'', href:'#packly-business-manager-v2', image:'img/work/packly-business-manager-app-v2.webp',
     desc:'The redesigned merchant app: order status, commerce tools and inventory at a glance.' },
-  { name:'Packly Drive', cat:'Web Design', size:'wide', href:'https://packlydrive.com/', image:'img/work/packly-drive-web.webp',
+  { name:'Packly Drive', cat:'Web Design', size:'wide', href:'#packly-drive', image:'img/work/packly-drive-web.webp',
     desc:'Car rental website for Dubai: search thousands of cars, airport transfers, yachts and drivers.' },
   { name:'Packly Business Manager', cat:'Mobile App', size:'', href:'#packly-business-manager', image:'img/work/packly-business-manager-app.webp',
     desc:'Products, sales, stock and e-shop management for merchants on the go.' }
@@ -90,10 +97,10 @@ function workSrcset(p){
 
 function workCard(p){
   const tag = p.href ? 'a' : 'div';
-  const link = p.href ? ` href="${p.href}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : ''}` : '';
+  const link = p.href ? ` href="${linkOf(p.href)}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : ''}` : '';
   return `<${tag} class="wk-card${p.size ? ' wk-' + p.size : ''}"${link} aria-label="${p.name}, ${p.cat}">
     <div class="wk-media">
-      <img src="${p.image}" ${workSrcset(p)} alt="" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
+      <img src="${p.image}" ${workSrcset(p)} alt="${p.name}, ${p.cat} design by Tareq Mahmud" width="${p.size ? 2000 : 1160}" height="${p.size ? 1346 : 1600}" loading="lazy" decoding="async">
       <div class="wk-over"><p>${p.desc.split(' ').map((w, i) => `<span class="wk-w" style="--i:${i}">${w}</span>`).join(' ')}</p></div>
     </div>
     <div class="wk-name"><b>${p.name}</b><span>${p.cat}</span></div>
@@ -106,21 +113,33 @@ function workCard(p){
 const MORE = [
   { n:'05', name:'Papi’s Grill', tint:'#f3dcc6', short:'Website redesign for Papi’s Grill, an Afro-fusion restaurant and bar: bold food-first hero, menu, reservations and events.', cat:'Restaurant · Website Redesign', platform:'Web', thumb:'papis-grill-home', thumbAlt:'Papi’s Grill restaurant home page',
     text:'A redesign of the Papi’s Grill restaurant and bar website. The new home page leads with the food and a bold headline, and puts the key actions up front: browse the menu, book a reservation, see upcoming events and get in touch.',
+    pair:['img/papis-grill-1.webp','img/papis-grill-2.webp'],
+    wide:'img/papis-grill-wide.webp',
     links:[] },
   { n:'06', name:'Fitchat AI', tint:'#e2dbf6', short:'AI fitness coach app: chat about your goals and get tailored tips and generated workout videos.', cat:'AI · Health & Fitness', platform:'Mobile App', thumb:'fitchat-ai-chat', thumbAlt:'Fitchat AI chat screen on a phone',
     text:'A mobile app where people chat with an AI fitness coach. Users describe their goals and progress in plain words, and the assistant replies with tailored advice and generated workout videos. The chat stays simple, with photo, file and voice input in one compact bar.',
+    pair:['img/fitchat-1.webp','img/fitchat-2.webp'],
+    wide:'img/fitchat-wide.webp',
     links:[] },
   { n:'07', name:'MeLABS Creative Studio', tint:'#d9f2e6', short:'Website for MeLABS, a Dhaka creative studio: bold black hero, services at a glance and an interactive project list.', cat:'Creative Studio · Web Design', platform:'Web', thumb:'melabs-home', thumbAlt:'MeLABS creative studio home page',
     text:'A website for MeLABS, a creative studio in Dhaka offering branding, social media, model photography and web design. A striking black hero introduces the studio and its services, followed by a project list where hovering a name brings up its photos, so the work speaks first.',
+    pair:['img/melabs-1.webp','img/melabs-2.webp'],
+    wide:'img/melabs-wide.webp',
     links:[] },
   { n:'08', name:'Constra Fitness', tint:'#e3d6f7', short:'Website for Constra, a fitness brand: bold hero, class bookings, trainer stats and an app download.', cat:'Fitness · Web Design', platform:'Web', thumb:'constra-home', thumbAlt:'Constra fitness website home page',
     text:'A website for Constra, a fitness brand. The hero pairs a bold headline with clear next steps: join, book an upcoming class like Pilates, or scan a code to download the app. Member and trainer numbers build trust, and a floating menu keeps programs, blog and sign-up one tap away.',
+    pair:['img/constra-1.webp','img/constra-2.webp'],
+    wide:'img/constra-wide.webp',
     links:[] },
   { n:'09', name:'Royale Luxury Hotel', tint:'#efe3d3', short:'Website for Royale, a luxury hotel in Bali: cinematic hero, rooms and suites, experiences and easy reservations.', cat:'Hospitality · Web Design', platform:'Web', thumb:'royale-hotel-home', thumbAlt:'Royale luxury hotel website home page',
     text:'A website for Royale, a luxury hotel in Bali. A dark, cinematic hero with elegant serif type sets the mood, a numbered section bar guides guests through rooms and suites, experiences, testimonials and gallery, and Reserve Now stays in reach throughout.',
+    pair:['img/royale-1.webp','img/royale-2.webp'],
+    wide:'img/royale-wide.webp',
     links:[] },
   { n:'10', name:'Noorayn Academy', tint:'#d5e8dc', short:'Website for an online Qur’an and Arabic academy: 1-to-1 classes with certified tutors, courses and a free evaluation.', cat:'Education · Web Design', platform:'Web', thumb:'noorayn-academy-home', thumbAlt:'Noorayn Academy website home page',
     text:'A website for Noorayn Academy, which teaches Qur’an, Tajweed, Hifz and Arabic through live 1-to-1 online classes. The hero explains the offer in one line and leads to a free evaluation, with learner numbers, ratings, round-the-clock support and certified teachers building trust right away.',
+    pair:['img/noorayn-1.webp','img/noorayn-2.webp'],
+    wide:'img/noorayn-wide.webp',
     links:[] }
 ];
 function superAppArt(){
@@ -137,10 +156,10 @@ function rowItem(p, i){
       <h4>${p.name}</h4>
       <p class="mw-desc">${p.short}</p>
     </div>`;
-  if(i === 0) return `<a class="mw mw-${kind} mw-intro" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+  if(i === 0) return `<a class="mw mw-${kind} mw-intro" href="/${shotHash(p)}" aria-label="${p.name}, view project">
     <div class="mw-stick">${inner}</div><div class="mw-pin" aria-hidden="true"></div>
   </a>`;
-  return `<a class="mw mw-${kind} rv" href="#${shotHash(p)}" aria-label="${p.name}, view project">
+  return `<a class="mw mw-${kind} rv" href="/${shotHash(p)}" aria-label="${p.name}, view project">
     ${inner}
   </a>`;
 }
@@ -158,6 +177,18 @@ const shotHash = p => `project/${slugify(p.name)}`;
 const SHOTS = Object.fromEntries(MORE.map(p => [shotHash(p), p]));
 const DEV = ['localhost', '127.0.0.1'].includes(location.hostname);
 
+/* ---------- URLs ---------- */
+// 'steadfast-merchant' -> /work/steadfast-merchant, 'project/fitchat-ai' -> /project/fitchat-ai
+const pathOf = h => CASES[h] ? '/work/' + h : SHOTS[h] ? '/' + h : null;
+// card links are written as '#slug' in the data; render them as the real page URL
+const linkOf = href => (href && href[0] === '#' && pathOf(href.slice(1))) || href;
+const PATH_RE = /^\/(work|project)\/([a-z0-9-]+)\/?$/;
+function routeOf(){
+  const m = location.pathname.match(PATH_RE);
+  if(m){ const h = m[1] === 'work' ? m[2] : 'project/' + m[2]; if(CASES[h] || SHOTS[h]) return h; }
+  return decodeURIComponent(location.hash.slice(1));
+}
+
 function shotFrame(src, alt, size, cls, eager){
   if(src) return `<figure class="pj-frame ${cls}"><img src="${src}" alt="${alt}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></figure>`;
   return DEV ? `<figure class="pj-frame ${cls} pj-empty" aria-hidden="true"><span>${size}</span></figure>` : '';
@@ -172,6 +203,14 @@ const caseCards = skip => WORK.filter(w => skip ? w.href !== '#' + skip : true).
   cat: w.cat
 }));
 
+// carousel for a "More work" project page: the other More work projects (the case studies stay on case-study pages)
+const moreWorkCards = skipHash => MORE.filter(p => p.thumb && shotHash(p) !== skipHash).map(p => ({
+  href: '#' + shotHash(p),
+  image: `img/${p.thumb}.webp`,
+  name: p.name,
+  cat: p.cat
+}));
+
 function moreTrack(title, cards){
   return `<section class="pj-more" aria-labelledby="pj-more-title">
     <div class="pj-more-head">
@@ -182,7 +221,7 @@ function moreTrack(title, cards){
       </div>
     </div>
     <div class="pj-track">${cards.map(o => `
-      <a class="pj-card" href="${o.href}">
+      <a class="pj-card" href="${linkOf(o.href)}">
         <span class="pj-card-img"><img src="${o.image}" alt="" loading="lazy" decoding="async"></span>
         <span class="pj-card-meta"><b>${o.name}</b><span>${o.cat}</span></span>
       </a>`).join('')}
@@ -216,7 +255,7 @@ function buildShot(hash){
     </div>
     ${pair ? `<div class="pj-pair">${pair}</div>` : ''}
     ${shotFrame(p.wide, `${p.name} screen 4`, '2400 × 1350', 'pj-wide')}
-    ${moreTrack('More work', caseCards())}
+    ${moreTrack('More work', moreWorkCards(hash))}
   </main>`;
   const frag = document.createDocumentFragment();
   while(el.firstChild) frag.appendChild(el.firstChild);
@@ -231,7 +270,7 @@ const CASES = {
   title:'Helping merchants run high-volume shipping from their phone',
   lead:'The everyday tool for businesses that ship with Steadfast: booking parcels, following deliveries, getting paid and reading how the business is doing.',
   meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Mobile app'],['Scope','End-to-end merchant experience'],['Status',`<a href="${PB}com.steadfast.steadfastmerchant" target="_blank" rel="noopener">Live on Google Play ↗</a>`]],
-  cover:`<div class="cover-frame cover-mock"><img src="img/sf-mockup.webp" srcset="img/sf-mockup-sm.webp 800w, img/sf-mockup.webp 1400w" sizes="(max-width:900px) 92vw, 820px" alt="Steadfast Merchant app: add parcel, home and parcel summary screens" width="1400" height="1321" fetchpriority="high" decoding="async"></div>`,
+  cover:`<div class="cover-frame cover-full"><img src="img/sf-cs-banner.webp" alt="Steadfast Merchant app: fraud check, home and API integration screens" width="2000" height="1125" fetchpriority="high" decoding="async"></div>`,
   sections:[
    ['intro','Introduction','A merchant app for a courier network', `<p class="lead">Steadfast is a courier service in Bangladesh. Merchants use the app to send parcels and manage everything that happens after.</p><p>I designed the end-to-end merchant experience: orders, shipments, payments, delivery operations and business performance, in one streamlined mobile app.</p>`],
    ['context','Context','Many parcels, each with its own money trail', `<p>Every parcel carries a status, a delivery charge, a cash-on-delivery amount, a recipient and a rider. A merchant might have hundreds in motion. The app has to keep all of that readable at volume, not just for one parcel at a time.</p>`],
@@ -266,7 +305,7 @@ const CASES = {
   title:'Designing a business operating system for modern merchants',
   lead:'One product, on mobile and web, where Packly merchants manage products, stock, orders, sales, customers and campaigns across more than one sales channel.',
   meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Mobile app + Web'],['Versions','V1 and V2'],['Status',`<a href="${PB}com.packlybusiness.app" target="_blank" rel="noopener">Live ↗</a>`]],
-  cover:`<div class="cover-frame" style="padding:0!important;background:none"><img src="img/pbm-hero.webp" alt="Packly Business Manager: finance, dashboard and POS sale screens" width="2000" height="1125" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block"></div>`,
+  cover:`<div class="cover-frame cover-full"><img src="img/pbm-web-banner.webp" alt="Packly Business Manager web dashboard: business overview, sales by channel and order summary" width="2000" height="1125" fetchpriority="high" decoding="async"></div>`,
   sections:[
    ['intro','Introduction','A back office in the merchant\'s pocket', `<p class="lead">Packly Business Manager is where merchants run their business on Packly.</p><p>I designed the mobile app for everyday merchant work and the web platform for merchants operating at a larger scale, and evolved both from V1 to V2.</p>`],
    ['context','Context','A lot of business in one product', `<p>The product covers the full operating loop of a merchant. Each area is a product in its own right, and they all depend on each other.</p><div class="chips" style="margin-top:4px">${['Products','Inventory','Orders','Sales','Customers','Campaigns','Warehouses','Multiple channels','Marketplace operations'].map(x=>`<span class="chip" style="color:var(--text);border-color:var(--line)">${x}</span>`).join('')}</div><figure class="wide-shot" style="margin-top:24px"><div class="frame"><img src="img/pbm-cover.jpg" alt="Packly Business Manager campaign image showing a small business owner using the app" width="2048" height="1000" loading="lazy" decoding="async"></div><figcaption>Packly Business Manager brings the tools for running a small business into one mobile app.</figcaption></figure>`],
@@ -301,7 +340,7 @@ const CASES = {
   title:'One store for customers, many shops behind it',
   lead:'A multi-vendor marketplace covering the customer journey from discovery to checkout and orders, and the vendor experience that powers it.',
   meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Web + Mobile'],['Versions','V1 live · V2 in development'],['Status','<a href="https://www.packly.com/" target="_blank" rel="noopener">packly.com ↗</a>']],
-  cover:`<div class="cover-frame"><div class="shot">${img('packly-web-home','Packly marketplace home page',1)}</div></div>`,
+  cover:`<div class="cover-frame cover-full"><img src="img/pkv2-banner.webp" alt="Packly Marketplace V2: product page, home and flash sale screens" width="2000" height="1125" fetchpriority="high" decoding="async"></div>`,
   sections:[
    ['intro','Introduction','A marketplace in two iterations', `<p class="lead">Packly is a multi-vendor commerce platform in Bangladesh.</p><p>I designed two iterations of it, covering customer shopping journeys, product discovery, vendor experiences, checkout, order management and marketplace workflows.</p>`],
    ['context','Context','Three sides of one purchase', `<div class="three"><div class="box"><span class="meta">Customer</span><h3>Finds and buys</h3><p>Discovers products, compares, adds to cart from several shops, checks out and follows orders.</p></div><div class="box inkb"><span class="meta">Marketplace</span><h3>Connects</h3><p>Categories, search, campaigns and order management tie buyers and sellers together.</p></div><div class="box"><span class="meta">Vendor</span><h3>Sells</h3><p>Runs a shop, lists products and fulfils orders, with tools in <a href="#packly-business-manager">Business Manager</a>.</p></div></div>`],
@@ -395,6 +434,39 @@ const CASES = {
    ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Complete streaming product</h3><p>Discovery, AI, social viewing and subscription designed as one experience.</p></div><div class="box sageb"><span class="meta">AI layer</span><h3>Mood-to-movie in one tap</h3><p>Ask Bonsai AI takes a mood and returns a single best match — no browsing required.</p></div><div class="box sageb"><span class="meta">Social</span><h3>Watch With Friends for 8</h3><p>Room codes and QR sharing let groups of up to 8 watch together in sync.</p></div></div>`]
   ]},
 
+'packly-drive': {
+  name:'Packly Drive', eyebrow:'Case study 07 · Car rental',
+  title:'Helping people in Dubai find the right car in one search',
+  lead:'A car rental and buying marketplace for Dubai, where renters compare cars, prices and hosts in one place, and rental companies list their fleets.',
+  meta:[['Role','Mid UI/UX Designer, Zavisoft'],['Platform','Web + Mobile app'],['Versions','V1 and V2'],['Status','<a href="https://packlydrive.com/" target="_blank" rel="noopener">packlydrive.com ↗</a>']],
+  cover:`<div class="cover-frame cover-full"><img src="img/pd-banner.webp" alt="Packly Drive home page: car search over a white sports car" width="2000" height="1125" fetchpriority="high" decoding="async"></div>`,
+  sections:[
+   ['intro','Introduction','From search to the right car', `<p class="lead">Packly Drive is a car marketplace for Dubai. People rent or buy cars, book a car with a driver, and rent yachts. Rental companies list their cars on it.</p><p>I designed the customer website across two versions: search, categories, listings, car cards and the paths into booking and the app.</p>`],
+   ['context','Context','Thousands of cars, many hosts', `<p>Renters in Dubai compare a lot at once: car type, brand, price per day or month, distance limits, and whether the host can be trusted. Each car comes from a different rental company, so the site has to make cars from many hosts easy to compare side by side.</p>`],
+   ['problem','Problem','What needed solving', `<div class="problem"><div><span class="meta">Problem</span><p style="margin-top:12px">With a large catalogue and many hosts, it was hard for renters to narrow down to a car they trusted at a price they understood.</p></div><div><span class="meta">Goal</span><p style="margin-top:12px">Get renters from the home page to a shortlist fast, with price and trust visible on every car before they open it.</p></div></div>`],
+   ['users','Users','Who the site serves', `<div class="two"><div class="box inkb"><span class="meta">Primary</span><h3>Renters</h3><p>Residents and visitors who need a car for a day, a week or a month, and compare type, brand and price.</p></div><div class="box"><span class="meta">Secondary</span><h3>Rental companies</h3><p>Hosts who list their fleets on Packly Drive and want their cars and reputation shown clearly.</p></div></div>`],
+   ['focus','Challenges','Four things the design had to get right', `<div class="focus-list"><div><b>Search first</b><span>Type, brand and rent or buy in one bar at the top.</span></div><div><b>Browse by need</b><span>Categories like luxury, SUV, sports, affordable and monthly.</span></div><div><b>Trust on the card</b><span>Verified and super-agent badges, ratings, trips and host name.</span></div><div><b>Clear pricing</b><span>Day and month prices with distance limits on every card.</span></div></div>`],
+   ['ia','Information Architecture','How the site is organised', `<div class="ia-map">
+      <div class="ia-map-head"><b>Packly Drive</b><span>Search as the front door</span></div>
+      <div class="ia-map-grid">
+        <article class="ia-map-card"><h3>Rent a car</h3><ul><li>Search by type and brand</li><li>Categories</li><li>Listings by area</li></ul></article>
+        <article class="ia-map-card"><h3>Buy a car</h3><ul><li>Rent or buy toggle</li><li>Car brands</li></ul></article>
+        <article class="ia-map-card"><h3>More services</h3><ul><li>Car with driver</li><li>Airport transfer</li><li>Yachts</li></ul></article>
+        <article class="ia-map-card"><h3>Hosts</h3><ul><li>List your cars</li><li>View my listings</li></ul></article>
+      </div>
+      <p class="ia-map-foot">Search and categories lead; services and host tools stay one level away in the navigation.</p>
+    </div>`],
+   ['iteration','Iteration','From V1 to V2', `<div class="versions"><div class="box"><span class="meta">V1</span><h3>Photo hero, simple search</h3><p>A full-width photo hero with a rent or buy toggle and a single search row.</p></div><div class="arrow">→</div><div class="box inkb"><span class="meta">V2</span><h3>Search panel and services</h3><p>A tabbed search for cars, airport transfer, yachts and drivers, a first-ride promo, and richer car cards.</p></div></div>`],
+   ['decisions','Key Design Decisions','Decisions visible in the product', `<div class="sf-decisions">
+      <article class="sf-decision"><h3>Lead with one search panel</h3><p>Put car type, brand and rent or buy in a single panel at the top, so most visits start with a search.</p></article>
+      <article class="sf-decision"><h3>Show trust on every card</h3><p>Verified and super-agent badges, rating, trip count and host name sit on the card, before anyone opens it.</p></article>
+      <article class="sf-decision"><h3>Price per day and per month</h3><p>Cards show both prices with their distance limits, so short and long rentals compare at a glance.</p></article>
+      <article class="sf-decision"><h3>Group cars by need and place</h3><p>Rows like affordable cars in Dubai Marina, luxury cars and chauffeur service, plus city cards, match how people plan a rental.</p></article>
+    </div>`],
+   ['flow','Core User Journeys','From intent to a shortlist', `<div class="focus-list f4"><div><b>Search → Car</b><span>Search panel → results → car card → details</span></div><div><b>Browse → Car</b><span>Category → listings → car card</span></div><div><b>City → Car</b><span>Popular city → cars available there</span></div><div><b>Host → Listing</b><span>List your cars → view my listings</span></div></div>`],
+   ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Live</span><h3>Live at packlydrive.com</h3><p>The customer website for renting and buying cars in Dubai.</p></div><div class="box sageb"><span class="meta">Search</span><h3>One search for every service</h3><p>Cars, airport transfer, yachts and drivers from a single panel.</p></div><div class="box sageb"><span class="meta">Trust</span><h3>Comparable cards</h3><p>Price, distance limits, badges and host shown the same way on every car.</p></div></div>`]
+  ]},
+
 'packly-business-manager-v2': {
   name:'Packly Business Manager V2', eyebrow:'Case study 06 · SaaS / Mobile',
   title:'Redesigning the merchant app for clarity and speed',
@@ -440,7 +512,7 @@ const CASES = {
    ['outcome','Outcome','Where it landed', `<div class="outcome"><div class="box sageb"><span class="meta">Shipped</span><h3>Live on Google Play</h3><p>V2 released to Packly merchants as the primary mobile management tool.</p></div><div class="box sageb"><span class="meta">Home</span><h3>Orders visible on open</h3><p>Pending, Processing and Delivered counts surface immediately without any navigation.</p></div><div class="box sageb"><span class="meta">Analytics</span><h3>Performance at a glance</h3><p>Net earnings, sales, orders, expense and profit in one screen with trend context.</p></div></div>`]
   ]}
 };
-const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway','bonsaihd','packly-business-manager-v2'];
+const ORDER = ['steadfast-merchant','packly-business-manager','packly-marketplace','payment-gateway','bonsaihd','packly-business-manager-v2','packly-drive'];
 
 
 
@@ -651,26 +723,33 @@ const CASE_BLOCKS = [
 // [file, title, caption, isPhone]; null = no image yet (placeholder on localhost only)
 const CASE_SHOTS = {
   'steadfast-merchant': {
-    pair1: [['sf-merchant-1.webp', 'Home and parcel details', 'Frequent actions on top. Parcel details with COD, charges, recipient and rider.', 1],
-            ['sf-merchant-summary.webp', 'Parcel summary', 'Every status as a tile with one number.', 1]],
-    wide: null,
-    pair2: [['sf-merchant-wallet.webp', 'Wallet', 'Requestable amount first, calculation beneath.', 1],
-            ['sf-merchant-fraud.webp', 'Fraud check', 'Customer success rate before booking.', 1]],
-    end: null },
+    pair1: [['sf-cs-api.webp', 'API integration', 'Merchants create API keys, update webhooks and download the WordPress plugin without a support call.'],
+            ['sf-cs-profile.webp', 'Profile', 'Business details, pickup address, pickup mode and the default payout method on one screen.']],
+    wide: ['sf-cs-trio.webp', 'Fraud check, wallet and parcel summary', 'Customer risk, the payout breakdown and parcel counts by status: the three screens merchants check most.'],
+    pair2: [['sf-cs-coverage.webp', 'Coverage', 'Search an area and get the nearest hub with its address, contact, one-tap call and map.'],
+            ['sf-cs-fraud.webp', 'Fraud check', 'Delivery success rate and reported complaints for a phone number before booking a parcel.']],
+    end: ['sf-cs-overview.webp', 'App overview', 'Fraud check, balance details, API integration, coverage and the side menu across the merchant app.'] },
   'packly-business-manager': {
-    pair1: [['pbm-finance-accounts.webp', 'Finance — Accounts', 'Cash in hand, bank balance and linked accounts side by side.'],
-            ['pbm-finance-report.webp', 'Finance — Reports', 'Business overview, stock and purchase-and-sales reports grouped by type.']],
-    wide: ['pbm-screens.webp', 'Dashboard, Finance & POS', 'Three core screens of the V1 app: the merchant dashboard, finance module and POS sale product grid.'],
-    pair2: [['pbm-pos-sale.webp', 'POS Sale', 'Scan or search product grid with filter shortcut — built for fast counter billing.'],
-            ['pbm-product-list.webp', 'Product list', 'All, Active, Inactive and Draft filter tabs with name, SKU, price, stock and status on each row.']],
-    end: ['pbm-overview.webp', 'App overview', 'Five key screens: dashboard, product list, POS sale, finance accounts and finance report — the full Packly Business Manager V1 experience.'] },
+    pair1: [['pbm-web-add-product.webp', 'Add product', 'One form for name, category, images, AI-assisted description, variations and opening stock, with publishing channels on the side.'],
+            ['pbm-web-pos.webp', 'POS sale and recent transactions', 'Product grid and cart for fast counter billing, plus every payment method and transaction in one place.']],
+    wide: ['pbm-web-orders.webp', 'Packly Commerce orders', 'Status tabs with counts, summary numbers, and every order showing customer, amount, payment and delivery state.'],
+    pair2: [['pbm-web-shop-settings.webp', 'Shop settings', 'Reorder shop sections, manage promotional banners and highlighted products, and pause the shop with vacation mode.'],
+            ['pbm-web-my-shop.webp', 'My Shop', 'The storefront before and after verification: a clear next step while pending, then cover, profile and products once the store is live.']],
+    end: ['pbm-web-signup.webp', 'Onboarding', 'The sign-up form next to a preview of the dashboard merchants are about to get.'] },
+  'packly-drive': {
+    pair1: [['pd-listings.webp', 'Listings by need and place', 'Affordable cars in Dubai Marina, luxury cars, popular cities and chauffeur service, each card with badges, rating, host and price.'],
+            ['pd-recommended.webp', 'Recommended cars', 'Type filters and car cards with day and month prices, distance limits and features.']],
+    wide: ['pd-footers.webp', 'Reviews, app and footer, V1 and V2', 'Brands, customer reviews and the app download on the left; chauffeur service, the in-app promo and a full sitemap footer on the right.'],
+    pair2: [['pd-home.webp', 'Home, V2', 'One search panel for cars, airport transfer, yachts and drivers, a first-ride promo, then categories and listings.'],
+            ['pd-home-v1.webp', 'Home, V1', 'A photo hero with a rent or buy toggle and search, followed by categories and why Packly Drive.']],
+    end: ['pd-footer.webp', 'Get the app', 'Reviews, app store links and a footer that keeps contact details and the brand in view.'] },
   'packly-marketplace': {
-    pair1: [['pk-app-home.webp', 'Home', 'Search, banner, campaigns and categories above the fold.', 1],
-            ['pk-app-categories.webp', 'Categories', 'Two-level browsing with image tiles.', 1]],
-    wide: ['pk-v2-home.webp', 'Marketplace V2', 'The V2 home in development: campaign-led, with flash sales and daily picks.'],
-    pair2: [['pk-app-flash.webp', 'Flash sale', 'Countdown and discount on every card.', 1],
-            ['pk-app-cart.webp', 'Cart', 'Items grouped under each shop.', 1]],
-    end: null },
+    pair1: [['pkv2-price-drop.webp', 'Price drop campaign', 'Campaign header with end time, collectable vouchers, then the sale items in a three-column grid.'],
+            ['pkv2-flash-sale.webp', 'Flash sale', 'Countdown up top, vouchers next, category chips and popular items below.']],
+    wide: ['pkv2-product-flow.webp', 'Product to cart', 'Product page, colour picker, size and quantity, then vouchers to collect before checkout.'],
+    pair2: [['pkv2-product.webp', 'Product page', 'Gallery, rating, sold count, price with savings and colour family above the fold.'],
+            ['pkv2-vouchers.webp', 'Collect vouchers', 'Store, shipping, bank and Packly vouchers, each with its minimum spend and one-tap collect.']],
+    end: ['pkv2-coins.webp', 'Coins and rewards', 'Daily check-in, missions and spin to win: coin rewards that bring shoppers back every day.'] },
   'payment-gateway': {
     pair1: [['pg-store.webp', 'Store settings', 'Payment methods, API keys, webhooks and checkout redirects for one store, with a live summary on the side.'],
             ['pg-emi.webp', 'EMI configuration', 'Bank EMI rules, tenure plans with interest and monthly amount, and eligible card networks.']],
@@ -850,27 +929,44 @@ function wireCardTilt(){
   });
 }
 
-function mount(kind, slug){
+const HOME_TITLE = 'Tareq Mahmud | Product Designer for SaaS, Fintech & Ecommerce';
+let booted = false;
+function mount(kind, slug, restoreY){
   if(destroyHome){ destroyHome(); destroyHome = null; }
   const frag = kind==='home' ? buildHome() : kind==='shot' ? buildShot(slug) : buildCase(slug);
   frag.appendChild(tplContact.content.cloneNode(true));
   view.replaceChildren(frag);
+  // going back to the home page: land where the visitor left it, before the reveal effects are wired
+  if(typeof restoreY === 'number') scrollToTarget(restoreY, true);
   current = kind==='home' ? 'home' : slug;
-  document.title = kind==='home' ? 'Tareq Mahmud' : (kind==='shot' ? SHOTS[slug] : CASES[slug]).name + ' · Tareq Mahmud';
+  // the server already sent the right title for the first page; keep it, and set matching ones on later swaps
+  if(booted) document.title = kind==='home' ? HOME_TITLE : (kind==='shot' ? SHOTS[slug].name + ' Design' : CASES[slug].name + ' Case Study') + ' | Tareq Mahmud';
+  booted = true;
   wireView();
   if(kind==='home'){ mountIntroReveal(); wireCardTilt(); }
   if(kind==='shot' || kind==='case') wireMoreTrack();
 }
 
 let swapping = false;
+let homeScroll = null; // where the home page was scrolled when a project page was opened
+let lastPath = location.pathname;
 function go(){
-  const h = decodeURIComponent(location.hash.slice(1));
+  // case studies live at /work/<slug> and More work pages at /project/<slug> (real, indexable URLs);
+  // the home page keeps #section anchors. Old shared links like /#steadfast-merchant move to the real URL.
+  let h = routeOf();
+  if(location.pathname === '/' && pathOf(h)) history.replaceState(null, '', pathOf(h));
+  lastPath = location.pathname;
   const kind = CASES[h] ? 'case' : SHOTS[h] ? 'shot' : 'home';
   const wantCase = kind !== 'home';
   const target = wantCase ? null : (h || 'top');
   const needSwap = wantCase ? current !== h : current !== 'home';
+  // leaving the home page for a project: remember the spot. Coming back with "Back to home" or the browser back button
+  // (empty hash) returns there; nav links like Work or About still jump to their own section.
+  if(current === 'home' && wantCase) homeScroll = scrollY;
+  const restoreY = (kind === 'home' && h === '' && current !== 'home' && current !== null) ? homeScroll : null;
   const finish = () => {
     if(wantCase){ scrollToTarget(0, true); focusTitle(kind==='shot' ? 'shot-title' : 'cs-title'); }
+    else if(restoreY !== null){ scrollToTarget(restoreY, true); }
     else {
       const el = document.getElementById(target);
       if(el && target !== 'top'){ requestAnimationFrame(()=>scrollToTarget(el, needSwap)); }
@@ -882,7 +978,7 @@ function go(){
   if(swapping) return;
   swapping = true;
   view.classList.add('leaving');
-  setTimeout(()=>{ mount(kind, h); finish(); requestAnimationFrame(()=>{ view.classList.remove('leaving'); swapping=false; }); }, 220);
+  setTimeout(()=>{ mount(kind, h, restoreY); finish(); requestAnimationFrame(()=>{ view.classList.remove('leaving'); swapping=false; }); }, 220);
 }
 function focusTitle(id){ const t = document.getElementById(id); if(t) t.focus({preventScroll:true}); }
 
@@ -1150,6 +1246,7 @@ document.addEventListener('click', e=>{
   if(!a) return;
   const id = a.getAttribute('href').slice(1);
   closeMenu();
+  if(current !== 'home' && id === 'top' && a.closest('.c-links')){ e.preventDefault(); scrollToTarget(0); return; }
   if(current !== 'home' && !CASES[id] && !SHOTS[id]){
     const el = document.getElementById(id);
     if(el && view.contains(el)){ e.preventDefault(); scrollToTarget(el); }
@@ -1182,6 +1279,29 @@ menuBtn.addEventListener('click', ()=>{
 });
 addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
 
+/* links to /work/…, /project/… and home sections from a project page swap the view in place
+   (same smooth transition as before) instead of loading a new document */
+document.addEventListener('click', e=>{
+  if(e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest('a[href]');
+  if(!a || a.target === '_blank' || a.hasAttribute('download')) return;
+  // in-page targets that exist here (e.g. the skip link) stay on this page; <base href="/"> would otherwise send them home
+  const raw = a.getAttribute('href');
+  if(raw.length > 1 && raw[0] === '#' && location.pathname !== '/'){
+    const el = document.getElementById(raw.slice(1));
+    if(el){ e.preventDefault(); scrollToTarget(el); if(el.id === 'main') el.focus({preventScroll:true}); return; }
+  }
+  const u = new URL(a.href, location.href);
+  if(u.origin !== location.origin || !(u.pathname === '/' || PATH_RE.test(u.pathname))) return;
+  if(u.pathname === '/' && location.pathname === '/') return; // #section on the home page: the browser handles it
+  e.preventDefault();
+  closeMenu();
+  if(u.pathname + u.hash === location.pathname + location.hash){ scrollToTarget(0); return; }
+  history.pushState(null, '', u.pathname + u.hash);
+  go();
+});
+// back/forward between pages (hash-only steps are handled by hashchange)
+addEventListener('popstate', ()=>{ if(location.pathname !== lastPath) go(); });
 addEventListener('hashchange', go);
 go();
 }
