@@ -121,29 +121,43 @@ ul{margin:0;padding:0;list-style:none}
 .hero h1 em{font-style:normal;color:var(--lime)}
 .hero-sub{margin-top:28px;max-width:40ch;color:rgba(244,244,238,.72)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
-/* Hero: full-bleed valley video, headline split top-left / bottom-right, intro and buttons bottom-left */
-.hv-stage{position:relative;isolation:isolate;overflow:hidden}
-/* the old hero's left/bottom shading would also tint the brand strip below the video, leaving a visible seam */
+/* Hero: dark solid stage. Statement headline upper-left (first line indented) with a small note under it,
+   the photo large and right of centre on the bottom edge, a giant name behind it cut by the bottom, one CTA bottom-right */
 .hero:has(.hv-stage)::before{display:none}
-.hv-stage .hero-media{z-index:-2}
-.hv-stage::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:
-  linear-gradient(180deg,rgba(20,22,14,.6) 0%,rgba(20,22,14,.34) 28%,rgba(20,22,14,.12) 48%,rgba(20,22,14,0) 60%,rgba(20,22,14,.7) 80%,var(--ink) 94%,var(--ink) 100%),
-  radial-gradient(75% 55% at 0% 12%,rgba(20,22,14,.5),rgba(20,22,14,0) 72%),
-  radial-gradient(60% 50% at 0% 100%,rgba(20,22,14,.55),rgba(20,22,14,0) 70%)}
-.hv-inner{min-height:max(640px,100svh);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;column-gap:32px;padding-top:calc(118px + env(safe-area-inset-top,0px));padding-bottom:clamp(40px,5vw,72px)}
-.hv-title{display:contents}
-.hv-t1,.hv-t2{font-size:clamp(3.2rem,1rem + 7.4vw,9.5rem);line-height:.92;letter-spacing:-.055em;font-weight:400;color:var(--paper)}
-.hv-t1{grid-area:1/1/2/3}
-.hv-t2{grid-area:3/2/4/3;justify-self:end;align-self:end;text-align:right}
-.hv-t2 em{font-style:normal;color:var(--lime)}
-.hv-foot{grid-area:3/1/4/2;align-self:end;max-width:34ch}
-.hv-foot p{margin:0;font-size:1rem;line-height:1.5;color:rgba(244,244,238,.8)}
-.hv-foot .hero-actions{margin-top:22px}
+.hv-stage{position:relative;isolation:isolate;overflow:hidden;background:var(--ink)}
+/* texture: a faint lift of light behind the figure and a soft vignette underneath everything,
+   then fine film grain over the whole stage so the photo and the ink read as one surface */
+.hv-stage::before{content:"";position:absolute;inset:0;z-index:-3;pointer-events:none;background:
+  radial-gradient(ellipse 38% 55% at 57% 62%,rgba(185,226,91,.075),rgba(185,226,91,0) 70%),
+  radial-gradient(ellipse 85% 85% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.42) 100%)}
+.hv-stage::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.09;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/180px 180px}
+.hv-figure{position:absolute;left:57%;bottom:0;z-index:-1;height:min(84%,920px);aspect-ratio:2000/1805;translate:-50% 0;pointer-events:none}
+.hv-figure img{display:block;width:100%;height:100%}
+.hv-big{position:absolute;left:50%;bottom:0;translate:-50% 12%;z-index:-2;margin:0;white-space:nowrap;pointer-events:none;
+  font-size:17.4vw;line-height:1;font-weight:400;letter-spacing:-.085em;
+  background:linear-gradient(90deg,rgba(244,244,238,.14) 0%,rgba(244,244,238,.34) 45%,rgba(244,244,238,.9) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hv-inner{position:relative;z-index:1;min-height:max(640px,100svh);display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto 1fr auto;
+  padding-top:calc(clamp(120px,20svh,200px) + env(safe-area-inset-top,0px));padding-bottom:clamp(28px,4svh,48px)}
+.hero .hv-title{grid-area:1/1/2/2;margin:0;max-width:17em;text-indent:2.6em;font-size:clamp(1.9rem,.6rem + 2.3vw,3.3rem);line-height:1.06;letter-spacing:-.035em;font-weight:400;color:var(--paper)}
+.hero .hv-title em{font-style:normal;color:var(--lime)}
+.hv-note{grid-area:2/1/3/2;margin:clamp(24px,4svh,44px) 0 0 clamp(80px,12vw,190px);font-size:.82rem;line-height:1.4;color:rgba(244,244,238,.62)}
+.hv-inner .hero-actions{grid-area:4/2/5/3;align-self:end;margin:0;align-items:center;gap:12px}
+/* round CTA: one line, centred in a lime disc that swells a little on hover; the CV is a quiet text link beside it */
+.hv-inner .hero-actions .hv-cta{flex:0 0 auto;flex-direction:row;justify-content:center;gap:6px;width:clamp(112px,9vw,132px);height:clamp(112px,9vw,132px);padding:0;border-radius:50%;font-weight:500;transition:transform .45s var(--ease),background .3s}
+.hv-inner .hero-actions .hv-cta:hover{transform:scale(1.06)}
+.hv-cv{grid-area:3/1/4/2;align-self:start;justify-self:start;display:inline-flex;align-items:center;gap:8px;margin:18px 0 0 clamp(80px,12vw,190px);padding-bottom:3px;
+  font-size:.82rem;color:var(--paper);text-decoration:none;border-bottom:1px solid rgba(244,244,238,.35);transition:border-color .3s,color .3s}
+.hv-cv:hover{color:var(--lime);border-color:var(--lime)}
 @media (max-width:860px){
-  .hv-inner{grid-template-columns:1fr;grid-template-rows:auto 1fr auto auto auto;row-gap:20px}
-  .hv-t1{grid-area:1/1/2/2}
-  .hv-t2{grid-area:3/1/4/2}
-  .hv-foot{grid-area:4/1/5/2;max-width:none}
+  .hv-inner{grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;padding-top:calc(108px + env(safe-area-inset-top,0px))}
+  .hero .hv-title{max-width:none;text-indent:1.6em;font-size:clamp(1.7rem,.9rem + 3.6vw,2.6rem)}
+  .hv-note{margin:20px 0 0 22%}
+  .hv-cv{margin:14px 0 0 22%}
+  .hv-inner .hero-actions{grid-area:4/1/5/2;justify-content:flex-end}
+  .hv-figure{left:60%;height:auto;width:min(150vw,720px)}
+  .hv-big{translate:-50% 12%}
+  .hv-inner .hero-actions{align-items:center}
+  .hv-inner .hero-actions .hv-cta{flex:0 0 100px;width:100px;height:100px;font-size:.9rem}
 }
 .cred{margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line-d);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .cred li{padding:20px 20px 4px 0;display:flex;flex-direction:column;gap:6px}

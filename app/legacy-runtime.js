@@ -989,15 +989,16 @@ let fxRaf = 0, fxItems = [];
 function wireScrollFx(){
   fxItems = [];
   if(REDUCE_MOTION) return;
+  // hero: copy lifts and fades, the giant name slides left behind the photo, the photo trails the page
   const stage = view.querySelector('.hv-stage');
   if(stage){
-    const t1 = stage.querySelector('.hv-t1'), t2 = stage.querySelector('.hv-t2'), foot = stage.querySelector('.hv-foot'), vid = stage.querySelector('.hero-media video');
+    const title = stage.querySelector('.hv-title'), note = stage.querySelector('.hv-note'), cv = stage.querySelector('.hv-cv'), big = stage.querySelector('.hv-big'), fig = stage.querySelector('.hv-figure');
     fxItems.push(() => {
       const h = stage.offsetHeight, p = Math.min(1, Math.max(0, scrollY / h));
-      if(t1){ t1.style.transform = `translate3d(${(-p * 6).toFixed(2)}vw,${(-p * 90).toFixed(1)}px,0)`; t1.style.opacity = (1 - p * 1.3).toFixed(3); }
-      if(t2){ t2.style.transform = `translate3d(${(p * 6).toFixed(2)}vw,${(p * 40).toFixed(1)}px,0)`; t2.style.opacity = (1 - p * 1.1).toFixed(3); }
-      if(foot){ foot.style.transform = `translate3d(0,${(p * 60).toFixed(1)}px,0)`; foot.style.opacity = (1 - p * 1.6).toFixed(3); }
-      if(vid) vid.style.scale = (1 + p * 0.14).toFixed(4);
+      if(title){ title.style.transform = `translate3d(0,${(-p * 80).toFixed(1)}px,0)`; title.style.opacity = (1 - p * 1.4).toFixed(3); }
+      [note, cv].forEach(el => { if(el){ el.style.transform = `translate3d(0,${(-p * 50).toFixed(1)}px,0)`; el.style.opacity = (1 - p * 1.8).toFixed(3); } });
+      if(big) big.style.transform = `translate3d(${(-p * 14).toFixed(2)}vw,0,0)`;
+      if(fig) fig.style.transform = `translate3d(0,${(p * 140).toFixed(1)}px,0)`;
     });
   }
   const tick = () => { fxRaf = 0; fxItems.forEach(f => f()); };
