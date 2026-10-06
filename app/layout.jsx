@@ -2,6 +2,9 @@ import "./globals.css";
 
 const siteUrl = "https://tareqmahmud.info";
 
+// Google Analytics 4 Measurement ID (Admin → Data streams → Web). Leave empty to turn tracking off.
+const GA_ID = "";
+
 const title = "Tareq Mahmud | Product Designer for SaaS, Fintech & Ecommerce";
 const description =
   "Tareq Mahmud is a product designer (UI/UX) in Dhaka, Bangladesh with 3+ years designing SaaS, ecommerce, ERP, fintech and logistics apps. Open to full-time remote roles and freelance projects.";
@@ -128,6 +131,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                // page views are sent by the runtime on every page swap, so the tag doesn't send its own;
+                // local development is never tracked
+                __html: `if(!/^(localhost|127\\.0\\.0\\.1|\\[::1\\])$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:false});}`,
+              }}
+            />
+          </>
+        )}
         {/* case studies live at /work/… and /project/…; the shell and runtime use relative asset paths */}
         <base href="/" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

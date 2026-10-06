@@ -942,6 +942,7 @@ function mount(kind, slug, restoreY){
   // the server already sent the right title for the first page; keep it, and set matching ones on later swaps
   if(booted) document.title = kind==='home' ? HOME_TITLE : (kind==='shot' ? SHOTS[slug].name + ' Design' : CASES[slug].name + ' Case Study') + ' | Tareq Mahmud';
   booted = true;
+  if(window.gtag) gtag('event', 'page_view', { page_title: document.title, page_location: location.origin + location.pathname });
   wireView();
   if(kind==='home'){ mountIntroReveal(); wireCardTilt(); }
   if(kind==='shot' || kind==='case') wireMoreTrack();
