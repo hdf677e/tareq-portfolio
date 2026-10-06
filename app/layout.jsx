@@ -3,7 +3,7 @@ import "./globals.css";
 const siteUrl = "https://tareqmahmud.info";
 
 // Google Analytics 4 Measurement ID (Admin → Data streams → Web). Leave empty to turn tracking off.
-const GA_ID = "";
+const GA_ID = "G-4TW9TDYFFR";
 
 const title = "Tareq Mahmud | Product Designer for SaaS, Fintech & Ecommerce";
 const description =
